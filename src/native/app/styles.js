@@ -20,5 +20,8 @@ export default StyleSheet.create({
   sceneView: {
     backgroundColor: '#fff',
     flex: 1
+  },
+  maps: {
+    flex: 1,
   }
 });
