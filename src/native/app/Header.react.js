@@ -11,10 +11,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#31AACC',
     borderBottomColor: '#73CEE7',
     borderBottomWidth: 2,
-    height: 70,
+    height: 50,
     justifyContent: 'center',
     paddingBottom: 10,
-    paddingTop: 30,
+    paddingTop: 10,
     position: 'relative'
   },
   header: {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     padding: 10,
     position: 'absolute',
-    top: 25,
+    top: 5,
     width: 44
   }
 });
