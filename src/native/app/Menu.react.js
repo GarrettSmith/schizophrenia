@@ -2,7 +2,11 @@ import Component from '../components/Component.react';
 import React, {Dimensions} from 'react-native';
 
 const {
-  PropTypes, ScrollView, StyleSheet, Text, View
+  PropTypes,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } = React;
 
 const window = Dimensions.get('window');
@@ -42,8 +46,12 @@ export default class Menu extends Component {
   };
 
   render() {
-    const {msg: {app: {links}}, onRouteChange} = this.props;
-    const pages = ['home', 'todos'];
+    const {onRouteChange} = this.props;
+    const pages = [
+      'home',
+      'logging',
+      'todos',
+    ];
 
     return (
       <ScrollView
@@ -57,7 +65,9 @@ export default class Menu extends Component {
               key={page}
               onPress={() => onRouteChange(page)} // eslint-disable-line react/jsx-no-bind
               style={styles.item}
-            >{links[page]}</Text>
+            >
+              {page}
+            </Text>
           )}
         </View>
         {/* TODO: Switch language here. */}
