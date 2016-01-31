@@ -1,78 +1,110 @@
 import Component from '../components/Component.react';
-import React, {Dimensions} from 'react-native';
 
-const {
-  PropTypes,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} = React;
+import React, {View} from 'react-native';
+import {COLOR, Divider, Drawer} from 'react-native-material-design';
 
-const window = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#2C2C2C',
-    flex: 1,
-    height: window.height,
-    width: window.width * .7
-  },
-  menu: {
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingVertical: 20,
-    paddingHorizontal: 30
-  },
-  item: {
-    fontSize: 16,
-    padding: 10,
-    color: '#fff'
-  },
-  header: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 10,
-    marginBottom: 10
-  }
-});
+const {PropTypes} = React;
 
 export default class Menu extends Component {
 
   static propTypes = {
-    msg: PropTypes.object.isRequired,
-    onRouteChange: PropTypes.func.isRequired
+    onRouteChange: PropTypes.func.isRequired,
   };
 
   render() {
     const {onRouteChange} = this.props;
-    const pages = [
-      'home',
-      'logging',
-      'todos',
-    ];
+
+    console.log(COLOR.paperPink50)
 
     return (
-      <ScrollView
-        automaticallyAdjustContentInsets={false}
-        contentContainerStyle={styles.menu}
-        style={styles.container}
-      >
-        <View>
-          {pages.map(page =>
-            <Text
-              key={page}
-              onPress={() => onRouteChange(page)} // eslint-disable-line react/jsx-no-bind
-              style={styles.item}
-            >
-              {page}
-            </Text>
-          )}
-        </View>
-        {/* TODO: Switch language here. */}
-      </ScrollView>
+      <Drawer>
+        <Drawer.Header backgroundColor={COLOR.paperPink300.color}>
+        </Drawer.Header>
+
+        <Drawer.Section
+          items={[
+            {
+              icon: 'label',
+              value: 'Day',
+              active: true,
+              onPress: () => onRouteChange('logging'),
+              onLongPress: () => onRouteChange('logging'),
+            },
+            {
+              icon: 'label',
+              value: 'Week',
+              active: false,
+              onPress: () => onRouteChange('logging'),
+              onLongPress: () => onRouteChange('logging'),
+            },
+            {
+              icon: 'label',
+              value: 'Month',
+              active: false,
+              onPress: () => onRouteChange('logging'),
+              onLongPress: () => onRouteChange('logging'),
+            },
+            {
+              icon: 'label',
+              value: 'All Time',
+              active: false,
+              onPress: () => onRouteChange('logging'),
+              onLongPress: () => onRouteChange('logging'),
+            },
+          ]}
+        />
+
+        <Divider/>
+
+        <Drawer.Section
+          items={[
+            {
+              icon: 'label',
+              value: 'Medication',
+              active: false,
+              onPress: () => onRouteChange('logging'),
+              onLongPress: () => onRouteChange('logging'),
+            },
+            {
+              icon: 'label',
+              value: 'Support',
+              active: false,
+              onPress: () => onRouteChange('logging'),
+              onLongPress: () => onRouteChange('logging'),
+            },
+          ]}
+        />
+
+        <Divider/>
+
+        <Drawer.Section
+          items={[
+            {
+              icon: 'label',
+              value: 'Settings',
+              active: false,
+              onPress: () => onRouteChange('logging'),
+              onLongPress: () => onRouteChange('logging'),
+            },
+            {
+              icon: 'label',
+              value: 'Help & Feedback',
+              active: false,
+              onPress: () => onRouteChange('logging'),
+              onLongPress: () => onRouteChange('logging'),
+            },
+          ]}
+        />
+
+      </Drawer>
     );
   }
 
+}
+
+const styles = {
+  drawerContainer: {
+    top: 0,
+    bottom: 0,
+  }
 }

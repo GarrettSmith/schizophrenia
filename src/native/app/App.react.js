@@ -1,7 +1,13 @@
 import Component from '../components/Component.react';
 import Header from './Header.react';
 import Menu from './Menu.react';
-import React, {Navigator, PropTypes, StatusBarIOS, View} from 'react-native';
+import React, {
+  DrawerLayoutAndroid,
+  Navigator,
+  PropTypes,
+  StatusBarIOS,
+  View,
+} from 'react-native';
 import SideMenu from 'react-native-side-menu';
 import mapDispatchToProps from '../../common/app/mapDispatchToProps';
 import mapStateToProps from '../../common/app/mapStateToProps';
@@ -26,7 +32,6 @@ class App extends Component {
     super(props);
     this.onNavigatorRef = this.onNavigatorRef.bind(this);
     this.onRouteChange = this.onRouteChange.bind(this);
-    this.onSideMenuChange = this.onSideMenuChange.bind(this);
   }
 
   onNavigatorRef(component) {
@@ -42,52 +47,35 @@ class App extends Component {
     actions.toggleSideMenu();
   }
 
-  onSideMenuChange(isOpen) {
-    const {actions, device} = this.props;
-    if (device.platform === 'ios')
-      StatusBarIOS.setHidden(isOpen, true);
-    actions.onSideMenuChange(isOpen);
-  }
-
-  getTitle(route) {
-    const {msg: {app: {links}}} = this.props;
-    switch (route) {
-      case routes.home: return links.home;
-      case routes.todos: return links.todos;
-    }
-  }
-
   render() {
     const {actions, msg, ui} = this.props;
 
+    const menu = (
+      <Menu
+        onRouteChange={this.onRouteChange}
+      />
+    );
+
     const renderScene = route =>
       <View style={[styles.sceneView, route.style]}>
-        <Header
-          title={this.getTitle(route)}
-          toggleSideMenu={actions.toggleSideMenu}
-        />
         <route.Page {...this.props} />
       </View>;
 
-    const menu =
-      <Menu msg={msg} onRouteChange={this.onRouteChange} />;
-
     return (
-      <SideMenu
-        disableGestures
-        isOpen={ui.isSideMenuOpen}
-        menu={menu}
-        onChange={this.onSideMenuChange}
-        style={styles.container}
+      <DrawerLayoutAndroid
+        drawerWidth={300}
+        drawerPostion={DrawerLayoutAndroid.positions.left}
+        renderNavigationView={() => menu}
+        ref="drawer"
       >
         <Navigator
           configureScene={App.configureScene}
-          initialRoute={routes.home}
+          initialRoute={routes.logging}
           ref={this.onNavigatorRef}
           renderScene={renderScene}
           style={styles.container}
         />
-      </SideMenu>
+      </DrawerLayoutAndroid>
     );
   }
 
