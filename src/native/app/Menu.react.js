@@ -24,28 +24,28 @@ export default class Menu extends Component {
         <Drawer.Section
           items={[
             {
-              icon: 'label',
-              value: 'Day',
+              icon: 'view-agenda',
+              value: 'Agenda',
               active: true,
               onPress: () => onRouteChange('logging'),
               onLongPress: () => onRouteChange('logging'),
             },
             {
-              icon: 'label',
+              icon: 'view-week',
               value: 'Week',
               active: false,
               onPress: () => onRouteChange('logging'),
               onLongPress: () => onRouteChange('logging'),
             },
             {
-              icon: 'label',
+              icon: 'view-module',
               value: 'Month',
               active: false,
               onPress: () => onRouteChange('logging'),
               onLongPress: () => onRouteChange('logging'),
             },
             {
-              icon: 'label',
+              icon: 'schedule',
               value: 'All Time',
               active: false,
               onPress: () => onRouteChange('logging'),
@@ -59,14 +59,14 @@ export default class Menu extends Component {
         <Drawer.Section
           items={[
             {
-              icon: 'label',
+              icon: 'local-pharmacy',
               value: 'Medication',
               active: false,
               onPress: () => onRouteChange('logging'),
               onLongPress: () => onRouteChange('logging'),
             },
             {
-              icon: 'label',
+              icon: 'group',
               value: 'Support',
               active: false,
               onPress: () => onRouteChange('logging'),
@@ -80,14 +80,14 @@ export default class Menu extends Component {
         <Drawer.Section
           items={[
             {
-              icon: 'label',
+              icon: 'settings',
               value: 'Settings',
               active: false,
               onPress: () => onRouteChange('logging'),
               onLongPress: () => onRouteChange('logging'),
             },
             {
-              icon: 'label',
+              icon: 'help',
               value: 'Help & Feedback',
               active: false,
               onPress: () => onRouteChange('logging'),

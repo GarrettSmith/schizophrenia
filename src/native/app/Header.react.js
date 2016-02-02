@@ -7,23 +7,20 @@ const {PropTypes} = React;
 export default class Header extends Component {
 
   static propTypes = {
-    title: PropTypes.string.isRequired,
-    toggleSideMenu: PropTypes.func.isRequired
+    children: PropTypes.node,
   };
 
   render() {
     const {
-      color,
-      title,
-      toggleSideMenu,
+      children
     } = this.props;
 
     return (
       <Toolbar
         icon="menu"
-        onIconPress={toggleSideMenu}
+        onIconPress={() => null}
         style={styles.toolbar}
-        title={title}
+        title={'test'}
       />
     );
   }

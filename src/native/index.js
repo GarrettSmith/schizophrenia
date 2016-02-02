@@ -1,6 +1,6 @@
 import 'react-native-browser-polyfill';
 import App from './app/App.react';
-import React, {AppRegistry, Component, Platform} from 'react-native';
+import React, {AppRegistry, Component, Platform, UIManager} from 'react-native';
 import configureStore from '../common/configureStore';
 import {Provider} from 'react-redux/native';
 import {setPlatform} from '../common/device/actions';
@@ -17,6 +17,10 @@ import '../../node_modules/intl/index.js';
 import '../../node_modules/intl/locale-data/jsonp/en.js';
 
 export default function index() {
+
+  // Enable LayoutAnimation on Android
+  UIManager.setLayoutAnimationEnabledExperimental &&
+    UIManager.setLayoutAnimationEnabledExperimental(true);
 
   // TODO: Add local storage example.
   const initialState = {
