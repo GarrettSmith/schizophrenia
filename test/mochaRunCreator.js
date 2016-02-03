@@ -16,7 +16,11 @@ serverConfig.webpackStylesExtensions.forEach(ext => {
 });
 
 function reportError(errorReporter) {
-  return errorReporter === 'process' ? process.exit.bind(process, 1) : gutil.log;
+  return errorReporter === 'process' ? process.exit.bind(process, 1) : log;
+}
+
+function log(msg) {
+  gutil.log(msg.stack ? msg.stack : msg.stack : msg);
 }
 
 export default function mochaRunCreator(errorReporter = 'process') {
