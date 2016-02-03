@@ -1,11 +1,11 @@
 import Component from '../components/Component.react';
 import React, {
-  DrawerLayoutAndroid,
   Navigator,
   PropTypes,
   View,
 } from 'react-native';
 import Menu from './Menu.react';
+import DrawerLayout from './DrawerLayout.react';
 
 import mapDispatchToProps from '../../common/app/mapDispatchToProps';
 import mapStateToProps from '../../common/app/mapStateToProps';
@@ -30,6 +30,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.onNavigatorRef = this.onNavigatorRef.bind(this);
+    this.onDrawerOpen = this.onDrawerOpen.bind(this);
+    this.onDrawerClose = this.onDrawerClose.bind(this);
     this.onRouteChange = this.onRouteChange.bind(this);
     this.renderMenu = this.renderMenu.bind(this);
     this.renderScene = this.renderScene.bind(this);
@@ -46,6 +48,14 @@ class App extends Component {
     const {actions} = this.props;
     this.navigator.replace(routes[route]);
     actions.toggleSideMenu();
+  }
+
+  onDrawerOpen() {
+    this.props.actions.onSideMenuChange(true);
+  }
+
+  onDrawerClose() {
+    this.props.actions.onSideMenuChange(false);
   }
 
   renderMenu() {
@@ -65,12 +75,16 @@ class App extends Component {
   }
 
   render() {
+    const {ui} = this.props;
+
     return (
-      <DrawerLayoutAndroid
+      <DrawerLayout
+        open={ui.isSideMenuOpen}
+        onDrawerOpen={this.onDrawerOpen}
+        onDrawerClose={this.onDrawerClose}
+        drawerPosition={DrawerLayout.positions.Left}
         drawerWidth={300}
-        drawerPostion={DrawerLayoutAndroid.positions.left}
         renderNavigationView={this.renderMenu}
-        ref="drawer"
       >
         <Navigator
           configureScene={App.configureScene}
@@ -79,7 +93,7 @@ class App extends Component {
           renderScene={this.renderScene}
           style={styles.container}
         />
-      </DrawerLayoutAndroid>
+      </DrawerLayout>
     );
   }
 
