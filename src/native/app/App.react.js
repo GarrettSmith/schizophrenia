@@ -47,15 +47,15 @@ class App extends Component {
   onRouteChange(route) {
     const {actions} = this.props;
     this.navigator.replace(routes[route]);
-    actions.ui.toggleSideMenu();
+    actions.ui.toggleDrawer();
   }
 
   onDrawerOpen() {
-    this.props.actions.ui.onSideMenuChange(true);
+    this.props.actions.ui.onDrawerChange(true);
   }
 
   onDrawerClose() {
-    this.props.actions.ui.onSideMenuChange(false);
+    this.props.actions.ui.onDrawerChange(false);
   }
 
   renderMenu() {
@@ -69,6 +69,7 @@ class App extends Component {
   renderScene(route) {
     return (
       <View style={[styles.sceneView, route.style]}>
+        {this.props.ui.drawerEnabled}
         <route.Page {...this.props} />
       </View>
     );
@@ -76,14 +77,16 @@ class App extends Component {
 
   render() {
     const {ui} = this.props;
+    console.log(this.props.ui.toJS());
 
     return (
       <DrawerLayout
-        open={ui.isSideMenuOpen}
+        open={ui.drawerOpen}
         onDrawerOpen={this.onDrawerOpen}
         onDrawerClose={this.onDrawerClose}
         drawerPosition={DrawerLayout.positions.Left}
         drawerWidth={300}
+        enabled={ui.drawerEnabled}
         renderNavigationView={this.renderMenu}
       >
         <Navigator

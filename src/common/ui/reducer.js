@@ -2,7 +2,8 @@ import * as actions from './actions';
 import {Record} from 'immutable';
 
 const InitialState = Record({
-  isSideMenuOpen: false
+  drawerEnabled: true,
+  drawerOpen: false,
 });
 const initialState = new InitialState;
 
@@ -11,13 +12,18 @@ export default function uiReducer(state = initialState, action) {
 
   switch (action.type) {
 
-    case actions.ON_SIDE_MENU_CHANGE: {
+    case actions.ON_DRAWER_CHANGE: {
       const {isOpen} = action.payload;
-      return state.set('isSideMenuOpen', isOpen);
+      return state.set('drawerOpen', isOpen);
     }
 
-    case actions.TOGGLE_SIDE_MENU:
-      return state.update('isSideMenuOpen', isSideMenuOpen => !isSideMenuOpen);
+    case actions.TOGGLE_DRAWER:
+      return state.update('drawerOpen', drawerOpen => !drawerOpen);
+
+    case actions.SET_DRAWER_ENABLED: {
+      const {enabled} = action.payload;
+      return state.set('drawerEnabled', enabled);
+    }
 
   }
 

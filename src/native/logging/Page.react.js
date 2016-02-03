@@ -24,11 +24,32 @@ export default class Page extends Component {
     actions: PropTypes.object.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.setDrawerEnabled = this.setDrawerEnabled.bind(this);
+    this.enableDrawer = this.enableDrawer.bind(this);
+    this.disableDrawer = this.disableDrawer.bind(this);
+  }
+
+  setDrawerEnabled(enabled) {
+    console.log(enabled)
+    this.props.actions.ui.setDrawerEnabled(enabled);
+  }
+
+  enableDrawer() {
+    this.setDrawerEnabled(true);
+  }
+
+  disableDrawer() {
+    this.setDrawerEnabled(false);
+  }
+
   render() {
+    const {actions} = this.props;
     return (
       <View style={[appStyles.centeredView, styles.emptyContainer]}>
         <Header
-          toggleDrawer={this.props.actions.ui.toggleSideMenu}
+          toggleDrawer={actions.ui.toggleDrawer}
         />
 
         <Icon

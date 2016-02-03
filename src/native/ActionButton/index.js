@@ -45,6 +45,8 @@ export default class ActionButton extends Component {
     children: PropTypes.node,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
+    onActivate: PropTypes.func,
+    onDeactivate: PropTypes.func,
   };
 
   constructor(props) {
@@ -97,6 +99,14 @@ export default class ActionButton extends Component {
         }
       )
     ]).start();
+
+    // callbacks
+    const {onActivate, onDeactivate} = this.props;
+    if (active) {
+      onActivate && onActivate();
+    } else {
+      onDeactivate && onDeactivate();
+    }
   }
 
   onPressContainer() {
