@@ -1,13 +1,22 @@
 import React, {
+  Animated,
   Component,
-  LayoutAnimation,
   PropTypes,
-  TouchableHighlight,
-  View,
   Text,
+  View,
 } from 'react-native';
 import {getColor} from '../lib/react-native-material-design-helpers';
 import {Icon} from 'react-native-material-design';
+
+const sizes = {
+  NORMAL: 56,
+  MINI: 40,
+};
+
+const animations = {
+  SPIN: 0,
+  ZOOM: 1,
+};
 
 export default class Button extends Component {
 
@@ -16,22 +25,21 @@ export default class Button extends Component {
     activeIcon: PropTypes.string,
     icon: PropTypes.string.isRequired,
     primary: PropTypes.string,
+    pressed: PropTypes.bool,
     overrides: PropTypes.shape({
-      iconColor: PropTypes.string,
+      buttonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+      highlightStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
       iconSyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-      backgroundColor: PropTypes.string,
     }),
-    onPress: PropTypes.func,
-    onLongPress: PropTypes.func,
-    size: PropTypes.oneOf(Button.SIZES),
+    size: PropTypes.number,
   };
 
-  static SIZES = {
-    NORMAL: 56,
-    MINI: 40,
-  };
+  static ANIMATIONS = animations;
+  static SIZES = sizes;
 
   static defaultProps = {
+    animation: animations.ZOOM,
+    pressed: false,
     primary: 'paperBlue',
     icon: 'add',
     size: Button.SIZES.NORMAL,
@@ -39,7 +47,76 @@ export default class Button extends Component {
 
   constructor(props) {
     super(props);
-    setTimeout(LayoutAnimation.spring, 0);
+    this.state = {
+      rotate: new Animated.Value(0),
+      scale: new Animated.Value(1),
+    };
+  }
+
+  componentDidMount() {
+    switch(this.props.animation) {
+      case(animations.SPIN):
+        this.spin();
+        break;
+      case(animations.ZOOM):
+        this.zoom();
+        break
+    }
+  }
+
+  spin() {
+    const duration = 200;
+    this.state.scale.setValue(0.1);
+    this.state.rotate.setValue(-90);
+    Animated.parallel(
+      [
+        Animated.timing(
+          this.state.scale,
+          {
+            toValue: 1,
+            duration,
+          }
+        ),
+        Animated.timing(
+          this.state.rotate,
+          {
+            toValue: 0,
+            duration,
+          }
+        ),
+      ]
+    ).start()
+  }
+
+  zoom() {
+    const duration = 100;
+    this.state.scale.setValue(0.1);
+    Animated.timing(
+      this.state.scale,
+      {
+        toValue: 1,
+        duration,
+      }
+    ).start()
+  }
+
+  componentWillReceiveProps(newProps) {
+    const {rotate} = this.state;
+    const {active} = newProps;
+
+    // Spin icon when changing active state
+    if (active !== this.props.active) {
+      rotate.setValue((active ? -1 : 1) * 45);
+      Animated.spring(
+        rotate,
+        {
+          toValue: 0,
+          friction: 10,
+          velocity: 10,
+          tension: 200,
+        }
+      ).start();
+    }
   }
 
   render() {
@@ -48,18 +125,16 @@ export default class Button extends Component {
       activeIcon,
       activeLabel,
       icon,
-      onLongPress,
-      onPress,
       overrides,
       primary,
+      pressed,
       size,
     } = this.props;
 
-    const iconStyle = {
-      color: (overrides && overrides.iconColor) ?
-        getColor(overrides.iconColor) :
-        '#fff',
-    };
+    const {
+      rotate,
+      scale,
+    } = this.state;
 
     const roundStyle = {
       borderRadius: size / 2,
@@ -67,53 +142,54 @@ export default class Button extends Component {
       height: size,
     };
 
-    const buttonStyle = {
-      backgroundColor: (overrides && overrides.backgroundColor) ?
-        getColor(overrides.backgroundColor) :
-        getColor(primary),
-      borderColor: 'rgba(0,0,0,.12)',
-    };
-
-
     return (
-      <TouchableHighlight
-        activeOpacity={0.9}
-        underlayColor="#000"
-        onPress={() => onPress && onPress(active)}
-        onLongPress={() => onLongPress && onLongPress(active)}
+      <Animated.View
         style={[
+          styles.background,
           roundStyle,
-          styles.highlight,
           overrides.highlightStyle,
+          {backgroundColor: pressed ? '#000' : 'transparent'},
+          {transform: [
+            {rotate: rotate.interpolate({
+              inputRange: [-360, 360],
+              outputRange: ['-360deg', '360deg'],
+            })},
+            {scale},
+          ]}
         ]}
       >
         <View
           style={[
             styles.button,
             roundStyle,
-            buttonStyle,
+            {backgroundColor: getColor(primary)},
             overrides.buttonStyle,
+            {opacity: pressed ? 0.9 : 1},
           ]}
         >
           <Icon
             name={active ? activeIcon : icon}
-            style={[iconStyle, overrides.iconStyle]}
+            style={[
+              styles.icon,
+              overrides.iconStyle
+            ]}
+            size={24}
           />
         </View>
-      </TouchableHighlight>
+      </Animated.View>
     );
   }
 };
 
 const styles = {
-  highlight: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  background: {
     elevation: 6,
   },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 20,
   },
+  icon: {
+    color: '#fff',
+  }
 };

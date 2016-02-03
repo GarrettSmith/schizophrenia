@@ -1,7 +1,6 @@
 import React, {
   Animated,
   Component,
-  LayoutAnimation,
   PropTypes,
   TouchableWithoutFeedback,
   View,
@@ -20,22 +19,39 @@ export default class ActionButton extends Component {
     children: PropTypes.node,
   };
 
-  static defaultProps = {
-    active: false,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
       active: false,
+      opacity: new Animated.Value(0),
+      translateY: new Animated.Value(0),
     };
   }
 
   setActive(active) {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     this.setState({
       active,
     });
+
+    // animate
+    const duration = 80;
+    this.state.translateY.setValue(10);
+    Animated.parallel([
+      Animated.timing(
+        this.state.opacity,
+        {
+          toValue: active ? 1 : 0,
+          duration,
+        }
+      ),
+      Animated.timing(
+        this.state.translateY,
+        {
+          toValue: 0,
+          duration,
+        }
+      )
+    ]).start();
   }
 
   render() {
@@ -44,7 +60,11 @@ export default class ActionButton extends Component {
       onPress,
     } = this.props;
 
-    const {active} = this.state;
+    const {
+      active,
+      opacity,
+      translateY,
+    } = this.state;
 
     return (
       <TouchableWithoutFeedback
@@ -53,23 +73,54 @@ export default class ActionButton extends Component {
         <Animated.View
           style={[
             styles.container,
-            active ? styles.activeContainer : null,
+            {backgroundColor: opacity.interpolate({
+              inputRange: [0, 1],
+              outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.7)'],
+            })}
           ]}
         >
-          { active ? children: null }
+
+          { active ? this.renderChildren() : null }
 
           <Item
             {...this.props}
+            animation={Button.ANIMATIONS.SPIN}
             active={active}
             onPress={active => {
-              if (!active) {
-                this.setActive(true);
-              }
+              this.setActive(!active);
               onPress && onPress(active);
             }}
           />
         </Animated.View>
       </TouchableWithoutFeedback>
+    );
+  }
+
+  renderChildren() {
+    return (
+      <Animated.View
+        style={{transform: [{translateY: this.state.translateY}]}}
+      >
+        {React.Children.map(
+          this.props.children,
+          child => {
+            const deactivateAndCall = callback => active => {
+              setTimeout(
+                () => this.setActive(false),
+                100,
+              );
+              child.props[callback] && child.props[callback](active);
+            };
+            return React.cloneElement(
+              child,
+              {
+                onPress: deactivateAndCall('onPress'),
+                onLongPress: deactivateAndCall('onLongPress'),
+              }
+            );
+          }
+        )}
+      </Animated.View>
     );
   }
 
@@ -87,14 +138,10 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'flex-end',
     left: -1 * overscan,
-    padding: overscan + 20,
+    padding: overscan + 14,
     position: 'absolute',
     right: -1 * overscan,
     top: -1 * overscan,
-    transform: [
-    ]
-  },
-  containerActive: {
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
   },
 };

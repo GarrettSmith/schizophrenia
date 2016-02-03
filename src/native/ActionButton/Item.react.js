@@ -1,6 +1,7 @@
 import React, {
   Component,
   PropTypes,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 
@@ -10,23 +11,41 @@ import Button from './Button.react';
 export default class Item extends Component {
 
   static propTypes = {
+    active: PropTypes.bool,
+    onPress: PropTypes.func,
+    onLongPress: PropTypes.func,
     overrides: PropTypes.shape({
       iconColor: PropTypes.string,
       iconSyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
       backgroundColor: PropTypes.string,
     }),
-    size: PropTypes.oneOf(Button.SIZES),
   };
 
   static defaultProps = {
+    active: false,
     overrides: {},
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      pressed: false,
+    };
+  }
+
+  setPressed(pressed) {
+    this.setState({pressed});
+  }
+
   render() {
     const {
+      active,
+      onLongPress,
+      onPress,
       overrides,
       size,
     } = this.props;
+    const {pressed} = this.state;
 
     const hlStyle = overrides.highlightStyle || {};
 
@@ -40,16 +59,26 @@ export default class Item extends Component {
     };
 
     return (
-      <View style={styles.item} >
-        <Label
-          {...this.props}
-          style={overrides.labelStyle}
-        />
-        <Button
-          {...this.props}
-          overrides={buttonOverrides}
-        />
-      </View>
+      <TouchableWithoutFeedback
+        delayPressOut={100}
+        onPressIn={() => this.setPressed(true)}
+        onPressOut={() => this.setPressed(false)}
+        onPress={() => onPress && onPress(active)}
+        onLongPress={() => onLongPress && onLongPress(active)}
+      >
+        <View style={styles.item}>
+          <Label
+            {...this.props}
+            pressed={pressed}
+            style={overrides.labelStyle}
+          />
+          <Button
+            {...this.props}
+            pressed={pressed}
+            overrides={buttonOverrides}
+          />
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 };
@@ -63,7 +92,9 @@ const styles = {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    padding: 6,
     paddingBottom: 10,
+    alignSelf: 'flex-end',
   },
   miniButton: {
     marginLeft: miniPadding,

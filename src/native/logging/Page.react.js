@@ -30,7 +30,6 @@ export default class Page extends Component {
         </Text>
 
         <ActionButton
-          active={true}
           activeIcon="create"
           activeText="Log Entry"
           primary="paperPink300"
@@ -39,9 +38,23 @@ export default class Page extends Component {
         >
 
           <ActionButton.Item
-            icon="add"
+            icon="flag"
+            onPress={() => console.log('goal button pressed')}
+            text="Goal"
+            size={ActionButton.SIZES.MINI}
+          />
+
+          <ActionButton.Item
+            icon="local-pharmacy"
             onPress={() => console.log('action button pressed')}
-            text="entry"
+            text="Medication"
+            size={ActionButton.SIZES.MINI}
+          />
+
+          <ActionButton.Item
+            icon="event"
+            onPress={() => console.log('action button pressed')}
+            text="Appointment"
             size={ActionButton.SIZES.MINI}
           />
 
