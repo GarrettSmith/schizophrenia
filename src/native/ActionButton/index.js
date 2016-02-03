@@ -11,22 +11,29 @@ import Button from './Button.react';
 
 // used to hide elevation shadows
 const overscan = 20;
+const padding = 14;
 
 const styles = {
   container: {
     alignItems: 'flex-end',
-    bottom: -1 * overscan,
-    elevation: 10,
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    left: -1 * overscan,
-    padding: overscan + 14,
     position: 'absolute',
+  },
+  activeContainer: {
+    bottom: -1 * overscan,
+    left: -1 * overscan,
+    padding: overscan + padding,
     right: -1 * overscan,
     top: -1 * overscan,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    elevation: 10,
   },
+  inactiveContainer: {
+    bottom: 0,
+    right: 0,
+    padding,
+  }
 };
 
 export default class ActionButton extends Component {
@@ -45,6 +52,7 @@ export default class ActionButton extends Component {
     this.state = {
       active: false,
       opacity: new Animated.Value(0),
+      showBackground: false,
       translateY: new Animated.Value(0),
     };
 
@@ -58,10 +66,20 @@ export default class ActionButton extends Component {
   setActive(active) {
     this.setState({
       active,
+      showBackground: true,
     });
 
     // animate
     const duration = 80;
+
+    // hide bg after fade on deactivate
+    if (!active) {
+      setTimeout(
+        () => this.setState({showBackground: false}),
+          duration
+      );
+    }
+
     this.state.translateY.setValue(10);
     Animated.parallel([
       Animated.timing(
@@ -96,6 +114,7 @@ export default class ActionButton extends Component {
     const {
       active,
       opacity,
+      showBackground,
     } = this.state;
 
     return (
@@ -105,6 +124,7 @@ export default class ActionButton extends Component {
         <Animated.View
           style={[
             styles.container,
+            showBackground ? styles.activeContainer : styles.inactiveContainer,
             {backgroundColor: opacity.interpolate({
               inputRange: [0, 1],
               outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.7)'],

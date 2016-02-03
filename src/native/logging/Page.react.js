@@ -21,13 +21,15 @@ const styles = {
 export default class Page extends Component {
 
   static propTypes = {
-    actions: PropTypes.object,
+    actions: PropTypes.object.isRequired,
   };
 
   render() {
     return (
       <View style={[appStyles.centeredView, styles.emptyContainer]}>
-        <Header/>
+        <Header
+          toggleDrawer={this.props.actions.ui.toggleSideMenu}
+        />
 
         <Icon
           color={styles.emptyText.color}

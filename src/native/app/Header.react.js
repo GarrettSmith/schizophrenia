@@ -12,6 +12,7 @@ const styles = {
 export default class Header extends Component {
 
   static propTypes = {
+    toggleDrawer: PropTypes.func.isRequired,
     children: PropTypes.node,
   };
 
@@ -19,6 +20,7 @@ export default class Header extends Component {
     return (
       <Toolbar
         icon="menu"
+        onIconPress={this.props.toggleDrawer}
         style={styles.toolbar}
         title={'test'}
       />
