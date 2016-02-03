@@ -1,23 +1,19 @@
-import * as authActions from '../auth/actions';
-import * as todosActions from '../todos/actions';
-import * as uiActions from '../ui/actions';
-import {Map} from 'immutable';
-import {bindActionCreators} from 'redux';
+import {ui} from '../ui/actions';
 
-const actions = [
-  authActions,
-  todosActions,
-  uiActions
-];
+import {bindActionCreators} from 'redux';
+import {map} from 'ramda';
+
+const actionCreators = {
+  ui,
+};
 
 export default function mapDispatchToProps(dispatch) {
-  const creators = Map()
-    .merge(...actions)
-    .filter(value => typeof value === 'function')
-    .toObject();
-
+  const actions = map(
+    creators => bindActionCreators(creators, dispatch),
+    actionCreators
+  );
   return {
-    actions: bindActionCreators(creators, dispatch),
+    actions,
     dispatch
   };
 }

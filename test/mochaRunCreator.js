@@ -20,7 +20,7 @@ function reportError(errorReporter) {
 }
 
 function log(msg) {
-  gutil.log(msg.stack ? msg.stack : msg.stack : msg);
+  gutil.log(msg.stack ? msg.stack : msg);
 }
 
 export default function mochaRunCreator(errorReporter = 'process') {

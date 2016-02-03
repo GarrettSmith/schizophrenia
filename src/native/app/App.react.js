@@ -47,15 +47,15 @@ class App extends Component {
   onRouteChange(route) {
     const {actions} = this.props;
     this.navigator.replace(routes[route]);
-    actions.toggleSideMenu();
+    actions.ui.toggleSideMenu();
   }
 
   onDrawerOpen() {
-    this.props.actions.onSideMenuChange(true);
+    this.props.actions.ui.onSideMenuChange(true);
   }
 
   onDrawerClose() {
-    this.props.actions.onSideMenuChange(false);
+    this.props.actions.ui.onSideMenuChange(false);
   }
 
   renderMenu() {
