@@ -36,7 +36,7 @@ export default class Button extends Component {
   static propTypes = {
     active: PropTypes.bool,
     activeIcon: PropTypes.string,
-    animation: PropTypes.oneOf(animations),
+    animation: PropTypes.number,
     color: PropTypes.string,
     icon: PropTypes.string.isRequired,
     pressed: PropTypes.bool,
