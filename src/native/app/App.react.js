@@ -1,18 +1,18 @@
 import Component from '../components/Component.react';
-import Header from './Header.react';
-import Menu from './Menu.react';
 import React, {
   DrawerLayoutAndroid,
   Navigator,
   PropTypes,
-  StatusBarIOS,
   View,
 } from 'react-native';
-import SideMenu from 'react-native-side-menu';
+import Menu from './Menu.react';
+
 import mapDispatchToProps from '../../common/app/mapDispatchToProps';
 import mapStateToProps from '../../common/app/mapStateToProps';
+
 import routes from '../routes';
 import styles from './styles';
+
 import {connect} from 'react-redux/native';
 
 class App extends Component {
@@ -20,7 +20,6 @@ class App extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
     device: PropTypes.object.isRequired,
-    msg: PropTypes.object.isRequired,
     ui: PropTypes.object.isRequired
   };
 
@@ -32,6 +31,8 @@ class App extends Component {
     super(props);
     this.onNavigatorRef = this.onNavigatorRef.bind(this);
     this.onRouteChange = this.onRouteChange.bind(this);
+    this.renderMenu = this.renderMenu.bind(this);
+    this.renderScene = this.renderScene.bind(this);
   }
 
   onNavigatorRef(component) {
@@ -47,32 +48,35 @@ class App extends Component {
     actions.toggleSideMenu();
   }
 
-  render() {
-    const {actions, msg, ui} = this.props;
-
-    const menu = (
+  renderMenu() {
+    return (
       <Menu
         onRouteChange={this.onRouteChange}
       />
     );
+  }
 
-    const renderScene = route =>
+  renderScene(route) {
+    return (
       <View style={[styles.sceneView, route.style]}>
         <route.Page {...this.props} />
-      </View>;
+      </View>
+    );
+  }
 
+  render() {
     return (
       <DrawerLayoutAndroid
         drawerWidth={300}
         drawerPostion={DrawerLayoutAndroid.positions.left}
-        renderNavigationView={() => menu}
+        renderNavigationView={this.renderMenu}
         ref="drawer"
       >
         <Navigator
           configureScene={App.configureScene}
           initialRoute={routes.logging}
           ref={this.onNavigatorRef}
-          renderScene={renderScene}
+          renderScene={this.renderScene}
           style={styles.container}
         />
       </DrawerLayoutAndroid>

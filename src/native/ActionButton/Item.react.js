@@ -8,6 +8,25 @@ import React, {
 import Label from './Label.react';
 import Button from './Button.react';
 
+// Make mini items have the same spacing between labels and edge
+const miniPadding = (Button.SIZES.NORMAL - Button.SIZES.MINI) / 2;
+
+const styles = {
+  item: {
+    flex: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 6,
+    paddingBottom: 10,
+    alignSelf: 'flex-end',
+  },
+  miniButton: {
+    marginLeft: miniPadding,
+    marginRight: miniPadding,
+  }
+};
+
 export default class Item extends Component {
 
   static propTypes = {
@@ -19,6 +38,7 @@ export default class Item extends Component {
       iconSyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
       backgroundColor: PropTypes.string,
     }),
+    size: PropTypes.number,
   };
 
   static defaultProps = {
@@ -34,14 +54,17 @@ export default class Item extends Component {
   }
 
   setPressed(pressed) {
-    this.setState({pressed});
+    return () => this.setState({pressed});
+  }
+
+  handle(actionName) {
+    const {active} = this.props;
+    const action = this.props[actionName];
+    return () => action && action(active);
   }
 
   render() {
     const {
-      active,
-      onLongPress,
-      onPress,
       overrides,
       size,
     } = this.props;
@@ -61,10 +84,10 @@ export default class Item extends Component {
     return (
       <TouchableWithoutFeedback
         delayPressOut={100}
-        onPressIn={() => this.setPressed(true)}
-        onPressOut={() => this.setPressed(false)}
-        onPress={() => onPress && onPress(active)}
-        onLongPress={() => onLongPress && onLongPress(active)}
+        onPressIn={this.setPressed(true)}
+        onPressOut={this.setPressed(false)}
+        onPress={this.handle('onPress')}
+        onLongPress={this.handle('onLongPress')}
       >
         <View style={styles.item}>
           <Label
@@ -81,23 +104,4 @@ export default class Item extends Component {
       </TouchableWithoutFeedback>
     );
   }
-};
-
-// Make mini items have the same spacing between labels and edge
-const miniPadding = (Button.SIZES.NORMAL - Button.SIZES.MINI) / 2;
-
-const styles = {
-  item: {
-    flex: 0,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    padding: 6,
-    paddingBottom: 10,
-    alignSelf: 'flex-end',
-  },
-  miniButton: {
-    marginLeft: miniPadding,
-    marginRight: miniPadding,
-  }
-};
+}

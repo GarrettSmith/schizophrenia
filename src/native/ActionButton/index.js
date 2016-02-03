@@ -9,14 +9,35 @@ import React, {
 import Item from './Item.react';
 import Button from './Button.react';
 
+// used to hide elevation shadows
+const overscan = 20;
+
+const styles = {
+  container: {
+    alignItems: 'flex-end',
+    bottom: -1 * overscan,
+    elevation: 10,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    left: -1 * overscan,
+    padding: overscan + 14,
+    position: 'absolute',
+    right: -1 * overscan,
+    top: -1 * overscan,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+  },
+};
+
 export default class ActionButton extends Component {
 
   static Item = Item;
   static SIZES = Button.SIZES;
 
   static propTypes = {
-    active: PropTypes.bool,
     children: PropTypes.node,
+    onPress: PropTypes.func,
+    onLongPress: PropTypes.func,
   };
 
   constructor(props) {
@@ -26,6 +47,12 @@ export default class ActionButton extends Component {
       opacity: new Animated.Value(0),
       translateY: new Animated.Value(0),
     };
+
+    // Bind funcs to keep this sane
+    this.onPressContainer = this.onPressContainer.bind(this);
+    this.onPressItem = this.onPressItem.bind(this);
+    this.renderChildren = this.renderChildren.bind(this);
+    this.wrapChild = this.wrapChild.bind(this);
   }
 
   setActive(active) {
@@ -54,21 +81,26 @@ export default class ActionButton extends Component {
     ]).start();
   }
 
-  render() {
-    const {
-      children,
-      onPress,
-    } = this.props;
+  onPressContainer() {
+    this.setActive(false);
+  }
 
+  onPressItem() {
+    const {active} = this.state;
+    const {onPress} = this.props;
+    this.setActive(!active);
+    onPress && onPress(active);
+  }
+
+  render() {
     const {
       active,
       opacity,
-      translateY,
     } = this.state;
 
     return (
       <TouchableWithoutFeedback
-        onPress={() => this.setActive(false)}
+        onPress={this.onPressContainer}
       >
         <Animated.View
           style={[
@@ -86,13 +118,28 @@ export default class ActionButton extends Component {
             {...this.props}
             animation={Button.ANIMATIONS.SPIN}
             active={active}
-            onPress={active => {
-              this.setActive(!active);
-              onPress && onPress(active);
-            }}
+            onPress={this.onPressItem}
           />
         </Animated.View>
       </TouchableWithoutFeedback>
+    );
+  }
+
+  // deactive the child buttons after they are pressed
+  wrapChild(child) {
+    const deactivateAndCall = callback => active => {
+      setTimeout(
+        () => this.setActive(false),
+          100,
+      );
+      child.props[callback] && child.props[callback](active);
+    };
+    return React.cloneElement(
+      child,
+      {
+        onPress: deactivateAndCall('onPress'),
+        onLongPress: deactivateAndCall('onLongPress'),
+      }
     );
   }
 
@@ -101,47 +148,9 @@ export default class ActionButton extends Component {
       <Animated.View
         style={{transform: [{translateY: this.state.translateY}]}}
       >
-        {React.Children.map(
-          this.props.children,
-          child => {
-            const deactivateAndCall = callback => active => {
-              setTimeout(
-                () => this.setActive(false),
-                100,
-              );
-              child.props[callback] && child.props[callback](active);
-            };
-            return React.cloneElement(
-              child,
-              {
-                onPress: deactivateAndCall('onPress'),
-                onLongPress: deactivateAndCall('onLongPress'),
-              }
-            );
-          }
-        )}
+        {React.Children.map(this.props.children, this.wrapChild)}
       </Animated.View>
     );
   }
 
 }
-
-// used to hide elevation shadows
-const overscan = 20;
-
-const styles = {
-  container: {
-    alignItems: 'flex-end',
-    bottom: -1 * overscan,
-    elevation: 10,
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    left: -1 * overscan,
-    padding: overscan + 14,
-    position: 'absolute',
-    right: -1 * overscan,
-    top: -1 * overscan,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-  },
-};

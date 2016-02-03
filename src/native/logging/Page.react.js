@@ -1,21 +1,33 @@
 import Component from '../components/Component.react';
 import React, {PropTypes, Text, View} from 'react-native';
+
 import appStyles from '../app/styles';
+
 import ActionButton from '../ActionButton';
-import {Button, COLOR} from 'react-native-material-design';
+import {COLOR} from 'react-native-material-design';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Header from '../app/Header.react';
+
+const styles = {
+  emptyContainer: {
+    backgroundColor: COLOR.paperGrey300.color,
+  },
+  emptyText: {
+    color: COLOR.paperGrey500.color,
+    fontSize: 16,
+  }
+};
 
 export default class Page extends Component {
 
   static propTypes = {
+    actions: PropTypes.object,
   };
 
   render() {
     return (
       <View style={[appStyles.centeredView, styles.emptyContainer]}>
-        <Header
-        />
+        <Header/>
 
         <Icon
           color={styles.emptyText.color}
@@ -32,7 +44,7 @@ export default class Page extends Component {
         <ActionButton
           activeIcon="create"
           activeText="Log Entry"
-          primary="paperPink300"
+          color={COLOR.paperPink300.color}
           icon="add"
           onPress={() => console.log('action button pressed')}
         >
@@ -63,14 +75,4 @@ export default class Page extends Component {
     );
   }
 
-}
-
-const styles = {
-  emptyContainer: {
-    backgroundColor: COLOR.paperGrey300.color,
-  },
-  emptyText: {
-    color: COLOR.paperGrey500.color,
-    fontSize: 16,
-  }
 }

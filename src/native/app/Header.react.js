@@ -1,8 +1,13 @@
 import Component from '../components/Component.react';
-import React from 'react-native';
+import React, {PropTypes} from 'react-native';
 import {Toolbar} from 'react-native-material-design';
 
-const {PropTypes} = React;
+const styles = {
+  toolbar: {
+    height: 76,
+    paddingTop: 24
+  },
+};
 
 export default class Header extends Component {
 
@@ -11,25 +16,13 @@ export default class Header extends Component {
   };
 
   render() {
-    const {
-      children
-    } = this.props;
-
     return (
       <Toolbar
         icon="menu"
-        onIconPress={() => null}
         style={styles.toolbar}
         title={'test'}
       />
     );
   }
 
-}
-
-const styles = {
-  toolbar: {
-    height: 76,
-    paddingTop: 24
-  },
 }

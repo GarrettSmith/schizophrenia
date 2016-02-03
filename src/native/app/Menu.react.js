@@ -1,9 +1,7 @@
 import Component from '../components/Component.react';
 
-import React, {View} from 'react-native';
+import React, {PropTypes} from 'react-native';
 import {COLOR, Divider, Drawer} from 'react-native-material-design';
-
-const {PropTypes} = React;
 
 export default class Menu extends Component {
 
@@ -13,8 +11,6 @@ export default class Menu extends Component {
 
   render() {
     const {onRouteChange} = this.props;
-
-    console.log(COLOR.paperPink50)
 
     return (
       <Drawer>
@@ -100,11 +96,4 @@ export default class Menu extends Component {
     );
   }
 
-}
-
-const styles = {
-  drawerContainer: {
-    top: 0,
-    bottom: 0,
-  }
 }

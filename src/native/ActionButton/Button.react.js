@@ -2,10 +2,8 @@ import React, {
   Animated,
   Component,
   PropTypes,
-  Text,
   View,
 } from 'react-native';
-import {getColor} from '../lib/react-native-material-design-helpers';
 import {Icon} from 'react-native-material-design';
 
 const sizes = {
@@ -18,13 +16,29 @@ const animations = {
   ZOOM: 1,
 };
 
+const styles = {
+  background: {
+    elevation: 6,
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  icon: {
+    color: '#fff',
+  }
+};
+
+const paperBlue500 = '#2196f3';
+
 export default class Button extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
     activeIcon: PropTypes.string,
+    animation: PropTypes.oneOf(animations),
+    color: PropTypes.string,
     icon: PropTypes.string.isRequired,
-    primary: PropTypes.string,
     pressed: PropTypes.bool,
     overrides: PropTypes.shape({
       buttonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
@@ -40,7 +54,7 @@ export default class Button extends Component {
   static defaultProps = {
     animation: animations.ZOOM,
     pressed: false,
-    primary: 'paperBlue',
+    color: paperBlue500,
     icon: 'add',
     size: Button.SIZES.NORMAL,
   };
@@ -54,13 +68,13 @@ export default class Button extends Component {
   }
 
   componentDidMount() {
-    switch(this.props.animation) {
-      case(animations.SPIN):
+    switch (this.props.animation) {
+      case (animations.SPIN):
         this.spin();
         break;
-      case(animations.ZOOM):
+      case (animations.ZOOM):
         this.zoom();
-        break
+        break;
     }
   }
 
@@ -85,7 +99,7 @@ export default class Button extends Component {
           }
         ),
       ]
-    ).start()
+    ).start();
   }
 
   zoom() {
@@ -97,7 +111,7 @@ export default class Button extends Component {
         toValue: 1,
         duration,
       }
-    ).start()
+    ).start();
   }
 
   componentWillReceiveProps(newProps) {
@@ -123,10 +137,9 @@ export default class Button extends Component {
     const {
       active,
       activeIcon,
-      activeLabel,
+      color,
       icon,
       overrides,
-      primary,
       pressed,
       size,
     } = this.props;
@@ -162,7 +175,7 @@ export default class Button extends Component {
           style={[
             styles.button,
             roundStyle,
-            {backgroundColor: getColor(primary)},
+            {backgroundColor: color},
             overrides.buttonStyle,
             {opacity: pressed ? 0.9 : 1},
           ]}
@@ -179,17 +192,4 @@ export default class Button extends Component {
       </Animated.View>
     );
   }
-};
-
-const styles = {
-  background: {
-    elevation: 6,
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    color: '#fff',
-  }
-};
+}
