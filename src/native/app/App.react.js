@@ -4,99 +4,88 @@ import React, {
   PropTypes,
   View,
 } from 'react-native';
-import Menu from './Menu.react';
-import DrawerLayout from './DrawerLayout.react';
+
+import Drawer from './Drawer.react';
+import Agenda from '../logging/Page.react';
+import Agenda2 from '../logging/Page2.react';
 
 import mapDispatchToProps from '../../common/app/mapDispatchToProps';
 import mapStateToProps from '../../common/app/mapStateToProps';
 
-import routes from '../routes';
 import styles from './styles';
 
+import {
+  Router,
+  Route,
+  Schema,
+  Animations,
+} from 'react-native-router-flux';
+
 import {connect} from 'react-redux';
+const connectComponent = connect(mapStateToProps, mapDispatchToProps);
+
+const ConnectedAgenda = connectComponent(Agenda);
+const ConnectedAgenda2 = connectComponent(Agenda2);
+const ConnectedDrawer = connectComponent(Drawer);
 
 class App extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    device: PropTypes.object.isRequired,
     ui: PropTypes.object.isRequired
   };
 
-  static configureScene(route) {
-    return route.animationType || Navigator.SceneConfigs.FloatFromRight;
-  }
-
-  constructor(props) {
-    super(props);
-    this.onNavigatorRef = this.onNavigatorRef.bind(this);
-    this.onDrawerOpen = this.onDrawerOpen.bind(this);
-    this.onDrawerClose = this.onDrawerClose.bind(this);
-    this.onRouteChange = this.onRouteChange.bind(this);
-    this.renderMenu = this.renderMenu.bind(this);
-    this.renderScene = this.renderScene.bind(this);
-  }
-
-  onNavigatorRef(component) {
-    this.navigator = component;
-  }
-
-  onRouteChange(route) {
-    const {actions} = this.props;
-    this.navigator.replace(routes[route]);
-    actions.ui.toggleDrawer();
-  }
-
-  onDrawerOpen() {
-    this.props.actions.ui.onDrawerChange(true);
-  }
-
-  onDrawerClose() {
-    this.props.actions.ui.onDrawerChange(false);
-  }
-
-  renderMenu() {
-    return (
-      <Menu
-        onRouteChange={this.onRouteChange}
-      />
-    );
-  }
-
-  renderScene(route) {
-    return (
-      <View style={[styles.sceneView, route.style]}>
-        {this.props.ui.drawerEnabled}
-        <route.Page {...this.props} />
-      </View>
-    );
-  }
-
   render() {
-    const {ui} = this.props;
-    console.log(this.props.ui.toJS());
+    const {
+      actions,
+      ui,
+    } = this.props;
 
     return (
-      <DrawerLayout
-        open={ui.drawerOpen}
-        onDrawerOpen={this.onDrawerOpen}
-        onDrawerClose={this.onDrawerClose}
-        drawerPosition={DrawerLayout.positions.Left}
-        drawerWidth={300}
-        enabled={ui.drawerEnabled}
-        renderNavigationView={this.renderMenu}
-      >
-        <Navigator
-          configureScene={App.configureScene}
-          initialRoute={routes.logging}
-          ref={this.onNavigatorRef}
-          renderScene={this.renderScene}
+        <Router
+          hideNavBar={true}
+          onPush={actions.ui.closeDrawer}
+          onReplace={actions.ui.closeDrawer}
           style={styles.container}
-        />
-      </DrawerLayout>
+        >
+
+          <Schema
+            name="default"
+            sceneConfig={Navigator.SceneConfigs.FaceAndroid}
+          />
+          <Schema
+            name="modal"
+            sceneConfig={Navigator.SceneConfigs.FloatFromBottomAndroid}
+          />
+
+          <Route name="main">
+            <ConnectedDrawer>
+              <Router
+                hideNavBar={true}
+                onPush={ actions.ui.closeDrawer}
+                onReplace={actions.ui.closeDrawer}
+              >
+
+                <Route
+                  name="agenda"
+                  component={ConnectedAgenda}
+                  initial={true}
+                  schema="default"
+                />
+
+                <Route
+                  name="agenda2"
+                  component={ConnectedAgenda2}
+                  schema="default"
+                />
+
+              </Router>
+            </ConnectedDrawer>
+          </Route>
+        </Router>
     );
   }
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connectComponent(App);

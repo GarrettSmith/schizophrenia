@@ -6,12 +6,23 @@ import {COLOR, Divider, Drawer} from 'react-native-material-design';
 export default class Menu extends Component {
 
   static propTypes = {
-    onRouteChange: PropTypes.func.isRequired,
+    closeDrawer: PropTypes.func.isRequired,
+    routes: PropTypes.object.isRequired,
   };
 
-  render() {
-    const {onRouteChange} = this.props;
+  constructor(props) {
+    super(props);
+    this.open = this.open.bind(this);
+  }
 
+  open(route, ...args) {
+    return () => {
+      this.props.routes[route](...args);
+      this.props.closeDrawer();
+    };
+  }
+
+  render() {
     return (
       <Drawer>
         <Drawer.Header backgroundColor={COLOR.paperPink300.color}>
@@ -23,29 +34,29 @@ export default class Menu extends Component {
               icon: 'view-agenda',
               value: 'Agenda',
               active: true,
-              onPress: () => onRouteChange('logging'),
-              onLongPress: () => onRouteChange('logging'),
+              onPress: this.open('agenda'),
+              onLongPress: this.open('agenda'),
             },
             {
               icon: 'view-week',
               value: 'Week',
               active: false,
-              onPress: () => onRouteChange('logging'),
-              onLongPress: () => onRouteChange('logging'),
+              onPress: this.open('agenda2'),
+              onLongPress: this.open('agenda2'),
             },
             {
               icon: 'view-module',
               value: 'Month',
               active: false,
-              onPress: () => onRouteChange('logging'),
-              onLongPress: () => onRouteChange('logging'),
+              onPress: () => routes.agenda,
+              onLongPress: () => routes.agenda,
             },
             {
               icon: 'schedule',
               value: 'All Time',
               active: false,
-              onPress: () => onRouteChange('logging'),
-              onLongPress: () => onRouteChange('logging'),
+              onPress: () => routes.agenda,
+              onLongPress: () => routes.agenda,
             },
           ]}
         />
@@ -58,15 +69,15 @@ export default class Menu extends Component {
               icon: 'local-pharmacy',
               value: 'Medication',
               active: false,
-              onPress: () => onRouteChange('logging'),
-              onLongPress: () => onRouteChange('logging'),
+              onPress: () => routes.agenda,
+              onLongPress: () => routes.agenda,
             },
             {
               icon: 'group',
               value: 'Support',
               active: false,
-              onPress: () => onRouteChange('logging'),
-              onLongPress: () => onRouteChange('logging'),
+              onPress: () => routes.agenda,
+              onLongPress: () => routes.agenda,
             },
           ]}
         />
@@ -79,15 +90,15 @@ export default class Menu extends Component {
               icon: 'settings',
               value: 'Settings',
               active: false,
-              onPress: () => onRouteChange('logging'),
-              onLongPress: () => onRouteChange('logging'),
+              onPress: () => routes.agenda,
+              onLongPress: () => routes.agenda,
             },
             {
               icon: 'help',
               value: 'Help & Feedback',
               active: false,
-              onPress: () => onRouteChange('logging'),
-              onLongPress: () => onRouteChange('logging'),
+              onPress: () => routes.agenda,
+              onLongPress: () => routes.agenda,
             },
           ]}
         />

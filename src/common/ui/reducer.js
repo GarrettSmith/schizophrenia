@@ -12,17 +12,23 @@ export default function uiReducer(state = initialState, action) {
 
   switch (action.type) {
 
-    case actions.ON_DRAWER_CHANGE: {
-      const {isOpen} = action.payload;
-      return state.set('drawerOpen', isOpen);
+    case actions.CLOSE_DRAWER: {
+      console.log(state)
+      const newState = state.set('drawerOpen', false);
+      console.log(newState);
+      return newState;
     }
 
-    case actions.TOGGLE_DRAWER:
-      return state.update('drawerOpen', drawerOpen => !drawerOpen);
+    case actions.OPEN_DRAWER: {
+      return state.set('drawerOpen', true);
+    }
+
+    case actions.ON_DRAWER_CHANGE: {
+      return state.set('drawerOpen', action.payload);
+    }
 
     case actions.SET_DRAWER_ENABLED: {
-      const {enabled} = action.payload;
-      return state.set('drawerEnabled', enabled);
+      return state.set('drawerEnabled', action.payload);
     }
 
   }
