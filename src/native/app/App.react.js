@@ -2,16 +2,17 @@ import styles from './styles';
 
 import Component from 'react-pure-render/component';
 import React, {
+  BackAndroid,
   Navigator,
   PropTypes,
-  View,
 } from 'react-native';
 
 import {
-  Router,
-  Route,
-  Schema,
+  Actions,
   Animations,
+  Route,
+  Router,
+  Schema,
 } from 'react-native-router-flux';
 
 import Agenda from '../log/agenda/Page.react';
@@ -51,6 +52,13 @@ class App extends Component {
     ui: PropTypes.object.isRequired
   };
 
+  componentWillMount() {
+    BackAndroid.addEventListener('hardwareBackPress', () => {
+      // Navigate back and exit if we have nowhere further to navigate to
+      return Actions.pop();
+    });
+  }
+
   render() {
     const {
       actions,
@@ -60,8 +68,6 @@ class App extends Component {
     return (
         <Router
           hideNavBar={true}
-          onPush={actions.ui.closeDrawer}
-          onReplace={actions.ui.closeDrawer}
           style={styles.container}
         >
 
@@ -76,11 +82,7 @@ class App extends Component {
 
           <Route name="main">
             <Connected.Drawer>
-              <Router
-                hideNavBar={true}
-                onPush={ actions.ui.closeDrawer}
-                onReplace={actions.ui.closeDrawer}
-              >
+              <Router hideNavBar={true}>
 
                 <Route
                   name="logAgenda"

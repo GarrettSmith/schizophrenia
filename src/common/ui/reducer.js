@@ -13,10 +13,7 @@ export default function uiReducer(state = initialState, action) {
   switch (action.type) {
 
     case actions.CLOSE_DRAWER: {
-      console.log(state)
-      const newState = state.set('drawerOpen', false);
-      console.log(newState);
-      return newState;
+      return state.set('drawerOpen', false);
     }
 
     case actions.OPEN_DRAWER: {

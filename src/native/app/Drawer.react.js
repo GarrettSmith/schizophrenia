@@ -50,6 +50,7 @@ export default class Drawer extends Component {
     return (
       <Menu
         closeDrawer={this.props.actions.ui.closeDrawer}
+        currentRoute={Actions.currentRouter.currentRoute.name}
         routes={Actions}
       />
     );
