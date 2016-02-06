@@ -1,12 +1,12 @@
 import Component from 'react-pure-render/component';
 import React, {PropTypes, Text, View} from 'react-native';
 
-import appStyles from '../app/styles';
+import appStyles from '../../app/styles';
 
-import ActionButton from '../ActionButton';
+import ActionButton from '../../ActionButton';
 import {COLOR} from 'react-native-material-design';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Header from '../app/Header.react';
+import Header from '../../app/Header.react';
 
 const styles = {
   emptyContainer: {

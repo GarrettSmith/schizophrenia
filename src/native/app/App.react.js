@@ -1,18 +1,11 @@
+import styles from './styles';
+
 import Component from 'react-pure-render/component';
 import React, {
   Navigator,
   PropTypes,
   View,
 } from 'react-native';
-
-import Drawer from './Drawer.react';
-import Agenda from '../logging/Page.react';
-import Agenda2 from '../logging/Page2.react';
-
-import mapDispatchToProps from '../../common/app/mapDispatchToProps';
-import mapStateToProps from '../../common/app/mapStateToProps';
-
-import styles from './styles';
 
 import {
   Router,
@@ -21,12 +14,35 @@ import {
   Animations,
 } from 'react-native-router-flux';
 
-import {connect} from 'react-redux';
-const connectComponent = connect(mapStateToProps, mapDispatchToProps);
+import Agenda from '../log/agenda/Page.react';
+import All from '../log/all/Page.react';
+import Drawer from './Drawer.react';
+import Help from '../help/Page.react';
+import Medication from '../medication/Page.react';
+import Month from '../log/month/Page.react';
+import Settings from '../settings/Page.react';
+import Support from '../support/Page.react';
+import Week from '../log/week/Page.react';
 
-const ConnectedAgenda = connectComponent(Agenda);
-const ConnectedAgenda2 = connectComponent(Agenda2);
-const ConnectedDrawer = connectComponent(Drawer);
+const components = {
+  Agenda,
+  All,
+  Drawer,
+  Help,
+  Medication,
+  Month,
+  Settings,
+  Support,
+  Week,
+};
+
+import mapDispatchToProps from '../../common/app/mapDispatchToProps';
+import mapStateToProps from '../../common/app/mapStateToProps';
+import {connect} from 'react-redux';
+import {map} from 'ramda';
+
+const connectComponent = connect(mapStateToProps, mapDispatchToProps);
+const Connected = map(connectComponent, components);
 
 class App extends Component {
 
@@ -59,7 +75,7 @@ class App extends Component {
           />
 
           <Route name="main">
-            <ConnectedDrawer>
+            <Connected.Drawer>
               <Router
                 hideNavBar={true}
                 onPush={ actions.ui.closeDrawer}
@@ -67,20 +83,56 @@ class App extends Component {
               >
 
                 <Route
-                  name="agenda"
-                  component={ConnectedAgenda}
+                  name="logAgenda"
+                  component={Connected.Agenda}
                   initial={true}
                   schema="default"
                 />
 
                 <Route
-                  name="agenda2"
-                  component={ConnectedAgenda2}
+                  name="logWeek"
+                  component={Connected.Week}
+                  schema="default"
+                />
+
+                <Route
+                  name="logMonth"
+                  component={Connected.Month}
+                  schema="default"
+                />
+
+                <Route
+                  name="logAll"
+                  component={Connected.All}
+                  schema="default"
+                />
+
+                <Route
+                  name="medication"
+                  component={Connected.Medication}
+                  schema="default"
+                />
+
+                <Route
+                  name="support"
+                  component={Connected.Support}
+                  schema="default"
+                />
+
+                <Route
+                  name="settings"
+                  component={Connected.Settings}
+                  schema="default"
+                />
+
+                <Route
+                  name="help"
+                  component={Connected.Help}
                   schema="default"
                 />
 
               </Router>
-            </ConnectedDrawer>
+            </Connected.Drawer>
           </Route>
         </Router>
     );
