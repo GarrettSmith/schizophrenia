@@ -1,4 +1,4 @@
-import Component from '../components/Component.react';
+import Component from 'react-pure-render/component';
 
 import React, {PropTypes} from 'react-native';
 import {COLOR, Divider, Drawer} from 'react-native-material-design';

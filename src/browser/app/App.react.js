@@ -1,10 +1,10 @@
-import './App.styl';
+import './App.scss';
 import Component from 'react-pure-render/component';
 import Footer from './Footer.react';
 import Header from './Header.react';
 import Helmet from 'react-helmet';
 import React, {PropTypes} from 'react';
-import RouterHandler from '../../common/components/RouterHandler.react';
+import RouterHandler from '../components/RouterHandler.react';
 import mapDispatchToProps from '../../common/app/mapDispatchToProps';
 import mapStateToProps from '../../common/app/mapStateToProps';
 import {connect} from 'react-redux';

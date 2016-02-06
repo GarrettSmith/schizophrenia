@@ -1,4 +1,4 @@
-import Component from '../components/Component.react';
+import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react-native';
 import {Toolbar} from 'react-native-material-design';
 
