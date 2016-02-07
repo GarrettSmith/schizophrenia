@@ -1,4 +1,4 @@
-import styles from './styles';
+import styles, {COLORS} from './styles';
 
 import Component from 'react-pure-render/component';
 import React, {
@@ -79,25 +79,51 @@ class App extends Component {
           name="default"
           sceneConfig={Navigator.SceneConfigs.FadeAndroid}
         />
+
         <Schema
-          name="top"
+          headerColor={COLORS.PRIMARY}
+          leftIcon="menu"
+          leftIconPress={actions.ui.openDrawer}
+          name="primary"
           sceneConfig={Navigator.SceneConfigs.FadeAndroid}
           type="replace"
         />
+
         <Schema
-          name="modal"
-          sceneConfig={Navigator.SceneConfigs.FloatFromBottomAndroid}
+          headerColor={COLORS.SECONDARY}
+          leftIcon="menu"
+          leftIconPress={actions.ui.openDrawer}
+          name="secondary"
+          sceneConfig={Navigator.SceneConfigs.FadeAndroid}
+          type="replace"
         />
 
-        <Route
-          name="logEntry"
-          component={Connected.LogEntry}
-          schema="modal"
+        <Schema
+          header={Connected.Header}
+          headerColor={COLORS.TERTIARY}
+          hideNavBar={true}
+          leftIcon="arrow-back"
+          leftIconPress={Actions.pop}
+          name="tertiary"
+          sceneConfig={Navigator.SceneConfigs.FadeAndroid}
+          wrapRouter={true}
+        />
+
+        <Schema
+          header={Connected.Header}
+          headerColor={COLORS.TERTIARY}
+          hideNavBar={true}
+          leftIcon="close"
+          leftIconPress={Actions.pop}
+          name="modal"
+          sceneConfig={Navigator.SceneConfigs.FloatFromBottomAndroid}
+          wrapRouter={true}
         />
 
         <Route
           name="main"
           initial={true}
+          schema="primary"
         >
           <Connected.Drawer>
             <Router
@@ -109,44 +135,43 @@ class App extends Component {
                 name="logAgenda"
                 component={Connected.Agenda}
                 initial={true}
-                schema="top"
+                schema="primary"
                 title="{date}"
               />
 
               <Route
                 name="logWeek"
                 component={Connected.Week}
-                schema="top"
+                schema="primary"
                 title="{date}"
               />
 
               <Route
                 name="logMonth"
                 component={Connected.Month}
-                schema="top"
+                schema="primary"
                 title="{date}"
               />
 
               <Route
                 name="logAll"
                 component={Connected.All}
-                schema="top"
+                schema="primary"
                 title="{date}"
               />
 
               <Route
                 name="medication"
                 component={Connected.Medication}
-                schema="top"
+                schema="secondary"
                 title="Medication"
               />
 
               <Route
                 name="support"
                 component={Connected.Support}
-                schema="top"
+                schema="secondary"
                 title="Support"
-                headerColor="#f00"
               />
 
             </Router>
@@ -156,15 +181,21 @@ class App extends Component {
         <Route
           name="settings"
           component={Connected.Settings}
-          schema="default"
+          schema="tertiary"
           title="Settings"
         />
 
         <Route
           name="help"
           component={Connected.Help}
-          schema="default"
+          schema="tertiary"
           title="Help & Feedback"
+        />
+
+        <Route
+          name="logEntry"
+          component={Connected.LogEntry}
+          schema="modal"
         />
 
       </Router>

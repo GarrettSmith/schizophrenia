@@ -1,3 +1,5 @@
+import {COLORS} from './styles';
+
 import Component from 'react-pure-render/component';
 import React, {
   PropTypes,
@@ -9,7 +11,9 @@ import {
   IconToggle,
 } from 'react-native-material-design';
 
-import {COLORS} from './styles';
+import {Actions as Routes} from 'react-native-router-flux';
+
+import {pathOr} from 'ramda';
 
 const statusbarHeight = 24;
 const toolbarHeight = 52;
@@ -44,22 +48,28 @@ export default class Header extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
     children: PropTypes.node,
+    headerColor: PropTypes.string,
     router: PropTypes.object,
     title: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
+
+    this.color = this.color.bind(this);
     this.currentRoute = this.currentRoute.bind(this);
-    this.title = this.title.bind(this);
-    this.atTop = this.atTop.bind(this);
+    this.currentRouter = this.currentRouter.bind(this);
     this.leftIcon = this.leftIcon.bind(this);
     this.leftIconPress = this.leftIconPress.bind(this);
-    this.color = this.color.bind(this);
+    this.title = this.title.bind(this);
+  }
+
+  currentRouter() {
+    return this.props.router ? this.props.router : Routes.currentRouter;
   }
 
   currentRoute() {
-    return this.props.router.currentRoute;
+    return this.currentRouter().currentRoute;
   }
 
   title() {
@@ -76,34 +86,34 @@ export default class Header extends Component {
     return '';
   }
 
-  atTop() {
-    return this.props.router.stack.length === 1;
-  }
-
   leftIcon() {
-    return this.atTop() ? 'menu' : 'back';
-  }
-
-  leftIconPress() {
-    if (this.atTop()) {
-      this.props.actions.ui.openDrawer();
-    } else {
-      this.props.router.pop();
-    }
-  }
-
-  color() {
-    const {color} = this.props;
-    if (color) {
-      return color;
+    const {leftIcon} = this.props;
+    if (leftIcon) {
+      return leftIcon;
     }
 
     const route = this.currentRoute();
-    if (route && route.props && route.props.headerColor) {
-      return route.props.headerColor;
+    return pathOr(null, ['props', 'leftIcon'], route);
+  }
+
+  leftIconPress() {
+    const {leftIconPress} = this.props;
+    if (leftIconPress) {
+      return leftIconPress;
     }
 
-    return COLORS.PRIMARY;
+    const route = this.currentRoute();
+    return pathOr(null, ['props', 'leftIconPress'], route);
+  }
+
+  color() {
+    const {headerColor} = this.props;
+      if (headerColor) {
+        return headerColor;
+    }
+
+    const route = this.currentRoute();
+    return pathOr(COLORS.PRIMARY, ['props', 'headerColor'], route);
   }
 
   render() {
@@ -118,7 +128,7 @@ export default class Header extends Component {
 
         <IconToggle
           color="#fff"
-          onPress={this.leftIconPress}
+          onPress={this.leftIconPress()}
           style={styles.leftIcon}
         >
           <Icon
