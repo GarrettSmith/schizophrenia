@@ -1,4 +1,14 @@
 import {StyleSheet} from 'react-native';
+import {COLOR} from 'react-native-material-design';
+
+export const COLORS = {
+  BLACK: COLOR.paperGrey800.color,
+  DIM: COLOR.paperGrey300.color,
+  DIM_DARK: COLOR.paperGrey500.color,
+  PRIMARY: COLOR.paperBlue900.color,
+  SECONDARY: COLOR.paperPink300.color,
+  WHITE: '#fff',
+};
 
 export default StyleSheet.create({
   centeredView: {

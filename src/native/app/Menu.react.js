@@ -1,7 +1,9 @@
 import Component from 'react-pure-render/component';
 
+import {COLORS} from './styles';
+
 import React, {PropTypes} from 'react-native';
-import {COLOR, Divider, Drawer} from 'react-native-material-design';
+import {Divider, Drawer} from 'react-native-material-design';
 
 import {map} from 'ramda';
 
@@ -22,7 +24,9 @@ export default class Menu extends Component {
 
   open(route, ...args) {
     return () => {
-      this.props.routes[route](...args);
+      // Don't allow navigation to the current route
+      if(route !== this.props.currentRoute)
+        this.props.routes[route](...args);
       this.props.closeDrawer();
     };
   }
@@ -42,7 +46,7 @@ export default class Menu extends Component {
   render() {
     return (
       <Drawer>
-        <Drawer.Header backgroundColor={COLOR.paperPink300.color}/>
+        <Drawer.Header backgroundColor={COLORS.SECONDARY}/>
 
         <Drawer.Section
           items={this.makeItems([

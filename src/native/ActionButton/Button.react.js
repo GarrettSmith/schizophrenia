@@ -6,6 +6,8 @@ import React, {
 } from 'react-native';
 import {Icon} from 'react-native-material-design';
 
+import {COLORS} from '../app/styles';
+
 const sizes = {
   NORMAL: 56,
   MINI: 40,
@@ -28,8 +30,6 @@ const styles = {
     color: '#fff',
   }
 };
-
-const paperBlue500 = '#2196f3';
 
 export default class Button extends Component {
 
@@ -54,7 +54,7 @@ export default class Button extends Component {
   static defaultProps = {
     animation: animations.ZOOM,
     pressed: false,
-    color: paperBlue500,
+    color: COLORS.PRIMARY,
     icon: 'add',
     size: Button.SIZES.NORMAL,
   };
