@@ -1,5 +1,5 @@
 import Component from 'react-pure-render/component';
-import React, {PropTypes, Text, View} from 'react-native';
+import React, {PropTypes} from 'react-native';
 
 import {COLORS} from '../app/styles';
 
@@ -35,21 +35,18 @@ export default class ActionButton extends Component {
 
         <Button.Item
           icon="flag"
-          onPress={() => console.log('goal button pressed')}
           text="Goal"
           size={Button.SIZES.MINI}
         />
 
         <Button.Item
           icon="local-pharmacy"
-          onPress={() => console.log('action button pressed')}
           text="Medication"
           size={Button.SIZES.MINI}
         />
 
         <Button.Item
           icon="event"
-          onPress={() => console.log('action button pressed')}
           text="Appointment"
           size={Button.SIZES.MINI}
         />

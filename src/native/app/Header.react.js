@@ -18,11 +18,12 @@ import {pathOr} from 'ramda';
 const statusbarHeight = 24;
 const toolbarHeight = 52;
 const spacing = 16;
+const defaultIconColor = COLORS.WHITE;
 
 const styles = {
   toolbar: {
     alignItems: 'center',
-    elevation: 4,
+    elevation: 3,
     flexDirection: 'row',
     height: statusbarHeight + toolbarHeight,
     paddingTop: statusbarHeight,
@@ -30,12 +31,11 @@ const styles = {
     paddingRight: spacing,
   },
   leftIcon: {
-    marginRight: spacing / 2,
+    marginRight: spacing,
   },
   title: {
-    color: 'white',
+    color: COLORS.WHITE,
     flex: 1,
-    marginLeft: spacing,
     fontSize: 20,
   },
   rightIcon: {
@@ -46,22 +46,25 @@ const styles = {
 export default class Header extends Component {
 
   static propTypes = {
-    actions: PropTypes.object.isRequired,
     children: PropTypes.node,
     headerColor: PropTypes.string,
+    iconColor: PropTypes.string,
+    leftIcon: PropTypes.string,
+    leftIconPress: PropTypes.func,
+    rightIcon: PropTypes.string,
+    rightIconPress: PropTypes.func,
     router: PropTypes.object,
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     title: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
 
-    this.color = this.color.bind(this);
     this.currentRoute = this.currentRoute.bind(this);
     this.currentRouter = this.currentRouter.bind(this);
-    this.leftIcon = this.leftIcon.bind(this);
-    this.leftIconPress = this.leftIconPress.bind(this);
-    this.title = this.title.bind(this);
+    this.renderTitle = this.renderTitle.bind(this);
+    this.getProp = this.getProp.bind(this);
   }
 
   currentRouter() {
@@ -72,81 +75,83 @@ export default class Header extends Component {
     return this.currentRouter().currentRoute;
   }
 
-  title() {
-    const {title} = this.props;
-    if (title) {
-      return title;
-    }
-
-    const routeTitle = this.currentRoute().title;
-    if (routeTitle) {
-      return routeTitle === '{date}' ? String(new Date) : routeTitle;
-    }
-
-    return '';
-  }
-
-  leftIcon() {
-    const {leftIcon} = this.props;
-    if (leftIcon) {
-      return leftIcon;
+  getProp(prop) {
+    if (this.props[prop]) {
+      return this.props[prop];
     }
 
     const route = this.currentRoute();
-    return pathOr(null, ['props', 'leftIcon'], route);
-  }
-
-  leftIconPress() {
-    const {leftIconPress} = this.props;
-    if (leftIconPress) {
-      return leftIconPress;
-    }
-
-    const route = this.currentRoute();
-    return pathOr(null, ['props', 'leftIconPress'], route);
-  }
-
-  color() {
-    const {headerColor} = this.props;
-      if (headerColor) {
-        return headerColor;
-    }
-
-    const route = this.currentRoute();
-    return pathOr(COLORS.PRIMARY, ['props', 'headerColor'], route);
+    return pathOr(null, ['props', prop], route);
   }
 
   render() {
-    const {children} = this.props;
+    const {
+      children,
+      style,
+      iconColor,
+    } = this.props;
+
     return (
       <View
         style={[
           styles.toolbar,
-          {backgroundColor: this.color()}
+          {backgroundColor: this.getProp('headerColor')},
+          style,
         ]}
       >
+        {
+          this.renderIcon(
+            this.getProp('leftIcon'),
+            this.getProp('leftIconPress'),
+            iconColor,
+            styles.leftIcon
+          )
+        }
+        {this.renderTitle()}
+        {children}
+        {
+          this.renderIcon(
+            this.getProp('rightIcon'),
+            this.getProp('rightIconPress'),
+            iconColor,
+            styles.rightIcon
+          )
+        }
+      </View>
+    );
+  }
 
-        <IconToggle
-          color="#fff"
-          onPress={this.leftIconPress()}
-          style={styles.leftIcon}
-        >
-          <Icon
-            color="#fff"
-            name={this.leftIcon()}
-            size={24}
-          />
-        </IconToggle>
+  renderTitle() {
+    const title = this.getProp('title');
 
+    if (title) {
+      return (
         <Text
           numberOfLines={1}
           style={styles.title}
         >
-          {this.title()}
+          {title}
         </Text>
-        {children}
-      </View>
-    );
+      );
+    }
+  }
+
+  renderIcon(name, onPress, color = defaultIconColor, style = null) {
+    if (name) {
+      return (
+        <IconToggle
+          color={COLORS.WHITE}
+          onPress={onPress}
+        >
+          <Icon
+            color={color}
+            name={name}
+            size={24}
+            style={style}
+          />
+        </IconToggle>
+      );
+    }
   }
 
 }

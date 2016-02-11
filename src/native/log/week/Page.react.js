@@ -7,9 +7,6 @@ import React, {
 
 import appStyles from '../../app/styles';
 
-const styles = {
-};
-
 export default class Page extends Component {
 
   static propTypes = {
@@ -21,7 +18,6 @@ export default class Page extends Component {
   }
 
   render() {
-    const {actions} = this.props;
     return (
       <View style={appStyles.centeredView}>
         <Text>

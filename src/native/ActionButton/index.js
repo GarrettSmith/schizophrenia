@@ -58,11 +58,18 @@ export default class ActionButton extends Component {
       translateY: new Animated.Value(0),
     };
 
+    this.timeouts = [];
+
     // Bind funcs to keep this sane
     this.onPressContainer = this.onPressContainer.bind(this);
     this.onPressItem = this.onPressItem.bind(this);
     this.renderChildren = this.renderChildren.bind(this);
     this.wrapChild = this.wrapChild.bind(this);
+  }
+
+  componentWillUnmount() {
+    // Clean up all the timeouts
+    this.timeouts.forEach(timeout => clearTimeout(timeout));
   }
 
   setActive(active) {
@@ -76,10 +83,10 @@ export default class ActionButton extends Component {
 
     // hide bg after fade on deactivate
     if (!active) {
-      setTimeout(
+      this.timeouts.push(setTimeout(
         () => this.setState({showBackground: false}),
           duration
-      );
+      ));
     }
 
     this.state.translateY.setValue(10);
@@ -158,10 +165,10 @@ export default class ActionButton extends Component {
   // deactive the child buttons after they are pressed
   wrapChild(child) {
     const deactivateAndCall = callback => active => {
-      setTimeout(
+      this.timeouts.push(setTimeout(
         () => this.setActive(false),
-          100,
-      );
+        100,
+      ));
       child.props[callback] && child.props[callback](active);
     };
     return React.cloneElement(

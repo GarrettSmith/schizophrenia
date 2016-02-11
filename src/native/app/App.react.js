@@ -9,7 +9,6 @@ import React, {
 
 import {
   Actions,
-  Animations,
   Route,
   Router,
   Schema,
@@ -21,6 +20,7 @@ import Drawer from './Drawer.react';
 import Header from './Header.react';
 import Help from '../help/Page.react';
 import LogEntry from '../log/entry/Page.react';
+import LogEntryHeader from '../log/entry/Header.react';
 import Medication from '../medication/Page.react';
 import Month from '../log/month/Page.react';
 import Settings from '../settings/Page.react';
@@ -35,6 +35,7 @@ const components = {
   Help,
   Medication,
   LogEntry,
+  LogEntryHeader,
   Month,
   Settings,
   Support,
@@ -53,25 +54,19 @@ class App extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    ui: PropTypes.object.isRequired
   };
 
   componentWillMount() {
-    BackAndroid.addEventListener('hardwareBackPress', () => {
-      // Navigate back and exit if we have nowhere further to navigate to
-      return Actions.pop();
-    });
+    // Navigate back and exit if we have nowhere further to navigate to
+    BackAndroid.addEventListener('hardwareBackPress', Actions.pop);
   }
 
   render() {
-    const {
-      actions,
-      ui,
-    } = this.props;
+    const {actions} = this.props;
 
     return (
       <Router
-        hideNavBar={true}
+        hideNavBar
         style={styles.container}
       >
 
@@ -101,40 +96,40 @@ class App extends Component {
         <Schema
           header={Connected.Header}
           headerColor={COLORS.TERTIARY}
-          hideNavBar={true}
+          hideNavBar
           leftIcon="arrow-back"
           leftIconPress={Actions.pop}
           name="tertiary"
           sceneConfig={Navigator.SceneConfigs.FadeAndroid}
-          wrapRouter={true}
+          wrapRouter
         />
 
         <Schema
           header={Connected.Header}
           headerColor={COLORS.TERTIARY}
-          hideNavBar={true}
+          hideNavBar
           leftIcon="close"
           leftIconPress={Actions.pop}
           name="modal"
           sceneConfig={Navigator.SceneConfigs.FloatFromBottomAndroid}
-          wrapRouter={true}
+          wrapRouter
         />
 
         <Route
           name="main"
-          initial={true}
+          initial
           schema="primary"
         >
           <Connected.Drawer>
             <Router
-              hideNavBar={true}
+              hideNavBar
               header={Connected.Header}
-             >
+            >
 
               <Route
                 name="logAgenda"
                 component={Connected.Agenda}
-                initial={true}
+                initial
                 schema="primary"
                 title="{date}"
               />
@@ -195,6 +190,7 @@ class App extends Component {
         <Route
           name="logEntry"
           component={Connected.LogEntry}
+          header={Connected.LogEntryHeader}
           schema="modal"
         />
 

@@ -29,7 +29,6 @@ export default class Page extends Component {
   }
 
   render() {
-    const {actions} = this.props;
     return (
       <View style={[appStyles.centeredView, styles.emptyContainer]}>
 
@@ -42,7 +41,7 @@ export default class Page extends Component {
           You haven't logged anything for today.
         </Text>
         <Text style={styles.emptyText}>
-          Tap here to get started!
+          Tap to get started!
         </Text>
 
         <ActionButton routes={Routes} />

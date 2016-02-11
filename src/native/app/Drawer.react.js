@@ -2,17 +2,10 @@ import Component from 'react-pure-render/component';
 import React, {
   DrawerLayoutAndroid,
   PropTypes,
-  View,
 } from 'react-native';
 
 import Menu from './Menu.react';
 import {Actions} from 'react-native-router-flux';
-
-const styles = {
-  container: {
-    flex: 1,
-  },
-};
 
 export default class Drawer extends Component {
   static propTypes = {

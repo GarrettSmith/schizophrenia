@@ -25,14 +25,14 @@ export default class Menu extends Component {
   open(route, ...args) {
     return () => {
       // Don't allow navigation to the current route
-      if(route !== this.props.currentRoute)
+      if (route !== this.props.currentRoute)
         this.props.routes[route](...args);
       this.props.closeDrawer();
     };
   }
 
   makeItem(item) {
-    const press = this.open(item.route)
+    const press = this.open(item.route);
     return {
       ...item,
       active: item.route === this.props.currentRoute,
