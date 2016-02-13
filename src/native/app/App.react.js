@@ -1,96 +1,210 @@
-import Component from '../components/Component.react';
+import styles, {COLORS} from './styles';
+
+import Component from 'react-pure-render/component';
+import React, {
+  BackAndroid,
+  Navigator,
+  PropTypes,
+} from 'react-native';
+
+import {
+  Actions,
+  Route,
+  Router,
+  Schema,
+} from 'react-native-router-flux';
+
+import Agenda from '../log/agenda/Page.react';
+import All from '../log/all/Page.react';
+import Drawer from './Drawer.react';
 import Header from './Header.react';
-import Menu from './Menu.react';
-import React, {Navigator, PropTypes, StatusBarIOS, View} from 'react-native';
-import SideMenu from 'react-native-side-menu';
+import Help from '../help/Page.react';
+import LogEntry from '../log/entry/Page.react';
+import LogEntryHeader from '../log/entry/Header.react';
+import Medication from '../medication/Page.react';
+import Month from '../log/month/Page.react';
+import Settings from '../settings/Page.react';
+import Support from '../support/Page.react';
+import Week from '../log/week/Page.react';
+
+const components = {
+  Agenda,
+  All,
+  Drawer,
+  Header,
+  Help,
+  Medication,
+  LogEntry,
+  LogEntryHeader,
+  Month,
+  Router,
+  Settings,
+  Support,
+  Week,
+};
+
 import mapDispatchToProps from '../../common/app/mapDispatchToProps';
 import mapStateToProps from '../../common/app/mapStateToProps';
-import routes from '../routes';
-import styles from './styles';
-import {connect} from 'react-redux/native';
+import {connect} from 'react-redux';
+
+import {map} from 'ramda';
+
+const connectComponent = connect(mapStateToProps, mapDispatchToProps);
+const Connected = map(connectComponent, components);
 
 class App extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    device: PropTypes.object.isRequired,
-    msg: PropTypes.object.isRequired,
-    ui: PropTypes.object.isRequired
   };
 
-  static configureScene(route) {
-    return route.animationType || Navigator.SceneConfigs.FloatFromRight;
+  componentWillMount() {
+    // Navigate back and exit if we have nowhere further to navigate to
+    BackAndroid.addEventListener('hardwareBackPress', Actions.pop);
   }
 
-  constructor(props) {
-    super(props);
-    this.onNavigatorRef = this.onNavigatorRef.bind(this);
-    this.onRouteChange = this.onRouteChange.bind(this);
-    this.onSideMenuChange = this.onSideMenuChange.bind(this);
-  }
-
-  onNavigatorRef(component) {
-    this.navigator = component;
-  }
-
-  // TODO: Fluxify routing and make it universal with redux-router.
-  // Store current route in storage.
-  // https://github.com/rackt/redux-router/issues/63
-  onRouteChange(route) {
-    const {actions} = this.props;
-    this.navigator.replace(routes[route]);
-    actions.toggleSideMenu();
-  }
-
-  onSideMenuChange(isOpen) {
-    const {actions, device} = this.props;
-    if (device.platform === 'ios')
-      StatusBarIOS.setHidden(isOpen, true);
-    actions.onSideMenuChange(isOpen);
-  }
-
-  getTitle(route) {
-    const {msg: {app: {links}}} = this.props;
-    switch (route) {
-      case routes.home: return links.home;
-      case routes.todos: return links.todos;
-    }
+  componentDidMount() {
+    // dispatch action to set the initial route
+    this.props.actions.ui.setRoute();
   }
 
   render() {
-    const {actions, msg, ui} = this.props;
-
-    const renderScene = route =>
-      <View style={[styles.sceneView, route.style]}>
-        <Header
-          title={this.getTitle(route)}
-          toggleSideMenu={actions.toggleSideMenu}
-        />
-        <route.Page {...this.props} />
-      </View>;
-
-    const menu =
-      <Menu msg={msg} onRouteChange={this.onRouteChange} />;
+    const {actions} = this.props;
 
     return (
-      <SideMenu
-        disableGestures
-        isOpen={ui.isSideMenuOpen}
-        menu={menu}
-        onChange={this.onSideMenuChange}
+      <Connected.Router
+        hideNavBar
         style={styles.container}
       >
-        <Navigator
-          configureScene={App.configureScene}
-          initialRoute={routes.home}
-          ref={this.onNavigatorRef}
-          renderScene={renderScene}
-          style={styles.container}
+
+        <Schema
+          name="default"
+          sceneConfig={Navigator.SceneConfigs.FadeAndroid}
         />
-      </SideMenu>
+
+        <Schema
+          headerColor={COLORS.PRIMARY}
+          leftIcon="menu"
+          leftIconPress={actions.ui.openDrawer}
+          name="primary"
+          sceneConfig={Navigator.SceneConfigs.FadeAndroid}
+          type="replace"
+        />
+
+        <Schema
+          headerColor={COLORS.SECONDARY}
+          leftIcon="menu"
+          leftIconPress={actions.ui.openDrawer}
+          name="secondary"
+          sceneConfig={Navigator.SceneConfigs.FadeAndroid}
+          type="replace"
+        />
+
+        <Schema
+          header={Connected.Header}
+          headerColor={COLORS.TERTIARY}
+          hideNavBar
+          leftIcon="arrow-back"
+          leftIconPress={Actions.pop}
+          name="tertiary"
+          sceneConfig={Navigator.SceneConfigs.FadeAndroid}
+          wrapRouter
+        />
+
+        <Schema
+          header={Connected.Header}
+          headerColor={COLORS.TERTIARY}
+          hideNavBar
+          leftIcon="close"
+          leftIconPress={Actions.pop}
+          name="modal"
+          sceneConfig={Navigator.SceneConfigs.FloatFromBottomAndroid}
+          wrapRouter
+        />
+
+        <Route
+          name="main"
+          initial
+          schema="primary"
+        >
+          <Connected.Drawer>
+            <Connected.Router
+              hideNavBar
+              header={Connected.Header}
+            >
+
+              <Route
+                name="logAgenda"
+                component={Connected.Agenda}
+                initial
+                schema="primary"
+                title="{date}"
+              />
+
+              <Route
+                name="logWeek"
+                component={Connected.Week}
+                schema="primary"
+                title="{date}"
+              />
+
+              <Route
+                name="logMonth"
+                component={Connected.Month}
+                schema="primary"
+                title="{date}"
+              />
+
+              <Route
+                name="logAll"
+                component={Connected.All}
+                schema="primary"
+                title="{date}"
+              />
+
+              <Route
+                name="medication"
+                component={Connected.Medication}
+                schema="secondary"
+                title="Medication"
+              />
+
+              <Route
+                name="support"
+                component={Connected.Support}
+                schema="secondary"
+                title="Support"
+              />
+
+            </Connected.Router>
+          </Connected.Drawer>
+        </Route>
+
+        <Route
+          name="settings"
+          component={Connected.Settings}
+          schema="tertiary"
+          title="Settings"
+        />
+
+        <Route
+          name="help"
+          component={Connected.Help}
+          schema="tertiary"
+          title="Help & Feedback"
+        />
+
+        <Route
+          name="logEntry"
+          component={Connected.LogEntry}
+          header={Connected.LogEntryHeader}
+          schema="modal"
+        />
+
+      </Connected.Router>
     );
   }
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connectComponent(App);

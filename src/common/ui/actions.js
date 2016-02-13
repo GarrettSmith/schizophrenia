@@ -1,15 +1,16 @@
-export const ON_SIDE_MENU_CHANGE = 'ON_SIDE_MENU_CHANGE';
-export const TOGGLE_SIDE_MENU = 'TOGGLE_SIDE_MENU';
+import {Actions} from 'react-native-router-flux';
+import {createAction} from 'redux-actions';
 
-export function onSideMenuChange(isOpen) {
-  return {
-    type: ON_SIDE_MENU_CHANGE,
-    payload: {isOpen}
-  };
-}
+export const CLOSE_DRAWER = 'CLOSE_DRAWER';
+export const ON_DRAWER_CHANGE = 'ON_DRAWER_CHANGE';
+export const OPEN_DRAWER = 'OPEN_DRAWER';
+export const SET_DRAWER_ENABLED = 'SET_DRAWER_ENABLED';
+export const SET_ROUTE = 'SET_ROUTE';
 
-export function toggleSideMenu() {
-  return {
-    type: TOGGLE_SIDE_MENU
-  };
-}
+export const ui = {
+  closeDrawer: createAction(CLOSE_DRAWER),
+  openDrawer: createAction(OPEN_DRAWER),
+  onDrawerChange: createAction(ON_DRAWER_CHANGE),
+  setDrawerEnabled: createAction(SET_DRAWER_ENABLED),
+  setRoute: createAction(SET_ROUTE, () => Actions.currentRouter.currentRoute),
+};

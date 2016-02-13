@@ -1,4 +1,16 @@
 import {StyleSheet} from 'react-native';
+import {COLOR} from 'react-native-material-design';
+
+export const COLORS = {
+  BLACK: COLOR.paperGrey800.color,
+  BLACK_DARK: '#000',
+  DIM: COLOR.paperGrey300.color,
+  DIM_DARK: COLOR.paperGrey500.color,
+  PRIMARY: COLOR.paperBlue900.color,
+  SECONDARY: COLOR.paperPink300.color,
+  TERTIARY: COLOR.paperGrey700.color,
+  WHITE: '#fff',
+};
 
 export default StyleSheet.create({
   centeredView: {
@@ -10,15 +22,15 @@ export default StyleSheet.create({
     textAlign: 'center'
   },
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
     flex: 1
   },
   paragraph: {
-    color: '#7C7C7C',
+    color: COLORS.BLACK,
     fontSize: 16
   },
   sceneView: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
     flex: 1
   }
 });

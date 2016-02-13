@@ -1,68 +1,144 @@
-import Component from '../components/Component.react';
-import React from 'react-native';
+import {COLORS} from './styles';
 
-const {
-  Image, PropTypes, StyleSheet, Text, TouchableOpacity, View
-} = React;
+import Component from 'react-pure-render/component';
+import React, {
+  PropTypes,
+  Text,
+  View,
+} from 'react-native';
+import {
+  Icon,
+  IconToggle,
+} from 'react-native-material-design';
 
-const styles = StyleSheet.create({
-  container: {
+import {path} from 'ramda';
+
+const statusbarHeight = 24;
+const toolbarHeight = 52;
+const spacing = 16;
+const defaultIconColor = COLORS.WHITE;
+
+const styles = {
+  toolbar: {
     alignItems: 'center',
-    backgroundColor: '#31AACC',
-    borderBottomColor: '#73CEE7',
-    borderBottomWidth: 2,
-    height: 50,
-    justifyContent: 'center',
-    paddingBottom: 10,
-    paddingTop: 10,
-    position: 'relative'
+    elevation: 3,
+    flexDirection: 'row',
+    height: statusbarHeight + toolbarHeight,
+    paddingTop: statusbarHeight,
+    paddingLeft: spacing,
+    paddingRight: spacing,
   },
-  header: {
-    color: '#fff',
-    fontSize: 20
+  leftIcon: {
+    marginRight: spacing,
   },
-  menuIcon: {
-    backgroundColor: 'transparent',
-    height: 24,
-    width: 24
+  title: {
+    color: COLORS.WHITE,
+    flex: 1,
+    fontSize: 20,
   },
-  menuLink: {
-    backgroundColor: 'transparent',
-    height: 44,
-    left: 8,
-    opacity: 0.9,
-    padding: 10,
-    position: 'absolute',
-    top: 5,
-    width: 44
-  }
-});
+  rightIcon: {
+    marginLeft: spacing,
+  },
+};
 
 export default class Header extends Component {
 
   static propTypes = {
-    title: PropTypes.string.isRequired,
-    toggleSideMenu: PropTypes.func.isRequired
+    children: PropTypes.node,
+    headerColor: PropTypes.string,
+    iconColor: PropTypes.string,
+    leftIcon: PropTypes.string,
+    leftIconPress: PropTypes.func,
+    rightIcon: PropTypes.string,
+    rightIconPress: PropTypes.func,
+    title: PropTypes.string,
+    ui: PropTypes.object,
   };
 
+  constructor(props) {
+    super(props);
+
+    this.renderTitle = this.renderTitle.bind(this);
+    this.getProp = this.getProp.bind(this);
+  }
+
+  getProp(prop) {
+    if (this.props[prop]) {
+      return this.props[prop];
+    }
+
+    const route = this.props.ui;
+    return path(['currentRoute', 'props', prop], route);
+  }
+
   render() {
-    const {title, toggleSideMenu} = this.props;
+    const {
+      children,
+      iconColor,
+    } = this.props;
 
     return (
-      <View style={styles.container}>
-        <TouchableOpacity
-          activeOpacity={.8}
-          onPress={toggleSideMenu}
-          style={styles.menuLink}
-        >
-          <Image
-            source={require('./img/MenuIcon.png')}
-            style={styles.menuIcon}
-          />
-        </TouchableOpacity>
-        <Text style={styles.header}>{title}</Text>
+      <View
+        style={[
+          styles.toolbar,
+          {backgroundColor: this.getProp('headerColor')},
+        ]}
+      >
+        {
+          this.renderIcon(
+            this.getProp('leftIcon'),
+            this.getProp('leftIconPress'),
+            iconColor,
+            styles.leftIcon
+          )
+        }
+
+        {this.renderTitle()}
+        {children}
+
+        {
+          this.renderIcon(
+            this.getProp('rightIcon'),
+            this.getProp('rightIconPress'),
+            iconColor,
+            styles.rightIcon
+          )
+        }
       </View>
     );
+  }
+
+  renderTitle() {
+    const title = this.getProp('title');
+
+    if (title) {
+      return (
+        <Text
+          numberOfLines={1}
+          style={styles.title}
+        >
+          {title}
+        </Text>
+      );
+    }
+  }
+
+  renderIcon(name, onPress, color = defaultIconColor, style = null) {
+    if (name) {
+      return (
+        <IconToggle
+          color={COLORS.WHITE}
+          onPress={onPress}
+        >
+          <Icon
+            color={color}
+            name={name}
+            size={24}
+            style={style}
+          />
+        </IconToggle>
+      );
+    }
   }
 
 }

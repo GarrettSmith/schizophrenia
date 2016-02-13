@@ -1,67 +1,113 @@
-import Component from '../components/Component.react';
-import React, {Dimensions} from 'react-native';
+import Component from 'react-pure-render/component';
 
-const {
-  PropTypes, ScrollView, StyleSheet, Text, View
-} = React;
+import {COLORS} from './styles';
 
-const window = Dimensions.get('window');
+import React, {PropTypes} from 'react-native';
+import {Divider, Drawer} from 'react-native-material-design';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#2C2C2C',
-    flex: 1,
-    height: window.height,
-    width: window.width * .7
-  },
-  menu: {
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingVertical: 20,
-    paddingHorizontal: 30
-  },
-  item: {
-    fontSize: 16,
-    padding: 10,
-    color: '#fff'
-  },
-  header: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 10,
-    marginBottom: 10
-  }
-});
+import {map} from 'ramda';
 
 export default class Menu extends Component {
 
   static propTypes = {
-    msg: PropTypes.object.isRequired,
-    onRouteChange: PropTypes.func.isRequired
+    closeDrawer: PropTypes.func.isRequired,
+    currentRoute: PropTypes.string,
+    routes: PropTypes.object.isRequired,
   };
 
-  render() {
-    const {msg: {app: {links}}, onRouteChange} = this.props;
-    const pages = ['home', 'todos'];
+  constructor(props) {
+    super(props);
+    this.open = this.open.bind(this);
+    this.makeItem = this.makeItem.bind(this);
+    this.makeItems = this.makeItems.bind(this);
+  }
 
+  open(route, ...args) {
+    return () => {
+      // Don't allow navigation to the current route
+      if (route !== this.props.currentRoute)
+        this.props.routes[route](...args);
+      this.props.closeDrawer();
+    };
+  }
+
+  makeItem(item) {
+    const press = this.open(item.route);
+    return {
+      ...item,
+      active: item.route === this.props.currentRoute,
+      onPress: press,
+      onLongPress: press,
+    };
+  }
+
+  makeItems = map(this.makeItem.bind(this));
+
+  render() {
     return (
-      <ScrollView
-        automaticallyAdjustContentInsets={false}
-        contentContainerStyle={styles.menu}
-        style={styles.container}
-      >
-        <View>
-          {pages.map(page =>
-            <Text
-              key={page}
-              onPress={() => onRouteChange(page)} // eslint-disable-line react/jsx-no-bind
-              style={styles.item}
-            >{links[page]}</Text>
-          )}
-        </View>
-        {/* TODO: Switch language here. */}
-      </ScrollView>
+      <Drawer>
+        <Drawer.Header backgroundColor={COLORS.SECONDARY}/>
+
+        <Drawer.Section
+          items={this.makeItems([
+            {
+              icon: 'view-agenda',
+              route: 'logAgenda',
+              value: 'Agenda',
+            },
+            {
+              icon: 'view-week',
+              route: 'logWeek',
+              value: 'Week',
+            },
+            {
+              icon: 'view-module',
+              route: 'logMonth',
+              value: 'Month',
+            },
+            {
+              icon: 'schedule',
+              route: 'logAll',
+              value: 'All Time',
+            },
+          ])}
+        />
+
+        <Divider/>
+
+        <Drawer.Section
+          items={this.makeItems([
+            {
+              icon: 'local-pharmacy',
+              route: 'medication',
+              value: 'Medication',
+            },
+            {
+              icon: 'group',
+              route: 'support',
+              value: 'Support',
+            },
+          ])}
+        />
+
+        <Divider/>
+
+        <Drawer.Section
+          items={this.makeItems([
+            {
+              icon: 'settings',
+              route: 'settings',
+              value: 'Settings',
+            },
+            {
+              icon: 'help',
+              route: 'help',
+              value: 'Help & Feedback',
+            },
+          ])}
+        />
+
+      </Drawer>
     );
   }
 
