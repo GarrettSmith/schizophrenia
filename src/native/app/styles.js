@@ -7,7 +7,7 @@ export const COLORS = {
   DIM: COLOR.paperGrey300.color,
   DIM_DARK: COLOR.paperGrey500.color,
   PRIMARY: COLOR.paperBlue900.color,
-  SECONDARY: COLOR.paperPink300.color,
+  SECONDARY: COLOR.paperPink400.color,
   TERTIARY: COLOR.paperGrey700.color,
   WHITE: '#fff',
 };

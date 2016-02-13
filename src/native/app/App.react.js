@@ -92,21 +92,12 @@ class App extends Component {
         />
 
         <Schema
-          headerColor={COLORS.SECONDARY}
-          leftIcon="menu"
-          leftIconPress={actions.ui.openDrawer}
-          name="secondary"
-          sceneConfig={Navigator.SceneConfigs.FadeAndroid}
-          type="replace"
-        />
-
-        <Schema
           header={Connected.Header}
           headerColor={COLORS.TERTIARY}
           hideNavBar
           leftIcon="arrow-back"
           leftIconPress={Actions.pop}
-          name="tertiary"
+          name="secondary"
           sceneConfig={Navigator.SceneConfigs.FadeAndroid}
           wrapRouter
         />
@@ -165,14 +156,14 @@ class App extends Component {
               <Route
                 name="medication"
                 component={Connected.Medication}
-                schema="secondary"
+                schema="primary"
                 title="Medication"
               />
 
               <Route
                 name="support"
                 component={Connected.Support}
-                schema="secondary"
+                schema="primary"
                 title="Support"
               />
 
@@ -183,14 +174,14 @@ class App extends Component {
         <Route
           name="settings"
           component={Connected.Settings}
-          schema="tertiary"
+          schema="secondary"
           title="Settings"
         />
 
         <Route
           name="help"
           component={Connected.Help}
-          schema="tertiary"
+          schema="secondary"
           title="Help & Feedback"
         />
 

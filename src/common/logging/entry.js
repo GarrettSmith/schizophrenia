@@ -1,8 +1,8 @@
 import {Record, List} from 'immutable-fns';
 
 const Entry = Record({
-  createdAt: new Date,
-  sczSymptoms: new List,
+  createdAt: null,
+  symptoms: Map(),
 });
 
 export default Entry;
