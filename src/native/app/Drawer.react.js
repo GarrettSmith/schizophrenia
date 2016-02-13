@@ -5,7 +5,9 @@ import React, {
 } from 'react-native';
 
 import Menu from './Menu.react';
+
 import {Actions} from 'react-native-router-flux';
+import {path} from 'ramda';
 
 export default class Drawer extends Component {
   static propTypes = {
@@ -40,10 +42,15 @@ export default class Drawer extends Component {
   }
 
   renderMenu() {
+    const {
+      actions,
+      ui,
+    } = this.props;
+
     return (
       <Menu
-        closeDrawer={this.props.actions.ui.closeDrawer}
-        currentRoute={Actions.currentRouter.currentRoute.name}
+        closeDrawer={actions.ui.closeDrawer}
+        currentRoute={path(['currentRoute', 'name'], ui)}
         routes={Actions}
       />
     );

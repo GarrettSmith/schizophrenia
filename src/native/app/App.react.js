@@ -37,6 +37,7 @@ const components = {
   LogEntry,
   LogEntryHeader,
   Month,
+  Router,
   Settings,
   Support,
   Week,
@@ -45,6 +46,7 @@ const components = {
 import mapDispatchToProps from '../../common/app/mapDispatchToProps';
 import mapStateToProps from '../../common/app/mapStateToProps';
 import {connect} from 'react-redux';
+
 import {map} from 'ramda';
 
 const connectComponent = connect(mapStateToProps, mapDispatchToProps);
@@ -61,11 +63,16 @@ class App extends Component {
     BackAndroid.addEventListener('hardwareBackPress', Actions.pop);
   }
 
+  componentDidMount() {
+    // dispatch action to set the initial route
+    this.props.actions.ui.setRoute();
+  }
+
   render() {
     const {actions} = this.props;
 
     return (
-      <Router
+      <Connected.Router
         hideNavBar
         style={styles.container}
       >
@@ -121,7 +128,7 @@ class App extends Component {
           schema="primary"
         >
           <Connected.Drawer>
-            <Router
+            <Connected.Router
               hideNavBar
               header={Connected.Header}
             >
@@ -169,7 +176,7 @@ class App extends Component {
                 title="Support"
               />
 
-            </Router>
+            </Connected.Router>
           </Connected.Drawer>
         </Route>
 
@@ -194,7 +201,7 @@ class App extends Component {
           schema="modal"
         />
 
-      </Router>
+      </Connected.Router>
     );
   }
 

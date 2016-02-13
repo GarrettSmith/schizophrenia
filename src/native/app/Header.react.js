@@ -11,9 +11,7 @@ import {
   IconToggle,
 } from 'react-native-material-design';
 
-import {Actions as Routes} from 'react-native-router-flux';
-
-import {pathOr} from 'ramda';
+import {path} from 'ramda';
 
 const statusbarHeight = 24;
 const toolbarHeight = 52;
@@ -53,26 +51,15 @@ export default class Header extends Component {
     leftIconPress: PropTypes.func,
     rightIcon: PropTypes.string,
     rightIconPress: PropTypes.func,
-    router: PropTypes.object,
-    style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     title: PropTypes.string,
+    ui: PropTypes.object,
   };
 
   constructor(props) {
     super(props);
 
-    this.currentRoute = this.currentRoute.bind(this);
-    this.currentRouter = this.currentRouter.bind(this);
     this.renderTitle = this.renderTitle.bind(this);
     this.getProp = this.getProp.bind(this);
-  }
-
-  currentRouter() {
-    return this.props.router ? this.props.router : Routes.currentRouter;
-  }
-
-  currentRoute() {
-    return this.currentRouter().currentRoute;
   }
 
   getProp(prop) {
@@ -80,14 +67,13 @@ export default class Header extends Component {
       return this.props[prop];
     }
 
-    const route = this.currentRoute();
-    return pathOr(null, ['props', prop], route);
+    const route = this.props.ui;
+    return path(['currentRoute', 'props', prop], route);
   }
 
   render() {
     const {
       children,
-      style,
       iconColor,
     } = this.props;
 
@@ -96,7 +82,6 @@ export default class Header extends Component {
         style={[
           styles.toolbar,
           {backgroundColor: this.getProp('headerColor')},
-          style,
         ]}
       >
         {
@@ -107,8 +92,10 @@ export default class Header extends Component {
             styles.leftIcon
           )
         }
+
         {this.renderTitle()}
         {children}
+
         {
           this.renderIcon(
             this.getProp('rightIcon'),

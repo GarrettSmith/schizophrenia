@@ -3,7 +3,6 @@ import {COLORS} from '../../app/styles';
 import Component from 'react-pure-render/component';
 import React, {
   ListView,
-  PropTypes,
   Text,
   TextInput,
   TouchableNativeFeedback,
