@@ -1,11 +1,19 @@
 import * as actions from './actions';
-import {Record} from 'immutable';
 
 // This isn't really common across platforms
 import {Actions} from 'react-native-router-flux';
 
-import {pick} from 'ramda';
 import * as routes from '../lib/routes';
+import {
+  assoc,
+  pick,
+} from 'ramda';
+
+const initialState = {
+  currentRoute: null,
+  drawerEnabled: true,
+  drawerOpen: false,
+};
 
 // pick a subset able to be passed around
 const pickRoute = pick([
@@ -17,35 +25,27 @@ const pickRoute = pick([
 
 function setCurrentRoute(base, state) {
   const route = pickRoute(routes.findCurrent(base));
-  return state.set('currentRoute', route);
+  return assoc('currentRoute', route, state);
 }
 
-const InitialState = Record({
-  currentRoute: null,
-  drawerEnabled: true,
-  drawerOpen: false,
-});
-const initialState = new InitialState;
-
 export default function uiReducer(state = initialState, action) {
-  if (!(state instanceof InitialState)) return initialState;
 
   switch (action.type) {
 
     case actions.CLOSE_DRAWER: {
-      return state.set('drawerOpen', false);
+      return assoc('drawerOpen', false, state);
     }
 
     case actions.OPEN_DRAWER: {
-      return state.set('drawerOpen', true);
+      return assoc('drawerOpen', true, state);
     }
 
     case actions.ON_DRAWER_CHANGE: {
-      return state.set('drawerOpen', action.payload);
+      return assoc('drawerOpen', action.payload, state);
     }
 
     case actions.SET_DRAWER_ENABLED: {
-      return state.set('drawerEnabled', action.payload);
+      return assoc('drawerEnabled', action.payload, state);
     }
 
     // Routing Actions
