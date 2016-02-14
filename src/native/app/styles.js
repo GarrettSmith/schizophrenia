@@ -16,21 +16,21 @@ export default StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   centered: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   container: {
     backgroundColor: COLORS.WHITE,
-    flex: 1
+    flex: 1,
   },
   paragraph: {
     color: COLORS.BLACK,
-    fontSize: 16
+    fontSize: 16,
   },
   sceneView: {
     backgroundColor: COLORS.WHITE,
-    flex: 1
-  }
+    flex: 1,
+  },
 });

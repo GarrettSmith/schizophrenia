@@ -53,7 +53,7 @@ const renderPage = (store, renderProps, req) => {
   const helmet = Helmet.rewind();
   const {
     styles: {app: appCssFilename},
-    javascript: {app: appJsFilename}
+    javascript: {app: appJsFilename},
   } = webpackIsomorphicTools.assets();
   const scriptHtml = getScriptHtml(state, headers, hostname, appJsFilename);
   if (!config.isProduction) {
@@ -74,8 +74,8 @@ const renderPage = (store, renderProps, req) => {
 export default function render(req, res, next) {
   const initialState = {
     device: {
-      isMobile: ['phone', 'tablet'].indexOf(req.device.type) > -1
-    }
+      isMobile: ['phone', 'tablet'].indexOf(req.device.type) > -1,
+    },
   };
   const store = configureStore({initialState});
 

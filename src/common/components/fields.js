@@ -7,7 +7,7 @@ export default function fields(Wrapped, options) {
   return class Fields extends Component {
 
     static contextTypes = {
-      store: PropTypes.object // Redux store.
+      store: PropTypes.object, // Redux store.
     };
 
     // Path can be string, array, or function for lazy path definition.
@@ -23,7 +23,7 @@ export default function fields(Wrapped, options) {
     static getFieldsValues(model) {
       return options.fields.reduce((values, field) => ({
         ...values,
-        [field]: model && model.get(field) || ''
+        [field]: model && model.get(field) || '',
       }), Object.create(null));
     }
 
@@ -41,12 +41,12 @@ export default function fields(Wrapped, options) {
         this.fields[field] = process.env.IS_REACT_NATIVE ? {
           onChangeText: text => {
             this.onChange(field, text);
-          }
+          },
         } : {
           name: field,
           onChange: e => {
             this.onChange(field, e.target.value);
-          }
+          },
         };
       });
     }

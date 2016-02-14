@@ -4,13 +4,13 @@ export const SET_FIELD = 'SET_FIELD';
 export function deleteField(path) {
   return {
     type: DELETE_FIELD,
-    payload: {path}
+    payload: {path},
   };
 }
 
 export function setField(path, value) {
   return {
     type: SET_FIELD,
-    payload: {path, value}
+    payload: {path, value},
   };
 }

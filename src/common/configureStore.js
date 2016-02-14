@@ -2,7 +2,7 @@ import appReducer from './app/reducer';
 import createFetch from './createFetch';
 import createLogger from 'redux-logger';
 import promiseMiddleware from 'redux-promise-middleware';
-import immutableStateInvariantMiddleware from 'redux-immutable-state-invariant';
+//import immutableStateInvariantMiddleware from 'redux-immutable-state-invariant';
 import shortid from 'shortid';
 import validate from './validate';
 import {applyMiddleware, compose, createStore} from 'redux';
@@ -28,18 +28,18 @@ export default function configureStore({deps, initialState}) {
       fetch: createFetch(serverUrl),
       getUid: () => shortid.generate(),
       now: () => Date.now(),
-      validate
+      validate,
     }),
     promiseMiddleware({
-      promiseTypeSuffixes: ['START', 'SUCCESS', 'ERROR']
-    })
+      promiseTypeSuffixes: ['START', 'SUCCESS', 'ERROR'],
+    }),
   ];
 
   // Check state for mutations in development
-  if (process.env.NODE_ENV !== 'production') {
-    // disable until https://github.com/facebook/react-native/commit/194092e7290c2a2e50e0263bac67686df418b915
+  // disable until https://github.com/facebook/react-native/commit/194092e7290c2a2e50e0263bac67686df418b915
+  //if (process.env.NODE_ENV !== 'production') {
     //middleware.push(immutableStateInvariantMiddleware());
-  }
+  //}
 
   // Enable logger only for browser and React Native development.
   const enableLogger = process.env.NODE_ENV !== 'production' &&
@@ -49,7 +49,7 @@ export default function configureStore({deps, initialState}) {
     const logger = createLogger({
       collapsed: true,
       // Convert immutable to JSON.
-      stateTransformer: state => JSON.parse(JSON.stringify(state))
+      stateTransformer: state => JSON.parse(JSON.stringify(state)),
     });
     // Logger must be the last middleware in chain.
     middleware.push(logger);

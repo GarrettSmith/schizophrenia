@@ -15,7 +15,7 @@ const styles = {
   emptyText: {
     color: COLORS.DIM_DARK,
     fontSize: 16,
-  }
+  },
 };
 
 export default class Page extends Component {

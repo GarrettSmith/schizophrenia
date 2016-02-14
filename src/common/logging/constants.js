@@ -1,0 +1,18 @@
+export const DEFAULT_SYMPTOMS = [
+  'Done something I deserve to be punished for',
+  'Eaten regular meals',
+  'Feel that my thoughts are disorganized',
+  'Felt good about myself',
+  'Felt low energy',
+  'Felt unusual sensations',
+  'Had a special mission or abilities',
+  'Had others see/hear my thoughts',
+  'Had something want to hurt me',
+  'Had the urge to harm myself',
+  'Had the urge to kill myself',
+  'Had thoughts that were not mine',
+  'Heard voices',
+  'Seen visions',
+  'Slept well at night',
+  'Spent time outside',
+];

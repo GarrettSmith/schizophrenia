@@ -20,8 +20,8 @@ export default function index() {
 
   const initialState = {
     device: {
-      isMobile: true
-    }
+      isMobile: true,
+    },
   };
   const store = configureStore({initialState});
   store.dispatch(setPlatform(Platform.OS));

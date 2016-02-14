@@ -28,7 +28,7 @@ const styles = {
   },
   icon: {
     color: '#fff',
-  }
+  },
 };
 
 export default class Button extends Component {
@@ -168,7 +168,7 @@ export default class Button extends Component {
               outputRange: ['-360deg', '360deg'],
             })},
             {scale},
-          ]}
+          ]},
         ]}
       >
         <View
@@ -184,7 +184,7 @@ export default class Button extends Component {
             name={active ? activeIcon : icon}
             style={[
               styles.icon,
-              overrides.iconStyle
+              overrides.iconStyle,
             ]}
             size={24}
           />

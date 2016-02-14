@@ -9,7 +9,7 @@ export default class Page extends Component {
   static propTypes = {
     // Why not PropTypes.object.isRequired? Because:
     // https://github.com/rackt/react-router/issues/1505
-    msg: PropTypes.object
+    msg: PropTypes.object,
   };
 
   render() {

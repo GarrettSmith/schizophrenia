@@ -20,7 +20,7 @@ const runEslint = () =>
   gulp.src([
     'gulpfile.babel.js',
     'src/**/*.js',
-    'webpack/*.js'
+    'webpack/*.js',
   ])
   .pipe(eslint())
   .pipe(eslint.format());
@@ -86,7 +86,7 @@ gulp.task('to-html', done => {
 
   const urls = {
     '/': 'index.html',
-    '/foo-bla-bar': '404.html'
+    '/foo-bla-bar': '404.html',
   };
 
   const fetch = url => new Promise((resolve, reject) => {

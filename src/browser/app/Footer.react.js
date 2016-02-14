@@ -5,7 +5,7 @@ import {FormattedHTMLMessage} from 'react-intl';
 export default class Footer extends Component {
 
   static propTypes = {
-    msg: PropTypes.object.isRequired
+    msg: PropTypes.object.isRequired,
   };
 
   render() {

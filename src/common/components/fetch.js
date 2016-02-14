@@ -5,13 +5,13 @@ export default function fetch(...actions) {
   return Wrapped => class Fetch extends Component {
 
     static contextTypes = {
-      store: PropTypes.object // Redux store.
+      store: PropTypes.object, // Redux store.
     };
 
     // Passed via react-router or can be passed manually in React Native.
     static propTypes = {
       location: PropTypes.object,
-      params: PropTypes.object
+      params: PropTypes.object,
     };
 
     // For server side fetching. Check frontend/render.js

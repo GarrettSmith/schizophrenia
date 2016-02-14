@@ -11,7 +11,7 @@ import React, {PropTypes} from 'react';
 export default class RouterHandler extends Component {
 
   static propTypes = {
-    children: PropTypes.object
+    children: PropTypes.object,
   };
 
   render() {

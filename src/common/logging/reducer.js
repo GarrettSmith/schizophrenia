@@ -1,18 +1,14 @@
 import * as actions from './actions';
 
-import Entry from './entry';
-import Symptom from './symptom';
+import {DEFAULT_SYMPTOMS} from './constants';
 
 import {
-  lensProp,
-  set,
+  assoc,
 } from 'ramda';
 
 const initialState = {
   entries: {},
 };
-
-const entries = lensProp('entries');
 
 export default function todosReducer(state = initialState, action) {
 

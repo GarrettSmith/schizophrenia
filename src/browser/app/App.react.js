@@ -15,7 +15,7 @@ class App extends Component {
     children: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     msg: PropTypes.object.isRequired,
-    users: PropTypes.object.isRequired
+    users: PropTypes.object.isRequired,
   };
 
   render() {
@@ -26,11 +26,11 @@ class App extends Component {
       <div className="page" data-pathname={pathname}>
         <Helmet
           link={[
-            {rel: 'shortcut icon', href: require('./favicon.ico')}
+            {rel: 'shortcut icon', href: require('./favicon.ico')},
           ]}
           meta={[{
             name: 'description',
-            content: 'Dev stack and starter kit for functional and universal React web apps'
+            content: 'Dev stack and starter kit for functional and universal React web apps',
           }]}
           titleTemplate="%s - Este.js"
         />

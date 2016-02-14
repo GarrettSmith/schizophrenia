@@ -33,7 +33,7 @@ const styles = {
     bottom: 0,
     right: 0,
     padding,
-  }
+  },
 };
 
 export default class ActionButton extends Component {
@@ -104,7 +104,7 @@ export default class ActionButton extends Component {
           toValue: 0,
           duration,
         }
-      )
+      ),
     ]).start();
 
     // callbacks
@@ -145,7 +145,7 @@ export default class ActionButton extends Component {
             {backgroundColor: opacity.interpolate({
               inputRange: [0, 1],
               outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.7)'],
-            })}
+            })},
           ]}
         >
 

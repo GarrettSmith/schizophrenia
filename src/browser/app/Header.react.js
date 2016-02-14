@@ -7,7 +7,7 @@ export default class Header extends Component {
   static propTypes = {
     msg: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
-    viewer: PropTypes.object
+    viewer: PropTypes.object,
   };
 
   render() {

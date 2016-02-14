@@ -4,7 +4,7 @@ import {assoc} from 'ramda';
 
 const initialState = {
   isMobile: false,
-  platform: ''
+  platform: '',
 };
 
 export default function deviceReducer(state = initialState, action) {

@@ -14,6 +14,6 @@ export default function mapDispatchToProps(dispatch) {
   );
   return {
     actions,
-    dispatch
+    dispatch,
   };
 }

@@ -1,4 +1,3 @@
-import Symptom from './symptom';
 import {createAction} from 'redux-actions';
 
 export const ADD_SYMPTOM = 'ADD_SYMPTOM';
@@ -30,4 +29,3 @@ export const logging = {
   saveEntry,
   setSymptomSeverity,
 };
-

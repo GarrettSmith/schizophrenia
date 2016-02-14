@@ -1,34 +1,34 @@
 export default {
   app: {
     footer: {
-      madeByHtml: 'made by <a href="https://twitter.com/steida">steida</a>'
+      madeByHtml: 'made by <a href="https://twitter.com/steida">steida</a>',
     },
     links: {
       home: 'Home',
       login: 'Login',
       me: 'Me (protected)',
-      todos: 'Todos'
-    }
+      todos: 'Todos',
+    },
   },
   auth: {
     form: {
       button: {
         login: 'Login',
-        signup: 'Sign up'
+        signup: 'Sign up',
       },
       hint: 'Hint: pass1',
       legend: 'Login / Sign Up',
       placeholder: {
         email: 'your@email.com',
-        password: 'password'
+        password: 'password',
       },
-      wrongPassword: 'Wrong password.'
+      wrongPassword: 'Wrong password.',
     },
     logout: {
-      button: 'Logout'
+      button: 'Logout',
     },
     login: {
-      title: 'Login'
+      title: 'Login',
     },
     validation: {
       email: 'Email address is not valid.',
@@ -37,8 +37,8 @@ export default {
         email {email}
         password {password}
         other {'{prop}'}
-      }.`
-    }
+      }.`,
+    },
   },
   home: {
     // // TODO: Android text.
@@ -58,28 +58,28 @@ export default {
       list: [
         {
           key: 'source',
-          text: 'Server rendering'
+          text: 'Server rendering',
         },
         {
           key: 'development',
-          text: 'Hot reload for styles, components, etc.'
+          text: 'Hot reload for styles, components, etc.',
         },
         {
           key: 'production',
-          text: 'Performance and size of production build (<code>gulp -p</code>)'
-        }
-      ]
-    }
+          text: 'Performance and size of production build (<code>gulp -p</code>)',
+        },
+      ],
+    },
   },
   me: {
     title: 'Me',
-    welcome: 'Hi {email}. This is your secret page.'
+    welcome: 'Hi {email}. This is your secret page.',
   },
   notFound: {
     continueMessage: 'Continue here please.',
     header: 'This page isn\'t available',
     message: 'The link may be broken, or the page may have been removed.',
-    title: 'Page Not Found'
+    title: 'Page Not Found',
   },
   todos: {
     add100: 'Add 100 Todos',
@@ -92,12 +92,12 @@ export default {
       other {You have {size} tasks to go}
     }`,
     newTodoPlaceholder: 'What needs to be done?',
-    title: 'Todos'
+    title: 'Todos',
   },
   profile: {
-    title: 'Profile'
+    title: 'Profile',
   },
   settings: {
-    title: 'Settings'
-  }
+    title: 'Settings',
+  },
 };
