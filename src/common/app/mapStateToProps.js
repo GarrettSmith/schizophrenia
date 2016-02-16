@@ -6,10 +6,13 @@ import {
   mergeWith,
 } from 'ramda';
 
+const deepMerge = mergeWith(
+    (a, b) => isObject(a) && isObject(b) ? deepMerge(a, b) : b,
+);
+
 export default function mapStateToProps(state) {
   // perform 2 levels of merging
-  return mergeWith(
-    (a, b) => isObject(a) && isObject(b) ? merge(a, b) : b,
+  return deepMerge(
     appSelector(state),
     {
       ...state,

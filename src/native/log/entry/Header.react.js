@@ -26,7 +26,6 @@ const styles = {
   list: {
     backgroundColor: COLORS.WHITE,
     elevation: 2,
-    position: 'absolute',
     left: 0,
     right: 0,
   },
@@ -62,11 +61,12 @@ export default class Header extends Component {
       suggestions: this.calcSuggestions(props.logging.suggestedSymptoms),
     };
 
+    this.addSymptom = this.addSymptom.bind(this);
     this.calcSuggestions = this.calcSuggestions.bind(this);
     this.data = this.data.bind(this);
+    this.renderRow = this.renderRow.bind(this);
     this.save = this.save.bind(this);
   }
-
 
   calcSuggestions(suggestions) {
     return this.suggestionsDataSource.cloneWithRows(suggestions);
@@ -88,8 +88,18 @@ export default class Header extends Component {
     Routes.pop();
   }
 
+  addSymptom(symptomId) {
+    return () => {
+      this.props.actions.logging.addSymptom(symptomId);
+    };
+  }
+
   render() {
-    const {actions} = this.props;
+    const {
+      actions,
+      logging,
+    } = this.props;
+    const {suggestions} = this.state;
 
     return (
       <View>
@@ -110,22 +120,28 @@ export default class Header extends Component {
             selectionColor={COLORS.SECONDARY}
             style={styles.input}
             onChangeText={actions.logging.enterSymptom}
+            onSubmitEditing={actions.logging.addNewSymptom}
+            value={logging.enteredSymptom}
           />
         </BaseHeader>
 
-        <ListView
-          dataSource={this.data()}
-          renderRow={this.renderRow}
-          style={styles.list}
-        />
+        {logging.enteredSymptom ?
+          <ListView
+            dataSource={suggestions}
+            renderRow={this.renderRow}
+            style={styles.list}
+          /> : null}
       </View>
     );
   }
 
   renderRow(data) {
+    const {actions} = this.props;
+
     return (
       <TouchableNativeFeedback
         background={TouchableNativeFeedback.Ripple(COLORS.DIM, false)}
+        onPress={this.addSymptom(data.id)}
       >
         <View style={styles.row}>
           <Icon
@@ -133,7 +149,7 @@ export default class Header extends Component {
             style={styles.rowIcon}
           />
           <Text style={styles.rowText}>
-            {data}
+            {data.name}
           </Text>
         </View>
       </TouchableNativeFeedback>

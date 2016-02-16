@@ -1,4 +1,13 @@
-export const DEFAULT_SYMPTOMS = [
+import shortid from 'shortid';
+import {Symptom} from './models';
+
+import {
+  fromPairs,
+  map,
+  merge,
+} from 'ramda';
+
+const DEFAULT_SYMPTOM_NAMES = [
   'Done something I deserve to be punished for',
   'Eaten regular meals',
   'Feel that my thoughts are disorganized',
@@ -16,3 +25,13 @@ export const DEFAULT_SYMPTOMS = [
   'Slept well at night',
   'Spent time outside',
 ];
+
+// Create symptom objects from the names
+export const DEFAULT_SYMPTOMS = fromPairs(map(
+  name => {
+    const id = shortid.generate();
+    const symptom = merge(Symptom, {id, name});
+    return [id, symptom];
+  },
+  DEFAULT_SYMPTOM_NAMES
+));
