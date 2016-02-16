@@ -3,6 +3,7 @@ import {COLORS} from '../../app/styles';
 import Component from 'react-pure-render/component';
 import React, {
   ListView,
+  PropTypes,
   Text,
   TextInput,
   TouchableNativeFeedback,
@@ -46,16 +47,19 @@ const styles = {
 
 export default class Header extends Component {
 
+  static propTypes = {
+    logging: PropTypes.object.isRequired,
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.data = this.data.bind(this);
+  }
+
   data() {
     const ds = new ListView.DataSource({rowHasChanged: (a, b) => a !== b});
-    return ds.cloneWithRows([
-      'Heard voices',
-      'Seen visions',
-      'Feel that my thoughts are disorganized',
-      'Felt unusual sensations',
-      'Done something I deserve to be punished for',
-      'Had others see/hear my thoughts',
-    ]);
+    return ds.cloneWithRows(this.props.logging);
   }
 
   render() {
@@ -72,7 +76,7 @@ export default class Header extends Component {
             autoCapitalize="sentences"
             autoCorrect
             autoFocus
-            placeholder="How have you been feeling?"
+            placeholder="How are you?"
             underlineColorAndroid={COLORS.DIM_DARK}
             selectionColor={COLORS.SECONDARY}
             style={styles.input}

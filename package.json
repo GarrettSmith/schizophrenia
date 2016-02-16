@@ -97,6 +97,7 @@
     "redux-logger": "^2.1.1",
     "redux-promise-middleware": "^2.3.2",
     "regenerator": "^0.8.42",
+    "reselect": "^2.0.3",
     "run-sequence": "^1.0.2",
     "sass-loader": "^3.0.0",
     "serialize-javascript": "^1.1.2",

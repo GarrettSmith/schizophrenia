@@ -43,13 +43,20 @@ const components = {
   Week,
 };
 
+import {
+  compose,
+  map,
+} from 'ramda';
+
+import appSelector from '../../common/app/selector';
 import mapDispatchToProps from '../../common/app/mapDispatchToProps';
 import mapStateToProps from '../../common/app/mapStateToProps';
 import {connect} from 'react-redux';
 
-import {map} from 'ramda';
-
-const connectComponent = connect(mapStateToProps, mapDispatchToProps);
+// connect selectors, state, and action creatores to component
+const connectComponent = compose(
+  connect(mapStateToProps, mapDispatchToProps)
+);
 const Connected = map(connectComponent, components);
 
 class App extends Component {

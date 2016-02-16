@@ -1,8 +1,27 @@
-import {createAction} from 'redux-actions';
-
 export const ADD_SYMPTOM = 'ADD_SYMPTOM';
 export const SAVE_ENTRY = 'SAVE_ENTRY';
-export const SET_SYMPTOM_SEVERITY = 'SET_SYMPTOM_SEVERITY';
+export const UPDATE_ENTRY_SYMPTOM = 'UPDATE_ENTRY_SYMPTOM';
+
+function addSymptom(name) {
+  return ({getUid}) => ({
+    type: ADD_SYMPTOM,
+    payload: {
+      entrySymptomId: getUid(),
+      id: getUid(),
+      name,
+    },
+  });
+}
+
+function updateEntrySymptom(severity, id) {
+  return {
+    type: UPDATE_ENTRY_SYMPTOM,
+    payload: {
+      id,
+      severity,
+    },
+  };
+}
 
 function saveEntry() {
   return ({getUid, now}) => ({
@@ -14,18 +33,8 @@ function saveEntry() {
   });
 }
 
-function setSymptomSeverity(severity, symptom) {
-  return {
-    type: SET_SYMPTOM_SEVERITY,
-    payload: {
-      severity,
-      symptom,
-    },
-  };
-}
-
 export const logging = {
-  addSymptom: createAction(ADD_SYMPTOM),
+  addSymptom,
   saveEntry,
-  setSymptomSeverity,
+  updateEntrySymptom,
 };

@@ -6,12 +6,14 @@ import {combineReducers} from 'redux';
 import device from '../device/reducer';
 import fields from '../fields/reducer';
 import intl from '../intl/reducer';
+import logging from '../logging/reducer';
 import ui from '../ui/reducer';
 
 const appReducer = combineReducers({
   device,
   fields,
   intl,
+  logging,
   ui,
 });
 
