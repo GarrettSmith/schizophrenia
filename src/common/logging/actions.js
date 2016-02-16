@@ -1,5 +1,8 @@
+import {createAction} from 'redux-actions';
+
 export const ADD_SYMPTOM = 'ADD_SYMPTOM';
 export const SAVE_ENTRY = 'SAVE_ENTRY';
+export const ENTER_SYMPTOM = 'ENTER_SYMPTOM';
 export const UPDATE_ENTRY_SYMPTOM = 'UPDATE_ENTRY_SYMPTOM';
 
 function addSymptom(name) {
@@ -35,6 +38,7 @@ function saveEntry() {
 
 export const logging = {
   addSymptom,
+  enterSymptom: createAction(ENTER_SYMPTOM),
   saveEntry,
   updateEntrySymptom,
 };

@@ -13,11 +13,14 @@ import {
   clone,
   curry,
   evolve,
+  map,
   merge,
 } from 'ramda';
 
 // set obj into id maps
-const set = curry((obj, map) =>  assoc(obj.id, obj, map));
+const set = curry((obj, map) => assoc(obj.id, obj, map));
+
+
 
 const initialState = {
   newEntry: Entry,
@@ -26,9 +29,10 @@ const initialState = {
   entries: {},
   entrySymptoms: {},
   symptoms: {},
+  enteredSymptom: null,
 };
 
-export default function todosReducer(state = initialState, action) {
+export default function loggingReducer(state = initialState, action) {
 
   switch (action.type) {
 
@@ -81,6 +85,10 @@ export default function todosReducer(state = initialState, action) {
         action.severity,
         state.newEntrySymptoms
       );
+    }
+
+    case actions.ENTER_SYMPTOM: {
+      return assoc('enteredSymptom', action.payload);
     }
 
     default:

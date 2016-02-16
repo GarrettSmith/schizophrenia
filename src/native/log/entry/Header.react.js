@@ -54,15 +54,43 @@ export default class Header extends Component {
   constructor(props) {
     super(props);
 
+    this.suggestionsDataSource = new ListView.DataSource({
+      rowHasChanged: (a, b) => a !== b,
+    });
+
+    this.state = {
+      suggestions: this.calcSuggestions(props.logging.suggestedSymptoms),
+    };
+
+    this.calcSuggestions = this.calcSuggestions.bind(this);
     this.data = this.data.bind(this);
+    this.save = this.save.bind(this);
+  }
+
+
+  calcSuggestions(suggestions) {
+    return this.suggestionsDataSource.cloneWithRows(suggestions);
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      suggestions: this.calcSuggestions(newProps.logging.suggestedSymptoms),
+    });
   }
 
   data() {
     const ds = new ListView.DataSource({rowHasChanged: (a, b) => a !== b});
-    return ds.cloneWithRows(this.props.logging);
+    return ds.cloneWithRows(this.props.logging.suggestedSymptoms);
+  }
+
+  save() {
+    this.props.actions.logging.saveEntry();
+    Routes.pop();
   }
 
   render() {
+    const {actions} = this.props;
+
     return (
       <View>
         <BaseHeader
@@ -71,6 +99,7 @@ export default class Header extends Component {
           headerColor={COLORS.WHITE}
           iconColor={COLORS.DIM_DARK}
           rightIcon="done"
+          rightIconPress={this.save}
         >
           <TextInput
             autoCapitalize="sentences"
@@ -80,6 +109,7 @@ export default class Header extends Component {
             underlineColorAndroid={COLORS.DIM_DARK}
             selectionColor={COLORS.SECONDARY}
             style={styles.input}
+            onChangeText={actions.logging.enterSymptom}
           />
         </BaseHeader>
 
