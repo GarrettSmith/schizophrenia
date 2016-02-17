@@ -6,7 +6,7 @@
   "extends" : ["airbnb"],
   "rules": {
     // Soften rules for legacy projects. Can be removed for clean project.
-    "comma-dangle": 1,
+    "comma-dangle": 0,
     "curly": 0,
     "default-case": 0,
     "new-cap": [2, {"capIsNew": false, "newIsCap": true}],

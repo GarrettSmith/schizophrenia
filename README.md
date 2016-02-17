@@ -1,4 +1,4 @@
-<a href="https://este.herokuapp.com/"><img alt="Este.js" src="https://cloud.githubusercontent.com/assets/66249/6515265/b91f0fb8-c388-11e4-857e-c90902e0b7a1.png" width="200"></a>
+<a href="https://learn-reactjs.com/"><img alt="Este.js" src="https://cloud.githubusercontent.com/assets/66249/6515265/b91f0fb8-c388-11e4-857e-c90902e0b7a1.png" width="200"></a>
 
 [![Circle CI](https://circleci.com/gh/este/este.svg?style=svg)](https://circleci.com/gh/este/este)
 [![Join the chat at https://gitter.im/este/este](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/este/este)
@@ -18,9 +18,11 @@
   - server side rendering
   - universal data fetching via one higher order component
   - prerender for static hosting
-- Functional works: immutability, hot reload, time travel
+- Functional architecture (immutability, hot reload, time traveling)
 - Test driven development ready
+- Advanced performance with pure components
 - Well tuned dev stack
+- Universal forms with validation
 
 ## Libraries
 
@@ -129,9 +131,6 @@ Yes it does. Este is agnostic of what you use in your backend and is completely 
 
 #### Is it possible use XXX library with Este?
 Yes. Este makes little assumptions about your stack, and passing every bit of needed info through props. This is not a framework, nothing prevents you from picking the bits you're interested in.
-
-#### Why Este is pure and why we have to pass data through props?
-Pure means no side effects. Programming without side effects rocks. It allows us to hot reload everything and testing is much easier as well. When component renders only data passed through props, [shouldComponentUpdate](https://facebook.github.io/react/docs/component-specs.html#updating-shouldcomponentupdate) can be implemented [only once](https://github.com/este/este/blob/master/src/native/components/Component.react.js#L11) per whole app. One can say it's verbose, but it isn't. It's explicit. And remember, we have to pass only data going to be rendered, because actions have access to app state.
 
 #### How React Native is used in this project?
 Just as regular React Native project created via `react-native init AwesomeProject`. We can easily share modules across platforms. But remember to check [gulpfile.babel.js](https://github.com/este/este/blob/master/gulpfile.babel.js) for details.

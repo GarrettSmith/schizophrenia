@@ -11,7 +11,6 @@ import {
 import {
   assoc,
   assocPath,
-  clone,
   curry,
   evolve,
   find,

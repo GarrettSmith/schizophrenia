@@ -23,21 +23,25 @@ const styles = {
     color: COLORS.BLACK,
     fontSize: 20,
   },
+
   list: {
     backgroundColor: COLORS.WHITE,
     elevation: 2,
     left: 0,
     right: 0,
   },
+
   row: {
     padding: 12,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
+
   rowIcon: {
     paddingRight: 24,
   },
+
   rowText: {
     color: COLORS.BLACK_DARK,
     fontSize: 16,
@@ -47,6 +51,7 @@ const styles = {
 export default class Header extends Component {
 
   static propTypes = {
+    actions: PropTypes.object.isRequired,
     logging: PropTypes.object.isRequired,
   };
 

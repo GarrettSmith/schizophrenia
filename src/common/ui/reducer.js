@@ -6,7 +6,9 @@ import {Actions} from 'react-native-router-flux';
 import * as routes from '../lib/routes';
 import {
   assoc,
+  is,
   pick,
+  pickBy,
 } from 'ramda';
 
 const initialState = {
@@ -16,12 +18,18 @@ const initialState = {
 };
 
 // pick a subset able to be passed around
-const pickRoute = pick([
-  'name',
-  'props',
-  'title',
-  'type',
-]);
+function pickRoute(route) {
+  const top = pick(
+    [
+      'name',
+      'title',
+      'type',
+    ],
+    route
+  );
+  const props = pickBy(is(String), route.props);
+  return assoc('props', props, top);
+};
 
 function setCurrentRoute(base, state) {
   const route = pickRoute(routes.findCurrent(base));
@@ -37,6 +45,7 @@ export default function uiReducer(state = initialState, action) {
     }
 
     case actions.OPEN_DRAWER: {
+      alert('open')
       return assoc('drawerOpen', true, state);
     }
 

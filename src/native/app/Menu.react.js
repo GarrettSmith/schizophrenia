@@ -37,7 +37,6 @@ export default class Menu extends Component {
       ...item,
       active: item.route === this.props.currentRoute,
       onPress: press,
-      onLongPress: press,
     };
   }
 
