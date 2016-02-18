@@ -2,6 +2,7 @@ import appReducer from './app/reducer';
 import {STORAGE_KEY} from './app/constants';
 
 import * as storage from 'redux-storage';
+import debounce from 'redux-storage-decorator-debounce';
 import createStorageEngine from 'redux-storage-engine-reactnativeasyncstorage';
 import createLogger from 'redux-logger';
 //import immutableStateInvariantMiddleware from 'redux-immutable-state-invariant';
@@ -30,7 +31,7 @@ export default function configureStore({deps, initialState}) {
 
   // Storage
   const reducer = storage.reducer(appReducer);
-  const storageEngine = createStorageEngine(STORAGE_KEY);
+  const storageEngine = debounce(createStorageEngine(STORAGE_KEY), 60);
   const storageMiddleware = storage.createMiddleware(storageEngine);
 
   const middleware = [
