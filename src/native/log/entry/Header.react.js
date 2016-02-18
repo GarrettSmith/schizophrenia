@@ -133,6 +133,7 @@ export default class Header extends Component {
             dataSource={suggestions}
             renderRow={this.renderRow}
             style={styles.list}
+            keyboardShouldPersistTaps
           /> : null}
       </View>
     );
