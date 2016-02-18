@@ -27,7 +27,10 @@ function pickRoute(route) {
     ],
     route
   );
-  const props = pickBy(is(String), route.props);
+  const props = pickBy(
+    p => is(String, p) || is(Function, p),
+    route.props
+  );
   return assoc('props', props, top);
 };
 
@@ -45,7 +48,6 @@ export default function uiReducer(state = initialState, action) {
     }
 
     case actions.OPEN_DRAWER: {
-      alert('open')
       return assoc('drawerOpen', true, state);
     }
 

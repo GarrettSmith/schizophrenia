@@ -2,7 +2,10 @@ import Component from 'react-pure-render/component';
 
 import {COLORS} from './styles';
 
-import React, {PropTypes} from 'react-native';
+import React, {
+  InteractionManager,
+  PropTypes,
+} from 'react-native';
 import {Divider, Drawer} from 'react-native-material-design';
 
 import {map} from 'ramda';
@@ -24,10 +27,12 @@ export default class Menu extends Component {
 
   open(route, ...args) {
     return () => {
-      // Don't allow navigation to the current route
-      if (route !== this.props.currentRoute)
-        this.props.routes[route](...args);
-      this.props.closeDrawer();
+      InteractionManager.runAfterInteractions(() => {
+        // Don't allow navigation to the current route
+        if (route !== this.props.currentRoute)
+          this.props.routes[route](...args);
+        this.props.closeDrawer();
+      });
     };
   }
 

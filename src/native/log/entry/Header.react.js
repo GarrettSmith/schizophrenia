@@ -27,8 +27,6 @@ const styles = {
   list: {
     backgroundColor: COLORS.WHITE,
     elevation: 2,
-    left: 0,
-    right: 0,
   },
 
   row: {

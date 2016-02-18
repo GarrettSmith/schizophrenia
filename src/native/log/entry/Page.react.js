@@ -1,4 +1,6 @@
+import appStyles, {COLORS} from '../../app/styles';
 import Component from 'react-pure-render/component';
+import Slider from 'react-native-slider';
 import React, {
   ListView,
   PropTypes,
@@ -6,7 +8,29 @@ import React, {
   View,
 } from 'react-native';
 
-import appStyles from '../../app/styles';
+
+const styles = {
+  symptom: {
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.DIM,
+    elevation: 1,
+    paddingTop: 12,
+    paddingRight: 12,
+    paddingBottom: 0,
+    paddingLeft: 12,
+    backgroundColor: COLORS.WHITE,
+  },
+
+  sliderThumb: {
+    backgroundColor: COLORS.SECONDARY,
+    width: 12,
+    height: 12,
+  },
+
+  sliderTrack: {
+    height: 2,
+  },
+};
 
 export default class Page extends Component {
 
@@ -27,6 +51,7 @@ export default class Page extends Component {
     };
 
     this.calcEntrySymptoms = this.calcEntrySymptoms.bind(this);
+    this.renderRow = this.renderRow.bind(this);
   }
 
   calcEntrySymptoms(entrySymptoms) {
@@ -45,8 +70,41 @@ export default class Page extends Component {
     return (
       <ListView
         dataSource={entrySymptoms}
-        renderRow={es => <Text>{es.symptom.name}: {es.severity}</Text>}
+        renderRow={this.renderRow}
+        style={{backgroundColor: COLORS.DIM}}
       />
+    );
+  }
+
+  renderRow(entrySymptom) {
+    const {updateEntrySymptom} = this.props.actions.logging;
+
+    return (
+      <View style={styles.symptom}>
+        <Text>
+          {entrySymptom.symptom.name}
+        </Text>
+
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Slider
+            maximumTrackTintColor={COLORS.DIM}
+            maximumValue={10}
+            minimumTrackTintColor={COLORS.SECONDARY}
+            minimumValue={1}
+            onValueChange={val => updateEntrySymptom(val, entrySymptom.id)}
+            onSlidingComplete={val => updateEntrySymptom(val, entrySymptom.id)}
+            style={{flex: 1}}
+            thumbStyle={styles.sliderThumb}
+            trackStyle={styles.sliderTrack}
+            value={entrySymptom.severity}
+          />
+          <View style={{paddingLeft: 12, width: 30, flex: 0}}>
+            <Text>
+              {entrySymptom.severity}
+            </Text>
+          </View>
+        </View>
+      </View>
     );
   }
 

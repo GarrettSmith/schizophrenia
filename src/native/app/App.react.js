@@ -115,7 +115,6 @@ class App extends Component {
 
         <Route
           name="main"
-          initial
           schema="primary"
         >
           <Connected.Drawer>
@@ -187,6 +186,7 @@ class App extends Component {
 
         <Route
           name="logEntry"
+          initial
           component={Connected.LogEntry}
           header={Connected.LogEntryHeader}
           schema="modal"

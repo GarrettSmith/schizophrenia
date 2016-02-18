@@ -108,7 +108,7 @@ export default function loggingReducer(state = initialState, action) {
     case actions.UPDATE_ENTRY_SYMPTOM: {
       return assocPath(
         ['newEntrySymptoms', action.payload.id, 'severity'],
-        action.payload.severity,
+        Math.round(action.payload.severity),
         state
       );
     }
