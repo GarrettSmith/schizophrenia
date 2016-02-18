@@ -1,10 +1,16 @@
 import appReducer from './app/reducer';
-import createFetch from './createFetch';
+import {STORAGE_KEY} from './app/constants';
+
+import * as storage from 'redux-storage';
+import createStorageEngine from 'redux-storage-engine-reactnativeasyncstorage';
 import createLogger from 'redux-logger';
-import promiseMiddleware from 'redux-promise-middleware';
 //import immutableStateInvariantMiddleware from 'redux-immutable-state-invariant';
+
+import createFetch from './createFetch';
 import shortid from 'shortid';
 import validate from './validate';
+import promiseMiddleware from 'redux-promise-middleware';
+
 import {applyMiddleware, compose, createStore} from 'redux';
 
 export default function configureStore({deps, initialState}) {
@@ -22,6 +28,11 @@ export default function configureStore({deps, initialState}) {
     // Browser is ok with relative url. Server and React Native need absolute.
     (process.env.IS_BROWSER ? '' : 'http://localhost:8000');
 
+  // Storage
+  const reducer = storage.reducer(appReducer);
+  const storageEngine = createStorageEngine(STORAGE_KEY);
+  const storageMiddleware = storage.createMiddleware(storageEngine);
+
   const middleware = [
     injectMiddleware({
       ...deps,
@@ -33,6 +44,7 @@ export default function configureStore({deps, initialState}) {
     promiseMiddleware({
       promiseTypeSuffixes: ['START', 'SUCCESS', 'ERROR'],
     }),
+    storageMiddleware,
   ];
 
   // Check state for mutations in development
@@ -55,15 +67,17 @@ export default function configureStore({deps, initialState}) {
     middleware.push(logger);
   }
 
+  const createStoreWithMiddleware = applyMiddleware(...middleware);
+
   const enableDevToolsExtension =
     process.env.NODE_ENV !== 'production' &&
     process.env.IS_BROWSER &&
     window.devToolsExtension;
 
   const createReduxStore = enableDevToolsExtension
-    ? compose(applyMiddleware(...middleware), window.devToolsExtension())
-    : applyMiddleware(...middleware);
-  const store = createReduxStore(createStore)(appReducer, initialState);
+    ? compose(createStoreWithMiddleware, window.devToolsExtension())
+    : createStoreWithMiddleware;
+  const store = createReduxStore(createStore)(reducer, initialState);
 
   // Enable hot reload where available.
   if (module.hot) {
@@ -73,6 +87,11 @@ export default function configureStore({deps, initialState}) {
       store.replaceReducer(nextAppReducer);
     });
   }
+
+  // Load store state from storage
+  const load = storage.createLoader(storageEngine);
+  load(store)
+    .catch(() => console.error('Failed to load stored state'));
 
   return store;
 }
