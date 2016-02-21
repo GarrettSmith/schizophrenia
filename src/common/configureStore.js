@@ -2,7 +2,7 @@ import appReducer from './app/reducer';
 import {STORAGE_KEY} from './app/constants';
 
 import * as storage from 'redux-storage';
-import debounce from 'redux-storage-decorator-debounce';
+import debounceDecorator from 'redux-storage-decorator-debounce';
 import createStorageEngine from 'redux-storage-engine-reactnativeasyncstorage';
 import createLogger from 'redux-logger';
 //import immutableStateInvariantMiddleware from 'redux-immutable-state-invariant';
@@ -13,6 +13,8 @@ import validate from './validate';
 import promiseMiddleware from 'redux-promise-middleware';
 
 import {applyMiddleware, compose, createStore} from 'redux';
+
+import {curry, evolve, flip, merge} from 'ramda';
 
 export default function configureStore({deps, initialState}) {
 
@@ -31,7 +33,27 @@ export default function configureStore({deps, initialState}) {
 
   // Storage
   const reducer = storage.reducer(appReducer);
-  const storageEngine = debounce(createStorageEngine(STORAGE_KEY), 60);
+  const debounce = curry(flip(debounceDecorator));
+  const transformState = transform => engine => merge(
+    engine,
+    {
+      save(state) {
+        const blacklistedState = evolve(transform, state);
+        return engine.save(blacklistedState);
+      },
+    }
+  );
+  const blacklist = transformState({
+    ui: {
+      drawerOpen: () => undefined,
+    },
+  });
+  const createDecoratedEngine = compose(
+    debounce(60),
+    blacklist,
+    createStorageEngine
+  );
+  const storageEngine = createDecoratedEngine(STORAGE_KEY);
   const storageMiddleware = storage.createMiddleware(storageEngine);
 
   const middleware = [
