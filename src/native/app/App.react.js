@@ -47,7 +47,7 @@ import mapDispatchToProps from '../../common/app/mapDispatchToProps';
 import mapStateToProps from '../../common/app/mapStateToProps';
 import {connect} from 'react-redux';
 
-import {map} from 'ramda';
+import {forEach, map} from 'ramda';
 
 const connectComponent = connect(mapStateToProps, mapDispatchToProps);
 const Connected = map(connectComponent, components);
@@ -58,6 +58,12 @@ class App extends Component {
     actions: PropTypes.object.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+
+    this.initialRoute = this.initialRoute.bind(this);
+  }
+
   componentWillMount() {
     // Navigate back and exit if we have nowhere further to navigate to
     BackAndroid.addEventListener('hardwareBackPress', Actions.pop);
@@ -65,11 +71,17 @@ class App extends Component {
 
   componentDidMount() {
     // dispatch action to set the initial route
-    this.props.actions.ui.setRoute();
+    this.props.actions.ui.setRoute(Actions.currentRouter.currentRoute);
+  }
+
+  initialRoute(name) {
+    return this.props.ui.primaryRoute.name === name;
   }
 
   render() {
-    const {actions} = this.props;
+    const {
+      actions,
+    } = this.props;
 
     return (
       <Connected.Router
@@ -115,6 +127,7 @@ class App extends Component {
 
         <Route
           name="main"
+          initial
           schema="primary"
         >
           <Connected.Drawer>
@@ -126,7 +139,7 @@ class App extends Component {
               <Route
                 name="logAgenda"
                 component={Connected.Agenda}
-                initial
+                initial={this.initialRoute('logAgenda')}
                 schema="primary"
                 title="{date}"
               />
@@ -134,6 +147,7 @@ class App extends Component {
               <Route
                 name="logWeek"
                 component={Connected.Week}
+                initial={this.initialRoute('logWeek')}
                 schema="primary"
                 title="{date}"
               />
@@ -141,6 +155,7 @@ class App extends Component {
               <Route
                 name="logMonth"
                 component={Connected.Month}
+                initial={this.initialRoute('logMonth')}
                 schema="primary"
                 title="{date}"
               />
@@ -148,6 +163,7 @@ class App extends Component {
               <Route
                 name="logAll"
                 component={Connected.All}
+                initial={this.initialRoute('logAll')}
                 schema="primary"
                 title="{date}"
               />
@@ -186,7 +202,6 @@ class App extends Component {
 
         <Route
           name="logEntry"
-          initial
           component={Connected.LogEntry}
           header={Connected.LogEntryHeader}
           schema="modal"

@@ -12,5 +12,5 @@ export const ui = {
   openDrawer: createAction(OPEN_DRAWER),
   onDrawerChange: createAction(ON_DRAWER_CHANGE),
   setDrawerEnabled: createAction(SET_DRAWER_ENABLED),
-  setRoute: createAction(SET_ROUTE, () => Actions.currentRouter.currentRoute),
+  setRoute: createAction(SET_ROUTE),
 };

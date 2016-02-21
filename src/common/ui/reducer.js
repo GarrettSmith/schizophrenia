@@ -6,15 +6,23 @@ import {Actions} from 'react-native-router-flux';
 import * as routes from '../lib/routes';
 import {
   assoc,
+  findLast,
   is,
+  map,
+  merge,
   pick,
   pickBy,
+  propEq,
 } from 'ramda';
 
 const initialState = {
+  currentPath: null,
   currentRoute: null,
   drawerEnabled: true,
   drawerOpen: false,
+  primaryRoute: {
+    name: 'logAgenda',
+  },
 };
 
 // pick a subset able to be passed around
@@ -35,8 +43,18 @@ function pickRoute(route) {
 };
 
 function setCurrentRoute(base, state) {
-  const route = pickRoute(routes.findCurrent(base));
-  return assoc('currentRoute', route, state);
+  const currentRoute = routes.current(base);
+  const route = pickRoute(currentRoute);
+  const path = map(pickRoute, routes.path(currentRoute));
+  const primary = findLast(propEq('type', 'replace'), path);
+  return merge(
+    state,
+    {
+      currentRoute: route,
+      currentPath: path,
+      primaryRoute: primary,
+    }
+  );
 }
 
 export default function uiReducer(state = initialState, action) {
