@@ -65,7 +65,6 @@ export default function makeConfig(isDevelopment) {
         test: /\.(ttf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
       }, {
         test: /\.js$/,
-        exclude: /node_modules/,
         loader: 'babel',
         query: {
           cacheDirectory: true,

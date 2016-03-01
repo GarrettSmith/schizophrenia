@@ -47,12 +47,13 @@ function setCurrentRoute(base, state) {
   const route = pickRoute(currentRoute);
   const path = map(pickRoute, routes.path(currentRoute));
   const primary = findLast(propEq('type', 'replace'), path);
+  console.log(path, primary, currentRoute);
   return merge(
     state,
     {
       currentRoute: route,
       currentPath: path,
-      primaryRoute: primary,
+      primaryRoute: primary || state.primaryRoute,
     }
   );
 }
