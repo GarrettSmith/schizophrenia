@@ -1,51 +1,80 @@
 import * as actions from './actions';
-import {Record} from 'immutable';
 
 // This isn't really common across platforms
 import {Actions} from 'react-native-router-flux';
 
-import {pick} from 'ramda';
 import * as routes from '../lib/routes';
+import {
+  assoc,
+  findLast,
+  is,
+  map,
+  merge,
+  pick,
+  pickBy,
+  propEq,
+} from 'ramda';
 
-// pick a subset able to be passed around
-const pickRoute = pick([
-  'name',
-  'props',
-  'title',
-  'type',
-]);
-
-function setCurrentRoute(base, state) {
-  const route = pickRoute(routes.findCurrent(base));
-  return state.set('currentRoute', route);
-}
-
-const InitialState = Record({
+const initialState = {
+  currentPath: null,
   currentRoute: null,
   drawerEnabled: true,
   drawerOpen: false,
-});
-const initialState = new InitialState;
+  primaryRoute: {
+    name: 'logAgenda',
+  },
+};
+
+// pick a subset able to be passed around
+function pickRoute(route) {
+  const top = pick(
+    [
+      'name',
+      'title',
+      'type',
+    ],
+    route
+  );
+  const props = pickBy(
+    p => is(String, p) || is(Function, p),
+    route.props
+  );
+  return assoc('props', props, top);
+};
+
+function setCurrentRoute(base, state) {
+  const currentRoute = routes.current(base);
+  const route = pickRoute(currentRoute);
+  const path = map(pickRoute, routes.path(currentRoute));
+  const primary = findLast(propEq('type', 'replace'), path);
+  return merge(
+    state,
+    {
+      currentRoute: route,
+      currentPath: path,
+      primaryRoute: primary,
+    }
+  );
+}
 
 export default function uiReducer(state = initialState, action) {
-  if (!(state instanceof InitialState)) return initialState;
 
   switch (action.type) {
 
     case actions.CLOSE_DRAWER: {
-      return state.set('drawerOpen', false);
+      return assoc('drawerOpen', false, state);
     }
 
     case actions.OPEN_DRAWER: {
-      return state.set('drawerOpen', true);
+      return assoc('drawerOpen', true, state);
     }
 
     case actions.ON_DRAWER_CHANGE: {
-      return state.set('drawerOpen', action.payload);
+      return assoc('drawerOpen', action.payload, state);
     }
 
     case actions.SET_DRAWER_ENABLED: {
-      return state.set('drawerEnabled', action.payload);
+      return assoc('drawerEnabled', action.payload, state);
     }
 
     // Routing Actions

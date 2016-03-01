@@ -21,7 +21,7 @@ const styles = {
   },
   text: {
     fontWeight: 'bold',
-  }
+  },
 };
 
 export default class Label extends Component {

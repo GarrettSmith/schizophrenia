@@ -24,7 +24,7 @@ const styles = {
   miniButton: {
     marginLeft: miniPadding,
     marginRight: miniPadding,
-  }
+  },
 };
 
 export default class Item extends Component {

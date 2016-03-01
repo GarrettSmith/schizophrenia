@@ -12,7 +12,7 @@ export default class Html extends Component {
 
   render() {
     const {
-      appCssFilename, bodyHtml, googleAnalyticsId, isProduction, helmet
+      appCssFilename, bodyHtml, googleAnalyticsId, isProduction, helmet,
     } = this.props;
 
     const linkStyles = appCssFilename &&

@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import Helmet from 'react-helmet';
 import Html from './Html.react';
 import React from 'react';
@@ -9,14 +10,21 @@ import serialize from 'serialize-javascript';
 import {IntlProvider} from 'react-intl';
 import {Provider} from 'react-redux';
 import {RouterContext, match} from 'react-router';
-import {createMemoryHistory} from 'history';
+import {createMemoryHistory} from 'react-router';
 
 const fetchComponentDataAsync = async (dispatch, renderProps) => {
   const {components, location, params} = renderProps;
   const promises = components
-    .reduce((actions, component) =>
-      actions.concat(component.fetchActions || [])
-    , [])
+    .reduce((actions, component) => {
+      if (typeof component === 'function') {
+        actions = actions.concat(component.fetchActions || []);
+      } else {
+        Object.keys(component).forEach(c => {
+          actions = actions.concat(component[c].fetchActions || []);
+        });
+      }
+      return actions;
+    }, [])
     .map(action =>
       // Server side fetching can use only router location and params props.
       // There is no easy way how to support custom component props.
@@ -53,7 +61,7 @@ const renderPage = (store, renderProps, req) => {
   const helmet = Helmet.rewind();
   const {
     styles: {app: appCssFilename},
-    javascript: {app: appJsFilename}
+    javascript: {app: appJsFilename},
   } = webpackIsomorphicTools.assets();
   const scriptHtml = getScriptHtml(state, headers, hostname, appJsFilename);
   if (!config.isProduction) {
@@ -74,8 +82,8 @@ const renderPage = (store, renderProps, req) => {
 export default function render(req, res, next) {
   const initialState = {
     device: {
-      isMobile: ['phone', 'tablet'].indexOf(req.device.type) > -1
-    }
+      isMobile: ['phone', 'tablet'].indexOf(req.device.type) > -1,
+    },
   };
   const store = configureStore({initialState});
 

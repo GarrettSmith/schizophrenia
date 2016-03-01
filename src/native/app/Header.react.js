@@ -28,14 +28,17 @@ const styles = {
     paddingLeft: spacing,
     paddingRight: spacing,
   },
+
   leftIcon: {
     marginRight: spacing,
   },
+
   title: {
     color: COLORS.WHITE,
     flex: 1,
     fontSize: 20,
   },
+
   rightIcon: {
     marginLeft: spacing,
   },

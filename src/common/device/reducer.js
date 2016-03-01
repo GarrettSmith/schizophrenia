@@ -1,20 +1,18 @@
 import * as actions from './actions';
-import {Record} from 'immutable';
 
-const InitialState = Record({
+import {assoc} from 'ramda';
+
+const initialState = {
   isMobile: false,
-  platform: ''
-});
-const initialState = new InitialState;
+  platform: '',
+};
 
 export default function deviceReducer(state = initialState, action) {
-  if (!(state instanceof InitialState)) return initialState.merge(state);
 
   switch (action.type) {
 
     case actions.SET_PLATFORM: {
-      const {platform} = action.payload;
-      return state.set('platform', platform);
+      return assoc('platform', action.payload.platform, state);
     }
 
   }

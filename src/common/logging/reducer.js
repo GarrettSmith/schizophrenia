@@ -1,36 +1,120 @@
 import * as actions from './actions';
-import Entry from './entry';
-import Symptom from './symptom';
-import {Map, Record} from 'immutable-fns';
 
-const InitialState = Record({
-  entries: Map(),
-});
-const initialState = new InitialState;
+import {DEFAULT_SYMPTOMS} from './constants';
 
-// Note how JSON from server is revived to immutable record.
-const revive = ({entries}) => Record.merge(
-  {
-    // Turn js objects back into map of entries
-    entries: Map.map(entry => Entry(entry), Map(entries))
-  },
-  initialState
-);
+import {
+  Entry,
+  EntrySymptom,
+  Symptom,
+} from './models';
 
-export default function todosReducer(state = initialState, action) {
-  if (!(state instanceof InitialState)) {
-    return revive(state);
-  }
+import {
+  assoc,
+  assocPath,
+  curry,
+  evolve,
+  find,
+  identity,
+  map,
+  merge,
+  propEq,
+  values,
+} from 'ramda';
+
+// set obj into id maps
+const set = curry((obj, map) => assoc(obj.id, obj, map));
+
+const initialState = {
+  newEntry: Entry,
+  newEntrySymptoms: {},
+  newSymptoms: {},
+  entries: {},
+  entrySymptoms: {},
+  symptoms: DEFAULT_SYMPTOMS,
+  enteredSymptom: null,
+};
+
+export default function loggingReducer(state = initialState, action) {
 
   switch (action.type) {
 
-    case actions.NEW_ENTRY: {
-      const entry = action.payload;
-      return Map.update(
-        'entries',
-        Map.set(entry.id, entry),
+    case actions.SAVE_ENTRY: {
+      const newEntry = merge(state.newEntry, action.payload);
+      const newEntrySymptoms = map(assoc('entryId', newEntry.id));
+      return merge(
+        state,
+        {
+          // Reset new entry state to be empty
+          newEntry: Entry,
+          newEntrySymptoms: {},
+          newSymptoms: {},
+
+          // Merge new state into persistent state
+          entries: set(newEntry, state.entries),
+          entrySymptoms: merge(newEntrySymptoms, state.entrySymptoms),
+          symptoms: merge(state.newSymptoms, state.symptoms),
+        }
+      );
+    }
+
+    case actions.ADD_NEW_SYMPTOM: {
+      const name = state.enteredSymptom;
+
+      const oldSymptom = find(propEq('name', name), values(state.symptoms));
+      const newSymptom = merge(
+        Symptom,
+        {
+          id: action.payload.symptomId,
+          name,
+        }
+      );
+      const symptom = oldSymptom || newSymptom;
+
+      const newEntrySymptom = merge(
+        EntrySymptom,
+        {
+          id: action.payload.entrySymptomId,
+          symptomId: symptom.id,
+        }
+      );
+      return evolve(
+        {
+          newEntrySymptoms: set(newEntrySymptom),
+          // only update newSymptoms if this is actually new
+          newSymptoms: newSymptom ? set(newSymptom) : identity,
+          enteredSymptom: () => null,
+        },
         state
       );
+    }
+
+    case actions.ADD_SYMPTOM: {
+      const newEntrySymptom = merge(
+        EntrySymptom,
+        {
+          id: action.payload.entrySymptomId,
+          symptomId: action.payload.symptomId,
+        }
+      );
+      return evolve(
+        {
+          newEntrySymptoms: set(newEntrySymptom),
+          enteredSymptom: () => null,
+        },
+        state
+      );
+    }
+
+    case actions.UPDATE_ENTRY_SYMPTOM: {
+      return assocPath(
+        ['newEntrySymptoms', action.payload.id, 'severity'],
+        Math.round(action.payload.severity),
+        state
+      );
+    }
+
+    case actions.ENTER_SYMPTOM: {
+      return assoc('enteredSymptom', action.payload, state);
     }
 
     default:

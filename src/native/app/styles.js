@@ -7,7 +7,7 @@ export const COLORS = {
   DIM: COLOR.paperGrey300.color,
   DIM_DARK: COLOR.paperGrey500.color,
   PRIMARY: COLOR.paperBlue900.color,
-  SECONDARY: COLOR.paperPink300.color,
+  SECONDARY: COLOR.paperPink400.color,
   TERTIARY: COLOR.paperGrey700.color,
   WHITE: '#fff',
 };
@@ -16,21 +16,21 @@ export default StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   centered: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   container: {
     backgroundColor: COLORS.WHITE,
-    flex: 1
+    flex: 1,
   },
   paragraph: {
     color: COLORS.BLACK,
-    fontSize: 16
+    fontSize: 16,
   },
   sceneView: {
     backgroundColor: COLORS.WHITE,
-    flex: 1
-  }
+    flex: 1,
+  },
 });
