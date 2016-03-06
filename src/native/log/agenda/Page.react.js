@@ -4,17 +4,21 @@ import React, {PropTypes, Text, View} from 'react-native';
 import appStyles, {COLORS} from '../../app/styles';
 
 import ActionButton from '../ActionButton.react';
+import Empty from './Empty.react';
+import Entry from './Entry.react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {Actions as Routes} from 'react-native-router-flux';
 
+import {
+  isEmpty,
+  map
+} from 'ramda';
+
 const styles = {
-  emptyContainer: {
+  container: {
     backgroundColor: COLORS.DIM,
-  },
-  emptyText: {
-    color: COLORS.DIM_DARK,
-    fontSize: 16,
+    flex: 1,
   },
 };
 
@@ -22,30 +26,30 @@ export default class Page extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
+    logging: PropTypes.object.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
+    const {
+      logging: {
+        agenda: {
+          entries,
+        },
+      },
+    } = this.props;
+
     return (
-      <View style={[appStyles.centeredView, styles.emptyContainer]}>
-
-        <Icon
-          color={styles.emptyText.color}
-          name="today"
-          size={96}
-        />
-        <Text style={styles.emptyText}>
-          You haven't logged anything for today.
-        </Text>
-        <Text style={styles.emptyText}>
-          Tap to get started!
-        </Text>
-
+      <View style={styles.container}>
+        {isEmpty(entries) ? <Empty /> : this.renderEntries(entries)}
         <ActionButton routes={Routes} />
       </View>
+    );
+  }
+
+  renderEntries(entries) {
+    return map(
+      entry => <Entry entry={entry} key={entry.id} />,
+      entries
     );
   }
 

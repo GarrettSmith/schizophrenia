@@ -1,4 +1,5 @@
 import {createSelector} from 'reselect';
+import agendaSelector from './agenda/selector';
 
 import {
   contains,
@@ -31,16 +32,21 @@ function associateEntrySymptoms(entrySymptoms, ...symptoms) {
 }
 
 export default createSelector(
-  enteredSymptomSelector,
-  newEntrySymptomsSelector,
-  newSymptomsSelector,
-  symptomsSelector,
+  [
+    agendaSelector,
+    enteredSymptomSelector,
+    newEntrySymptomsSelector,
+    newSymptomsSelector,
+    symptomsSelector,
+  ],
   (
+    agenda,
     entered,
     newEntrySymptoms,
     newSymptoms,
     symptoms
   ) => ({
+    agenda,
     suggestedSymptoms: suggestSymptoms(entered, symptoms),
     newEntrySymptoms:
       associateEntrySymptoms(newEntrySymptoms, symptoms, newSymptoms),
