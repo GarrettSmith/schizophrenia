@@ -5,6 +5,8 @@ import React, {AppRegistry, Platform, UIManager} from 'react-native';
 import configureStore from '../common/configureStore';
 import {Provider} from 'react-redux';
 import {setPlatform} from '../common/device/actions';
+import createStorageEngine from 'redux-storage-engine-reactnativeasyncstorage';
+import {STORAGE_KEY} from '../common/app/constants';
 
 import '../../node_modules/intl/index.js';
 import '../../node_modules/intl/locale-data/jsonp/en.js';
@@ -23,7 +25,8 @@ export default function index() {
       isMobile: true,
     },
   };
-  const store = configureStore({initialState});
+  const engine = createStorageEngine(STORAGE_KEY);
+  const store = configureStore({engine, initialState});
   store.dispatch(setPlatform(Platform.OS));
 
   class Root extends Component {
