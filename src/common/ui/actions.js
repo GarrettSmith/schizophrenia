@@ -1,4 +1,3 @@
-import {Actions} from 'react-native-router-flux';
 import {createAction} from 'redux-actions';
 
 export const CLOSE_DRAWER = 'CLOSE_DRAWER';

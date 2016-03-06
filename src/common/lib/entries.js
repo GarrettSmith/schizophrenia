@@ -8,4 +8,3 @@ export function createdOnDay(date, entries) {
     entries,
   );
 }
-

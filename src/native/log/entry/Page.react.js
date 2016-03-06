@@ -1,4 +1,4 @@
-import appStyles, {COLORS} from '../../app/styles';
+import {COLORS} from '../../app/styles';
 import Component from 'react-pure-render/component';
 import Slider from 'react-native-slider';
 import React, {
@@ -79,6 +79,8 @@ export default class Page extends Component {
   renderRow(entrySymptom) {
     const {updateEntrySymptom} = this.props.actions.logging;
 
+    const onChange = val => updateEntrySymptom(val, entrySymptom.id);
+
     return (
       <View style={styles.symptom}>
         <Text>
@@ -91,8 +93,8 @@ export default class Page extends Component {
             maximumValue={10}
             minimumTrackTintColor={COLORS.SECONDARY}
             minimumValue={1}
-            onValueChange={val => updateEntrySymptom(val, entrySymptom.id)}
-            onSlidingComplete={val => updateEntrySymptom(val, entrySymptom.id)}
+            onValueChange={onChange}
+            onSlidingComplete={onChange}
             style={{flex: 1}}
             thumbStyle={styles.sliderThumb}
             trackStyle={styles.sliderTrack}

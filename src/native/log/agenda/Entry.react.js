@@ -6,11 +6,8 @@ import React, {
   View,
 } from 'react-native';
 
-import appStyles, {COLORS} from '../../app/styles';
-
+import {COLORS} from '../../app/styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
-import {Actions as Routes} from 'react-native-router-flux';
 
 const styles = {
   entry: {
@@ -24,10 +21,10 @@ const styles = {
 
 export default class Entry extends Component {
 
-  static proptypes = {
+  static propTypes = {
     entry: PropTypes.shape({
       createdAt: PropTypes.number,
-    }),
+    }).isRequired,
   };
 
   render() {
@@ -44,8 +41,6 @@ export default class Entry extends Component {
             name="help"
             size={32}
           />
-          <View>
-          </View>
           <Text>
             {entry.createdAt}
           </Text>

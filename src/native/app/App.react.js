@@ -47,7 +47,7 @@ import mapDispatchToProps from '../../common/app/mapDispatchToProps';
 import mapStateToProps from '../../common/app/mapStateToProps';
 import {connect} from 'react-redux';
 
-import {forEach, map} from 'ramda';
+import {map} from 'ramda';
 
 const connectComponent = connect(mapStateToProps, mapDispatchToProps);
 const Connected = map(connectComponent, components);
@@ -56,6 +56,7 @@ class App extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
+    ui: PropTypes.object.isRequired,
   };
 
   constructor(props) {

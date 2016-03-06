@@ -108,7 +108,7 @@ export default function configureStore({deps, engine, initialState}) {
     // Enable Webpack hot module replacement for reducers.
     module.hot.accept('./app/reducer', () => {
       const nextAppReducer = require('./app/reducer');
-      const nextReducer = storage.createReducer(nextAppReducer);
+      const nextReducer = storage.reducer(nextAppReducer);
       store.replaceReducer(nextReducer);
     });
   }
@@ -116,8 +116,7 @@ export default function configureStore({deps, engine, initialState}) {
   if (engine) {
     // Load store state from storage
     const load = storage.createLoader(engine);
-    load(store)
-      .catch(() => console.error('Failed to load stored state'));
+    load(store);
   }
 
   return store;

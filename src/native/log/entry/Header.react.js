@@ -140,8 +140,6 @@ export default class Header extends Component {
   }
 
   renderRow(data) {
-    const {actions} = this.props;
-
     return (
       <TouchableNativeFeedback
         background={TouchableNativeFeedback.Ripple(COLORS.DIM, false)}

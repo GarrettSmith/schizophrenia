@@ -40,7 +40,7 @@ function pickRoute(route) {
     route.props
   );
   return assoc('props', props, top);
-};
+}
 
 function setCurrentRoute(base, state) {
   const currentRoute = routes.current(base);

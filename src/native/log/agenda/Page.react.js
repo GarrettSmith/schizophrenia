@@ -1,12 +1,11 @@
 import Component from 'react-pure-render/component';
-import React, {PropTypes, Text, View} from 'react-native';
+import React, {PropTypes, View} from 'react-native';
 
-import appStyles, {COLORS} from '../../app/styles';
+import {COLORS} from '../../app/styles';
 
 import ActionButton from '../ActionButton.react';
 import Empty from './Empty.react';
 import Entry from './Entry.react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {Actions as Routes} from 'react-native-router-flux';
 
