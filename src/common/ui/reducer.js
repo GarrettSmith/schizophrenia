@@ -52,7 +52,7 @@ function setCurrentRoute(base, state) {
     {
       currentRoute: route,
       currentPath: path,
-      primaryRoute: primary,
+      primaryRoute: primary || state.primaryRoute,
     }
   );
 }
