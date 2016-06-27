@@ -37,3 +37,9 @@ local.properties
 node_modules/
 npm-debug.log
 webpack-assets.json
+
+# Cordova
+#
+plugins/
+platforms/
+www/
