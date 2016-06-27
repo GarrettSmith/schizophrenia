@@ -1,28 +1,22 @@
+## Installing
+1. Install dependencies: ```npm i```
+2. Install global tools: ```npm install -g cordova```
+3. Add your cordova platform by running ```cordova platform add %PLATFORM%``` (android and more)
+
+## Usage
+- ```npm run lint``` - runs linting against src folder.
+- ```npm run test``` - runs karma + jasmine testing.
+- ```npm run start``` - starts a server, with react model replacement and devtools.
+- ```npm run start:prod``` - starts a server, with react model replacement and minifications of main html file and js file.
+- ```npm run build``` - builds the project (single html file and single js file) as it does for development.
+- ```npm run build:prod``` - builds the project (single html file and single js file) as it does for production.
+
+## Build and run as application
+As you do with any cordova application, ```cordova build android```, ```cordova run android``` and more.
+
+cordova runs ```npm run build:prod``` before any cordova command (using hooks).
+
 <a href="https://learn-reactjs.com/"><img alt="Este.js" src="https://cloud.githubusercontent.com/assets/66249/6515265/b91f0fb8-c388-11e4-857e-c90902e0b7a1.png" width="200"></a>
-
-[![Circle CI](https://circleci.com/gh/este/este.svg?style=svg)](https://circleci.com/gh/este/este)
-[![Join the chat at https://gitter.im/este/este](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/este/este)
-[![Dependency Status](https://david-dm.org/este/este.svg)](https://david-dm.org/este/este)
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
-> Happily maintained dev stack and starter kit for React universal apps. One stack for browser, server, mobile.
-
-> Forget about [evil frameworks](http://tomasp.net/blog/2015/library-frameworks/), use laser focused [libraries](https://github.com/este/este#libraries) and design patterns instead.
-
-> Nejbližší **školení Este** se koná 18. února až 19. února v Praze - registrujte se zde [learn-reactjs.com](https://learn-reactjs.com/).
-
-## Techniques
-
-- Truly universal architecture
-  - code shared across platforms (browser, server, native mobile)
-  - server side rendering
-  - universal data fetching via one higher order component
-  - prerender for static hosting
-- Functional architecture (immutability, hot reload, time traveling)
-- Test driven development ready
-- Advanced performance with pure components
-- Well tuned dev stack
-- Universal forms with validation
 
 ## Libraries
 
@@ -52,59 +46,6 @@
 
 If you are using different node versions on your machine, use [nvm](https://github.com/creationix/nvm) to manage them.
 
-## Create App
-
-```shell
-git clone https://github.com/este/este.git este-app
-cd este-app
-npm install
-```
-
-## Start Development
-
-- run `gulp`
-- point your browser to [localhost:8000](http://localhost:8000)
-- build something beautiful
-
-React Native: [facebook.github.io/react-native/docs/getting-started.html](https://facebook.github.io/react-native/docs/getting-started.html)
-
-## Dev Tasks
-
-- `gulp` run web app in development mode
-- `gulp -p` run web app in production mode
-- `gulp mocha` run mocha unit tests
-- `gulp mocha-watch` continuous test running for TDD
-- `gulp eslint` eslint
-
-## Production Tasks
-
-- `gulp build -p` build app for production, for example for [Heroku](https://dashboard.heroku.com/)
-- `npm test` run all checks and tests
-- `node src/server` start app, remember to set NODE_ENV and SERVER_URL
-- `gulp to-html` render app to HTML for static hosting like [Firebase](https://www.firebase.com/features.html#features-hosting)
-
-
-## Documentation
-
-For absolute beginners: [react-howto](https://github.com/petehunt/react-howto).
-
-So you decided to give a chance to this web stack, but where is documentation? Code is documentation itself as it illustrates various patterns, but for start you should read something about [React.js](http://facebook.github.io/react/) and [Redux](http://redux.js.org/). Refresh you JavaScript knowledge about "new" JavaScript - [learn ES6](https://babeljs.io/docs/learn-es6/). This stack uses [immutable.js](http://facebook.github.io/immutable-js/) and class-less design for a [good reason](https://github.com/facebook/immutable-js/#the-case-for-immutability). [Express.js](http://expressjs.com/) is used on the [Node.js](http://nodejs.org/api/) based server. Application is [universal](https://medium.com/@mjackson/universal-javascript-4761051b7ae9), so we can share code between browser, server, mobile, whatever easily. Congrats, you're Este.js expert level 1 now :-)
-
-## Links
-
-- [wiki](https://github.com/este/este/wiki)
-- [twitter.com/estejs](https://twitter.com/estejs)
-
-## Windows
-
-Use this if you are using JEST or another library, which has to be compiled.
-
-- Install Python - Install version 2.7 of Python and add it to your path or/and create a PYTHONPATH environment variable.
-- Install Visual Studio (Express Edition is fine) - We will need this for some of modules that are compiled when we are installing Este. [Download VS Express](https://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx), get one of the versions that has C++ - Express 2013 for Windows Desktop for example.
-- Set Visual Studio Version Flags - We need to tell node-gyp (something that is used for compiling addons) what version of Visual Studio we want to compile with. You can do this either through an environment variable GYP_MSVS_VERSION. If you are using Express, you have to say GYP_MSVS_VERSION=2013e.
-
-Thanks to [Ryanlanciaux](http://ryanlanciaux.github.io/blog/2014/08/02/using-jest-for-testing-react-components-on-windows/)
-
 ## Tips and Tricks
 
 - To check current app state, just open browser console.
@@ -132,22 +73,8 @@ Yes it does. Este is agnostic of what you use in your backend and is completely 
 #### Is it possible use XXX library with Este?
 Yes. Este makes little assumptions about your stack, and passing every bit of needed info through props. This is not a framework, nothing prevents you from picking the bits you're interested in.
 
-#### How React Native is used in this project?
-Just as regular React Native project created via `react-native init AwesomeProject`. We can easily share modules across platforms. But remember to check [gulpfile.babel.js](https://github.com/este/este/blob/master/gulpfile.babel.js) for details.
-
-## Training
-- [learn-reactjs.com](http://www.learn-reactjs.com)
-- [javascript-skoleni.cz](http://javascript-skoleni.cz)
-- [DzejEs.cz](http://www.dzejes.cz) - czech articles about Este
-
 ## Notes
 
 - Este.js dev stack works on OSX, Linux, and Windows.
 - As a rule of thumb, Este.js supports all evergreen browsers plus last two pieces of IE.
 - Support Este.js development via Bitcoin - [daniel.steigerwald.cz/#donate-estejs](http://daniel.steigerwald.cz/#donate-estejs)
-
-## Credit
-
-<img alt="Este.js" src="https://cloud.githubusercontent.com/assets/66249/6515278/de638916-c388-11e4-8754-184f5b11e770.jpeg" width="200">
-
-made by Daniel Steigerwald, [twitter.com/steida](https://twitter.com/steida) and the community
