@@ -10,8 +10,8 @@ export default class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    msg: PropTypes.object.isRequired,
-    users: PropTypes.object.isRequired,
+    //msg: PropTypes.object.isRequired,
+    //users: PropTypes.object.isRequired,
   };
 
   render() {
@@ -21,14 +21,11 @@ export default class App extends Component {
       // Pass data-pathname to allow route specific styling.
       <div className="page" data-pathname={location.pathname}>
         <Helmet
-          link={[
-            {rel: 'shortcut icon', href: require('./favicon.ico')},
-          ]}
           meta={[{
             name: 'description',
-            content: 'Dev stack and starter kit for functional and universal React web apps',
+            content: '',
           }]}
-          titleTemplate="%s - Este.js"
+          titleTemplate="%s"
         />
         <Header
           // TODO: Use Redux router, then connect location.

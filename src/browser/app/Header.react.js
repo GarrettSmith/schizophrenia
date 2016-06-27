@@ -8,11 +8,11 @@ class Header extends Component {
   static propTypes = {
     msg: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
-    viewer: PropTypes.object,
+    //viewer: PropTypes.object,
   };
 
   render() {
-    const {msg, viewer} = this.props;
+    const {msg} = this.props;
 
     return (
       <header>
@@ -22,9 +22,6 @@ class Header extends Component {
         <ul>
           <li><Link activeClassName="active" to="/todos">{msg.todos}</Link></li>
           <li><Link activeClassName="active" to="/me">{msg.me}</Link></li>
-          {!viewer &&
-            <li><Link activeClassName="active" to="/login">{msg.login}</Link></li>
-          }
         </ul>
       </header>
     );
@@ -34,5 +31,4 @@ class Header extends Component {
 
 export default connect(state => ({
   msg: state.intl.msg.app.links,
-  viewer: state.users.viewer
 }))(Header);

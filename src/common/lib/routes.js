@@ -1,5 +1,4 @@
 import {
-  compose,
   curry,
   filter,
   path as _path,
@@ -28,5 +27,3 @@ export const path = pipe(
   filter(r => r.name[0] !== '_'),
   reverse
 );
-
-

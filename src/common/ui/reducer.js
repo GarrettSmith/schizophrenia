@@ -1,8 +1,5 @@
 import * as actions from './actions';
 
-// This isn't really common across platforms
-import {Actions} from 'react-native-router-flux';
-
 import * as routes from '../lib/routes';
 import {
   assoc,
@@ -40,7 +37,7 @@ function pickRoute(route) {
     route.props
   );
   return assoc('props', props, top);
-};
+}
 
 function setCurrentRoute(base, state) {
   const currentRoute = routes.current(base);
@@ -52,7 +49,7 @@ function setCurrentRoute(base, state) {
     {
       currentRoute: route,
       currentPath: path,
-      primaryRoute: primary,
+      primaryRoute: primary || state.primaryRoute,
     }
   );
 }
@@ -78,10 +75,10 @@ export default function uiReducer(state = initialState, action) {
     }
 
     // Routing Actions
-    case Actions.AFTER_ROUTE:
-    case Actions.AFTER_POP: {
-      return setCurrentRoute(action.route, state);
-    }
+    //case Actions.AFTER_ROUTE:
+    //case Actions.AFTER_POP: {
+      //return setCurrentRoute(action.route, state);
+    //}
 
     case actions.SET_ROUTE: {
       return setCurrentRoute(action.payload, state);

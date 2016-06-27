@@ -1,9 +1,7 @@
 import appReducer from './app/reducer';
-import {STORAGE_KEY} from './app/constants';
 
 import * as storage from 'redux-storage';
 import debounceDecorator from 'redux-storage-decorator-debounce';
-import createStorageEngine from 'redux-storage-engine-reactnativeasyncstorage';
 import createLogger from 'redux-logger';
 //import immutableStateInvariantMiddleware from 'redux-immutable-state-invariant';
 
@@ -16,7 +14,7 @@ import {applyMiddleware, compose, createStore} from 'redux';
 
 import {curry, evolve, flip, merge} from 'ramda';
 
-export default function configureStore({deps, initialState}) {
+export default function configureStore({deps, engine, initialState}) {
 
   // Este dependency injection middleware. So simple that we don't need a lib.
   // It's like mixed redux-thunk and redux-inject.
@@ -31,30 +29,6 @@ export default function configureStore({deps, initialState}) {
     // Browser is ok with relative url. Server and React Native need absolute.
     (process.env.IS_BROWSER ? '' : 'http://localhost:8000');
 
-  // Storage
-  const reducer = storage.reducer(appReducer);
-  const debounce = curry(flip(debounceDecorator));
-  const transformState = transform => engine => merge(
-    engine,
-    {
-      save(state) {
-        const blacklistedState = evolve(transform, state);
-        return engine.save(blacklistedState);
-      },
-    }
-  );
-  const blacklist = transformState({
-    ui: {
-      drawerOpen: () => undefined,
-    },
-  });
-  const createDecoratedEngine = compose(
-    debounce(60),
-    blacklist,
-    createStorageEngine
-  );
-  const storageEngine = createDecoratedEngine(STORAGE_KEY);
-  const storageMiddleware = storage.createMiddleware(storageEngine);
 
   const middleware = [
     injectMiddleware({
@@ -67,8 +41,33 @@ export default function configureStore({deps, initialState}) {
     promiseMiddleware({
       promiseTypeSuffixes: ['START', 'SUCCESS', 'ERROR'],
     }),
-    storageMiddleware,
   ];
+
+  if (engine) {
+    // Storage
+    const debounce = curry(flip(debounceDecorator));
+    const transformState = transform => engine => merge(
+      engine,
+      {
+        save(state) {
+          const blacklistedState = evolve(transform, state);
+          return engine.save(blacklistedState);
+        },
+      }
+    );
+    const blacklist = transformState({
+      ui: {
+        drawerOpen: () => undefined,
+      },
+    });
+    const createDecoratedEngine = compose(
+      debounce(60),
+      blacklist
+    );
+    const storageEngine = createDecoratedEngine(engine);
+    const storageMiddleware = storage.createMiddleware(storageEngine);
+    middleware.push(storageMiddleware);
+  }
 
   // Check state for mutations in development
   // disable until https://github.com/facebook/react-native/commit/194092e7290c2a2e50e0263bac67686df418b915
@@ -100,6 +99,8 @@ export default function configureStore({deps, initialState}) {
   const createReduxStore = enableDevToolsExtension
     ? compose(createStoreWithMiddleware, window.devToolsExtension())
     : createStoreWithMiddleware;
+
+  const reducer = storage.reducer(appReducer);
   const store = createReduxStore(createStore)(reducer, initialState);
 
   // Enable hot reload where available.
@@ -107,14 +108,16 @@ export default function configureStore({deps, initialState}) {
     // Enable Webpack hot module replacement for reducers.
     module.hot.accept('./app/reducer', () => {
       const nextAppReducer = require('./app/reducer');
-      store.replaceReducer(nextAppReducer);
+      const nextReducer = storage.reducer(nextAppReducer);
+      store.replaceReducer(nextReducer);
     });
   }
 
-  // Load store state from storage
-  const load = storage.createLoader(storageEngine);
-  load(store)
-    .catch(() => console.error('Failed to load stored state'));
+  if (engine) {
+    // Load store state from storage
+    const load = storage.createLoader(engine);
+    load(store);
+  }
 
   return store;
 }
