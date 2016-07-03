@@ -25,6 +25,7 @@ export default class App extends Component {
             name: 'description',
             content: '',
           }]}
+          style={require('onsenui/css/onsenui.css')}
           titleTemplate="%s"
         />
         <Header

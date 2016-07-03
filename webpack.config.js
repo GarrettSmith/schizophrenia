@@ -38,7 +38,12 @@ const webpackConfig = {
   devServer: {
     host: '0.0.0.0'
   },
-  entry: './src/browser/main.js',
+  entry: {
+    app: './src/browser/main.js',
+    vendor: [
+      'onsenui'
+    ],
+  },
   output: {
     path: path.join(__dirname, 'www'),
     filename: 'bundle.js',
@@ -49,6 +54,7 @@ const webpackConfig = {
       __CLIENT__: JSON.stringify(true),
       __SERVER__: JSON.stringify(false)
     })),
+    new webpack.optimize.CommonsChunkPlugin('vendor', '[name].[hash].js'),
     new ExtractTextPlugin('style.css'),
     new HtmlWebpackPlugin({
       minify: {},
@@ -107,7 +113,29 @@ const webpackConfig = {
       }, {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file'
+      }, {
+        test: [
+          /ionicons\.svg/,
+          /ionicons\.eot/,
+          /ionicons\.ttf/,
+          /ionicons\.woff/,
+          /fontawesome-webfont\.svg/,
+          /fontawesome-webfont\.eot/,
+          /fontawesome-webfont\.ttf/,
+          /fontawesome-webfont\.woff/,
+          /Material-Design-Iconic-Font\.svg/,
+          /Material-Design-Iconic-Font\.eot/,
+          /Material-Design-Iconic-Font\.ttf/,
+          /Material-Design-Iconic-Font\.woff/,
+          /Material-Design-Iconic-Font\.woff2/
+        ],
+        loader: 'file?name=fonts/[name].[ext]'
       }
+    ]
+  },
+  sassLoader: {
+    includePaths: [
+      "node_modules/ionicons/dis/scss"
     ]
   }
 };
