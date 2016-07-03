@@ -9,6 +9,8 @@ import {
   Button,
   SpeedDial,
   SpeedDialItem,
+  Icon,
+  Switch,
   Fab
 } from 'react-onsenui';
 
@@ -23,9 +25,19 @@ class Home extends Component {
 
     return (
       <Page>
-        <Button ripple>Test</Button>
-        <SpeedDial position='bottom right'>
-          <Fab>A</Fab>
+        <Button
+          ripple
+          modifier="material"
+        >
+          Test
+        </Button>
+        <SpeedDial
+          ripple
+          position='bottom right'
+        >
+          <Fab style={{backgroundColor: "rgb(233,30,99)"}}>
+            <Icon icon="md-edit" />
+          </Fab>
           <SpeedDialItem>B</SpeedDialItem>
           <SpeedDialItem>C</SpeedDialItem>
         </SpeedDial>

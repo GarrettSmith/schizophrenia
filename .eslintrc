@@ -3,7 +3,7 @@
   "plugins": [
     "import"
   ],
-  "extends" : ["airbnb"],
+  "extends" : [],
   "rules": {
     // Soften rules for legacy projects. Can be removed for clean project.
     "comma-dangle": 0,
