@@ -1,5 +1,6 @@
 /* eslint-disable import/default */
 import 'babel-polyfill';
+import 'onsenui';
 import Bluebird from 'bluebird';
 import React from 'react';
 import ReactDOM from 'react-dom';

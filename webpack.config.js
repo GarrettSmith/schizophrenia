@@ -1,166 +1,113 @@
 'use strict';
+const path = require('path')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const webpack = require('webpack');
-const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-const __PROD__ = process.env.NODE_ENV === 'production';
-const __CORDOVA__ = process.env.BUILD_TARGET === 'cordova';
-const __DEV__ = __PROD__ === false;
-
-const packageFile = require('./package.json');
-
- // Take cordova enviroment, if not prod, if not dev
-const enviroment = packageFile.enviroments[
-  (__CORDOVA__ && '__CORDOVA__') ||
-  (__PROD__ && '__PROD__') ||
-  (__DEV__ && '__DEV__')
+let plugins = [];
+let basePlugins = [
+  new webpack.DefinePlugin({
+    __DEV__: process.env.NODE_ENV !== 'production',
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+  }),
+  new webpack.optimize.CommonsChunkPlugin('vendor', '[name].[hash].js'),
+  new HtmlWebpackPlugin({
+    template: path.join(__dirname, 'src', 'index.html'),
+    inject: 'body'
+  })
 ];
 
-const __SSR__ = enviroment.__SSR__;
-const __DEVTOOLS__ = enviroment.__DEVTOOLS__;
+let devPlugins = [];
 
-const define = {
-  __DEV__: JSON.stringify(__DEV__),
-  __PROD__: JSON.stringify(__PROD__),
-  'process.env': {
-    NODE_ENV: JSON.stringify(__PROD__ ? 'production' : 'development')
-  },
-  __CORDOVA__: JSON.stringify(__CORDOVA__),
-  __SSR__: JSON.stringify(__SSR__),
-  __DEVTOOLS__: JSON.stringify(__DEVTOOLS__)
-};
+let prodPlugins = [
+  new webpack.optimize.UglifyJsPlugin({
+    beautify: false,
+    mangle: {
+      screw_ie8: true
+    },
+    compress: {
+      screw_ie8: true
+    },
+    comments: false
+  })
+];
 
-let getServerString;
-const webpackConfig = {
-  devtool: __DEV__ ? 'source-map' : false,
+if (process.env.NODE_ENV === 'production') {
+  plugins = basePlugins.concat(prodPlugins);
+} else { // dev or rest
+  plugins = basePlugins.concat(devPlugins);
+}
+
+module.exports = {
+  context: __dirname,
   devServer: {
-    host: '0.0.0.0'
+    historyApiFallback: true
   },
-  entry: './src/browser/main.js',
+  entry: {
+    app: './src/browser/main.js',
+    vendor: [
+      'es6-shim',
+      'es6-promise',
+      'react',
+      'react-dom',
+      'onsenui'
+    ],
+    //styl: path.join(__dirname, 'src', 'styl', 'index.styl'),
+    //scss: path.join(__dirname, 'src', 'scss', 'index.scss')
+  },
+
   output: {
     path: path.join(__dirname, 'www'),
-    filename: 'bundle.js',
-    publicPath: ''
+    filename: '[name].[hash].js',
+    publicPath: '/'
   },
-  plugins: [
-    new webpack.DefinePlugin(Object.assign(define, {
-      __CLIENT__: JSON.stringify(true),
-      __SERVER__: JSON.stringify(false)
-    })),
-    new ExtractTextPlugin('style.css'),
-    new HtmlWebpackPlugin({
-      minify: {},
-      getAppContent: () => __SSR__ ? getServerString() : '',
-      template: './src/index.ejs', // Load a custom template
-      inject: 'body' // Inject all scripts into the body
-    })
-  ].concat(__PROD__ ? [
-    new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: false
-      },
-      compress: {
-        warnings: false
-      },
-      sourceMap: false
-    })
-  ] : []),
   module: {
+    preLoaders: [
+      { test: /\.js?$/, include: /src/, loader: 'eslint' }
+    ],
     loaders: [
+      { test: /\.html$/, include: /src/, loaders: ['raw'] },
+      { test: /\.json$/, include: /src/, loaders: ['json'] },
+      { test: /\.(png|jpg|svg)$/, include: /src/, loader: 'file?name=img/[ext]/[name].[ext]' },
+      { test: /\.styl$/, loaders: ['style', 'css', 'stylus'] },
+      { test: /\.scss$/, loaders: ['style', 'css', 'sass'] },
+      { test: /\.css$/, include: /src/, loaders: ['style', 'css?modules&localIdentName=[local]---[hash:base64:5]', 'postcss'] },
+      { test: /\.js?$/, include: /src/, loaders: ['react-hot', 'babel'] },
       {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015', 'stage-0']
-        }
-      },
-      {
-        test: /\.jsx$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015', 'stage-0', 'react'],
-          env: {
-            development: {
-              presets: ['react-hmre']
-            }
-          }
-        }
-      },
-      {
-        test: /\.(scss|css)$/,
-        loader: __PROD__ ? ExtractTextPlugin.extract(
-          'style',
-          'css?modules&importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true'
-        )
-        : 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap'
-      },
-      {
-        test: /\.(png|jpg)$/,
-        loader: 'url?limit=8192'
-      }, {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url?limit=10000&minetype=application/font-woff'
-      }, {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'file'
+        test: [
+          /ionicons\.svg/,
+          /ionicons\.eot/,
+          /ionicons\.ttf/,
+          /ionicons\.woff/,
+          /fontawesome-webfont\.svg/,
+          /fontawesome-webfont\.eot/,
+          /fontawesome-webfont\.ttf/,
+          /fontawesome-webfont\.woff/,
+          /Material-Design-Iconic-Font\.svg/,
+          /Material-Design-Iconic-Font\.eot/,
+          /Material-Design-Iconic-Font\.ttf/,
+          /Material-Design-Iconic-Font\.woff/,
+          /Material-Design-Iconic-Font\.woff2/
+        ], loader: 'file?name=fonts/[name].[ext]'
       }
     ]
-  }
-};
-
-getServerString = () => {
-  const MemoryFS = require('memory-fs');
-  const fs = new MemoryFS();
-
-  const compiler = webpack(Object.assign(webpackConfig, {
-    entry: './src/entry-points/Server.jsx',
-    output: {
-      path: '/',
-      filename: 'bundle.js'
-    },
-    module: Object.assign(webpackConfig.module, {
-      loaders: webpackConfig.module.loaders.map(loaderObj => {
-        let returnedLoaderObj;
-        if (loaderObj.test.toString() === /\.(scss|css)$/.toString()) {
-          returnedLoaderObj = Object.assign(loaderObj, {
-            loader: 'css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!sass'
-          });
-        } else {
-          returnedLoaderObj = loaderObj;
-        }
-        return returnedLoaderObj;
-      })
-    }),
-    plugins: [
-      new webpack.DefinePlugin(Object.assign(define, {
-        __CLIENT__: JSON.stringify(false),
-        __SERVER__: JSON.stringify(true)
-      }))
+  },
+  sassLoader: {
+    includePaths: [
+      "node_modules/ionicons/dist/scss"
     ]
-  }));
-
-  let sync = true;
-  let data = null;
-  compiler.outputFileSystem = fs;
-  compiler.run(err => {
-    if (err) {
-      throw err;
-    }
-    const fileContent = fs.readFileSync('/bundle.js').toString('ascii');
-    // Using eval because we can't require from `memory-fs`
-    data = eval(fileContent); // eslint-disable-line no-eval
-    sync = false;
-  });
-
-  while (sync) {
-    require('deasync').sleep(100);
+  },
+  plugins: plugins,
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.json', '.css', '.scss', '.styl']
+  },
+  postcss: function (webpack) {
+    return [
+      require('postcss-import')({ addDependencyTo: webpack }),
+      require('postcss-url')(),
+      require('postcss-custom-properties')(),
+      require('postcss-nested')(),
+      require('postcss-cssnext')(), require('postcss-browser-reporter')(),
+      require('postcss-reporter')()
+    ]
   }
-
-  return data;
 };
-
-module.exports = webpackConfig;
