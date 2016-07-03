@@ -16,7 +16,8 @@
     "iosEmulator": "npm run dumpdev && cordova run ios",
     "ios": "npm run dumpdev && cordova run ios --device",
     "lint": "eslint --ext .js,.jsx .",
-    "test": "gulp test"
+    "test": "gulp test",
+    "build:android": "npm run dumpprod && cordova build android --release --buildConfig build.json"
   },
   "betterScripts": {
     "start": {

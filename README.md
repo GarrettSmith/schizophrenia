@@ -1,22 +1,29 @@
 ## Installing
 1. Install dependencies: ```npm i```
 2. Install global tools: ```npm install -g cordova```
-3. Add your cordova platform by running ```cordova platform add %PLATFORM%``` (android and more)
 
 ## Usage
+
+### Setup
+- ```npm run restore``` - restore cordova platforms and plugin
+
+### Dev
+- ```npm run start``` - runs the dev web server.
 - ```npm run lint``` - runs linting against src folder.
 - ```npm run test``` - runs karma + jasmine testing.
-- ```npm run start``` - starts a server, with react model replacement and devtools.
-- ```npm run start:prod``` - starts a server, with react model replacement and minifications of main html file and js file.
-- ```npm run build``` - builds the project (single html file and single js file) as it does for development.
-- ```npm run build:prod``` - builds the project (single html file and single js file) as it does for production.
 
-## Build and run as application
-As you do with any cordova application, ```cordova build android```, ```cordova run android``` and more.
+### Dump the app in www folder
+- ```npm run dumpprod``` - dump a production build to the www folder.
+- ```npm run dumpdev``` - dump a dev build to the www folder.
 
-cordova runs ```npm run build:prod``` before any cordova command (using hooks).
+### Run on device
+- ```npm run android``` - Run on Android device (or emulator)
+- ```npm run iosEmulator``` - Run on iOS simulator
+- ```npm run ios``` - Run on iOS device
 
-<a href="https://learn-reactjs.com/"><img alt="Este.js" src="https://cloud.githubusercontent.com/assets/66249/6515265/b91f0fb8-c388-11e4-857e-c90902e0b7a1.png" width="200"></a>
+### Building
+- ```npm run build:android``` - Make a production build for Android. Requires a
+keystore file in the root of the project.
 
 ## Libraries
 
