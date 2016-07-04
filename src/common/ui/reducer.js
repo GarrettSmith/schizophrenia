@@ -22,38 +22,6 @@ const initialState = {
   },
 };
 
-// pick a subset able to be passed around
-function pickRoute(route) {
-  const top = pick(
-    [
-      'name',
-      'title',
-      'type',
-    ],
-    route
-  );
-  const props = pickBy(
-    p => is(String, p) || is(Function, p),
-    route.props
-  );
-  return assoc('props', props, top);
-}
-
-function setCurrentRoute(base, state) {
-  const currentRoute = routes.current(base);
-  const route = pickRoute(currentRoute);
-  const path = map(pickRoute, routes.path(currentRoute));
-  const primary = findLast(propEq('type', 'replace'), path);
-  return merge(
-    state,
-    {
-      currentRoute: route,
-      currentPath: path,
-      primaryRoute: primary || state.primaryRoute,
-    }
-  );
-}
-
 export default function uiReducer(state = initialState, action) {
 
   switch (action.type) {
@@ -74,14 +42,8 @@ export default function uiReducer(state = initialState, action) {
       return assoc('drawerEnabled', action.payload, state);
     }
 
-    // Routing Actions
-    //case Actions.AFTER_ROUTE:
-    //case Actions.AFTER_POP: {
-      //return setCurrentRoute(action.route, state);
-    //}
-
     case actions.SET_ROUTE: {
-      return setCurrentRoute(action.payload, state);
+      return assoc('currentRoute', action.payload, state);
     }
 
   }

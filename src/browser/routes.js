@@ -45,7 +45,7 @@ export const ROUTES = {
   },
 };
 
-export const INITIAL_ROUTE = ROUTES.log;
+export const INITIAL_ROUTE = ROUTES.logAgenda;
 
 export function route(name) {
   return ROUTES[name];

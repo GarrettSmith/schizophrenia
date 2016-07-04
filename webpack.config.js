@@ -3,11 +3,17 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+let production = process.env.NODE_ENV === 'production';
+let dev = !production;
+
 let plugins = [];
 let basePlugins = [
   new webpack.DefinePlugin({
-    __DEV__: process.env.NODE_ENV !== 'production',
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    __DEV__: dev,
+    'process.env': {
+      IS_BROWSER: true,
+      NODE_ENV: JSON.stringify(dev ? 'development' : 'production'),
+    }
   }),
   new webpack.optimize.CommonsChunkPlugin('vendor', '[name].[hash].js'),
   new HtmlWebpackPlugin({
@@ -31,17 +37,14 @@ let prodPlugins = [
   })
 ];
 
-if (process.env.NODE_ENV === 'production') {
-  plugins = basePlugins.concat(prodPlugins);
-} else { // dev or rest
-  plugins = basePlugins.concat(devPlugins);
-}
+plugins = basePlugins.concat(production ? prodPlugins : devPlugins);
 
 module.exports = {
   context: __dirname,
   devServer: {
     historyApiFallback: true
   },
+  devtool: dev ? 'source-map' : false,
   entry: {
     app: './src/browser/main.js',
     vendor: [

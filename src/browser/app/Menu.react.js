@@ -59,7 +59,7 @@ export default class Menu extends Component {
       <ListItem
         className={classnames({active})}
         key={item.name}
-        onClick={onMenuItemClick}
+        onClick={() => onMenuItemClick(item.name)}
         ripple
       >
         {item.name}
