@@ -1,4 +1,7 @@
 import LogAgenda from './log/agenda/Page.react';
+import LogWeek from './log/week/Page.react';
+import LogAll from './log/all/Page.react';
+import LogMonth from './log/month/Page.react';
 
 export const ROUTES = {
   logAgenda: {
@@ -10,19 +13,19 @@ export const ROUTES = {
   logWeek: {
     icon: 'md-view-week',
     key: 'logWeek',
-    component: null,
+    component: LogWeek,
   },
 
   logMonth: {
     icon: 'md-view-module',
     key: 'logMonth',
-    component: null,
+    component: LogMonth,
   },
 
   logAll: {
     icon: 'md-schedule',
     key: 'logAll',
-    component: null,
+    component: LogAll,
   },
 
   logEntry: {

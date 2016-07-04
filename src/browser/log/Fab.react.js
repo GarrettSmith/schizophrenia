@@ -13,6 +13,10 @@ export default class ActionButton extends Component {
   static propTypes = {
   };
 
+  state = {
+    open: false,
+  };
+
   constructor(props) {
     super(props);
     this.logEntryPressed = this.logEntryPressed.bind(this);
@@ -30,8 +34,13 @@ export default class ActionButton extends Component {
       <SpeedDial
         position="bottom right"
       >
-        <Fab>
-          <Icon icon="md-plus" />
+        <Fab
+          onClick={() => this.setState({open: !this.state.open})}
+        >
+          <Icon
+            icon="md-plus"
+            style={{transform: `rotate(${this.state.open ? 45 : 0}deg)`}}
+          />
         </Fab>
 
         <SpeedDialItem>
