@@ -13,8 +13,8 @@ import {
 } from 'ramda';
 
 const initialState = {
-  currentPath: null,
-  currentRoute: null,
+  currentPath: 'logAgenda',
+  currentRoute: 'logAgenda',
   drawerEnabled: true,
   drawerOpen: false,
   primaryRoute: {

@@ -1,53 +1,63 @@
+import LogAgenda from './log/agenda/Page.react';
+
 export const ROUTES = {
   logAgenda: {
-    name: 'logAgenda',
-    component: null,
+    icon: 'md-view-agenda',
+    key: 'logAgenda',
+    component: LogAgenda,
   },
 
   logWeek: {
-    name: 'logWeek',
+    icon: 'md-view-week',
+    key: 'logWeek',
     component: null,
   },
 
   logMonth: {
-    name: 'logMonth',
+    icon: 'md-view-module',
+    key: 'logMonth',
     component: null,
   },
 
   logAll: {
-    name: 'logAll',
+    icon: 'md-schedule',
+    key: 'logAll',
     component: null,
   },
 
   logEntry: {
-    name: 'logEntry',
+    key: 'logEntry',
     component: null,
   },
 
   medication: {
-    name: 'medication',
+    icon: 'md-pharmacy',
+    key: 'medication',
     component: null,
   },
 
   support: {
-    name: 'support',
+    icon: 'md-group',
+    key: 'support',
     component: null,
   },
 
   settings: {
-    name: 'settings',
+    icon: 'md-settings',
+    key: 'settings',
     component: null,
   },
 
   help: {
-    name: 'help',
+    icon: 'md-help',
+    key: 'help',
     component: null,
   },
 };
 
 export const INITIAL_ROUTE = ROUTES.logAgenda;
 
-export function route(name) {
-  return ROUTES[name];
+export function route(key) {
+  return ROUTES[key];
 }
 

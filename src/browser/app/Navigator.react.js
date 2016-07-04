@@ -9,7 +9,7 @@ import {
   SplitterContent,
   SplitterSide
 } from 'react-onsenui';
-import {INITIAL_ROUTE} from '../routes';
+import {route} from '../routes';
 import NotFound from '../notfound/Page.react';
 import Menu from './Menu.react';
 
@@ -19,15 +19,14 @@ export class Navigator extends Component {
     this.onMenuItemClick = this.onMenuItemClick.bind(this);
     this.onDrawerOpen = this.onDrawerOpen.bind(this);
     this.onDrawerClose = this.onDrawerClose.bind(this);
+    this.renderPage = this.renderPage.bind(this);
   }
 
-  navigator = null; // So we can pass around a refrence
-
   renderPage(route, navigator) {
-    this.navigator = navigator;
-    const component = route.component || NotFound;
+    this.setState({navigator});
+    const RouteComponent = route.component || NotFound;
     return (
-      <component navigator={navigator} {...route} />
+      <RouteComponent navigator={navigator} {...route} />
     );
   }
 
@@ -38,7 +37,8 @@ export class Navigator extends Component {
     } = this.props;
 
     closeDrawer();
-    setRoute(route);
+    setRoute(route.key);
+    this.state.navigator.resetPage(route);
   }
 
   onDrawerOpen() {
@@ -57,8 +57,6 @@ export class Navigator extends Component {
       onDrawerChange,
     } = this.props;
 
-    console.log(drawerOpen);
-
     return(
       <Splitter>
         <SplitterSide
@@ -72,14 +70,13 @@ export class Navigator extends Component {
         >
           <Menu
             currentRoute={currentRoute}
-            navigator={navigator}
             onMenuItemClick={this.onMenuItemClick}
           />
         </SplitterSide>
 
         <SplitterContent>
           <OnsNav
-            initialRoute={INITIAL_ROUTE}
+            initialRoute={route(currentRoute)}
             renderPage={this.renderPage}
           />
         </SplitterContent>

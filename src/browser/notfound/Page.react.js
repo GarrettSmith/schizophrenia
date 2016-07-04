@@ -1,8 +1,8 @@
 import Component from 'react-pure-render/component';
 import Helmet from 'react-helmet';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 import {connect} from 'react-redux';
+import {Page} from 'react-onsenui';
 
 class NotFound extends Component {
 
@@ -14,12 +14,11 @@ class NotFound extends Component {
     const {msg} = this.props;
 
     return (
-      <div className="notfound-page">
+      <Page className="notfound-page">
         <Helmet title={msg.title} />
         <h1>{msg.header}</h1>
         <p>{msg.message}</p>
-        <Link to="/">{msg.continueMessage}</Link>
-      </div>
+      </Page>
     );
   }
 

@@ -2,9 +2,10 @@ import Component from 'react-pure-render/component';
 
 import React, {PropTypes} from 'react';
 import {
-  Page,
+  Icon,
   List,
   ListItem,
+  Page,
   Toolbar,
 } from 'react-onsenui';
 import {route} from '../routes';
@@ -36,8 +37,7 @@ const ROUTES = [
 export default class Menu extends Component {
 
   static propTypes = {
-    currentRoute: PropTypes.object,
-    navigator: PropTypes.object.isRequired,
+    currentRoute: PropTypes.string,
     onMenuItemClick: PropTypes.func.isRequired,
   };
 
@@ -53,16 +53,17 @@ export default class Menu extends Component {
       onMenuItemClick,
     } = this.props;
 
-    const active = item === currentRoute;
+    const active = item.key === currentRoute;
 
     return (
       <ListItem
         className={classnames({active})}
-        key={item.name}
-        onClick={() => onMenuItemClick(item.name)}
+        key={item.key}
+        onClick={() => onMenuItemClick(item.key)}
         ripple
       >
-        {item.name}
+        <Icon icon={item.icon} />
+        {item.key}
       </ListItem>
     );
   }
