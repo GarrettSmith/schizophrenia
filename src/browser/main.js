@@ -1,15 +1,20 @@
 /* eslint-disable import/default */
 import 'babel-polyfill';
 import 'onsenui';
+import './app/App.scss';
 import Bluebird from 'bluebird';
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import configureStore from '../common/configureStore';
-import createRoutes from './createRoutes';
-import {IntlProvider} from 'react-intl';
 import {Provider} from 'react-redux';
-import {Router} from 'react-router';
-import {browserHistory} from 'react-router';
+import Menu from './app/Menu.react';
+import {
+  Navigator,
+  Splitter,
+  SplitterContent,
+  SplitterSide
+} from 'react-onsenui';
+import {INITIAL_ROUTE} from './routes';
 
 // http://bluebirdjs.com/docs/why-bluebird.html
 window.Promise = Bluebird;
@@ -17,15 +22,55 @@ window.Promise = Bluebird;
 const app = document.getElementById('app');
 const initialState = window.__INITIAL_STATE__;
 const store = configureStore({initialState});
-const routes = createRoutes(store.getState);
+
+class App extends Component {
+  navigator = null;
+
+  renderPage(route, navigator) {
+    this.navigator = navigator;
+    //this.props.setRoute(route);
+    console.log(`Set route ${route.id}`);
+    return (
+      <route.component navigator={navigator} {...route} />
+    )
+  }
+
+  render() {
+    const {
+      closeMenu,
+      currentRoute,
+      menuOpen,
+      openMenu,
+    } = this.props;
+    return(
+      <Provider store={store}>
+        <Splitter>
+          <SplitterSide
+            side="left"
+            isOpen={true}
+            width={240}
+            collapse
+            isSwipeable
+          >
+            <Menu
+              currentRoute={currentRoute}
+              navigator={navigator}
+              onMenuItemClick={x => console.log(x)}
+            />
+          </SplitterSide>
+          <SplitterContent>
+            <Navigator
+              initialRoute={INITIAL_ROUTE}
+              renderPage={this.renderPage}
+            />
+          </SplitterContent>
+        </Splitter>
+      </Provider>
+    );
+  }
+}
 
 ReactDOM.render(
-  <Provider store={store}>
-    <IntlProvider>
-      <Router history={browserHistory}>
-        {routes}
-      </Router>
-    </IntlProvider>
-  </Provider>,
+  <App />,
   app
 );

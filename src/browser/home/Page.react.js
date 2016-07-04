@@ -11,6 +11,8 @@ import {
   SpeedDialItem,
   Icon,
   Switch,
+  Col,
+  Row,
   Fab
 } from 'react-onsenui';
 
