@@ -1,0 +1,16 @@
+@import '../app/Constants.scss';
+
+.log-speed-dial {
+  ons-fab, ons-fab:active {
+    background-color: $primary;
+
+    ons-icon {
+      transition: transform 0.5s cubic-bezier(0.155,3,0.7,0.85);
+    }
+  }
+
+  ons-speed-dial-item, ons-speed-dial-item:active {
+    background-color: $secondary;
+  }
+
+}

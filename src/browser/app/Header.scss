@@ -1,0 +1,17 @@
+@import './Constants';
+
+.header {
+  background-color: $secondary;
+
+  &.primary {
+    background-color: $primary;
+  }
+
+  &.secondary {
+    background-color: $secondary;
+  }
+
+  &.tertiary {
+    background-color: $tertiary;
+  }
+}

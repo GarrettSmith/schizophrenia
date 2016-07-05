@@ -1,14 +1,16 @@
+import './Page.scss';
+
 import Component from 'react-pure-render/component';
-import Helmet from 'react-helmet';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {Page} from 'react-onsenui';
-import Header from '../app/Header.react';
+import Header from '../../app/Header.react';
+import {
+  Page,
+} from 'react-onsenui';
 
-class NotFound extends Component {
+class JournalEntry extends Component {
 
   static propTypes = {
-    msg: PropTypes.object,
     navigator: PropTypes.object.isRequired,
   };
 
@@ -20,10 +22,12 @@ class NotFound extends Component {
   renderToolbar() {
     return  (
       <Header
+        action={() => console.log('save')}
+        actionIcon="md-check"
         back
         modifier="tertiary"
         navigator={this.props.navigator}
-        title="Not Found"
+        title="New Journal Entry"
       />
     );
   }
@@ -33,18 +37,17 @@ class NotFound extends Component {
 
     return (
       <Page
-        className="notfound-page"
+        className="journal-entry"
         renderToolbar={this.renderToolbar}
       >
-        <Helmet title={msg.title} />
-        <h1>{msg.header}</h1>
-        <p>{msg.message}</p>
+        <textarea autofocus/>
       </Page>
     );
   }
 
 }
 
-export default connect(state => ({
-  msg: state.intl.msg.notFound
-}))(NotFound);
+JournalEntry = connect(state => ({
+}))(JournalEntry);
+
+export default JournalEntry;

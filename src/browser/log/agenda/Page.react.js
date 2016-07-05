@@ -18,23 +18,26 @@ export default class AgendaPage extends Component {
   static propTypes = {
     //actions: PropTypes.object.isRequired,
     //logging: PropTypes.object.isRequired,
+    navigator: PropTypes.object.isRequired,
   };
 
+  renderToolbar() {
+    return <Header title="Agenda"/>;
+  }
+
   render() {
-    //const {
-      //logging: {
-        //agenda: {
-          //entries,
-        //},
-      //},
-    //} = this.props;
+    const {
+      navigator,
+    } = this.props;
     const entries = [];
 
     return (
-      <Page>
-        <Header title="Agenda"/>
+      <Page
+        className="agenda"
+        renderToolbar={this.renderToolbar}
+      >
         {isEmpty(entries) ? <Empty /> : this.renderEntries(entries)}
-        <Fab />
+        <Fab navigator={navigator}/>
       </Page>
     );
   }

@@ -1,0 +1,61 @@
+@import './Constants.scss';
+
+ons-splitter-side {
+  $shadow-width: 0.7rem;
+  box-shadow: $shadow-width 0 $shadow-width fade-out(black, 0.9);
+  margin-right: $shadow-width ;
+}
+
+.menu {
+  color: $md-grey;
+
+  ons-toolbar {
+    height: 8rem;
+    background-color: $primary;
+  }
+
+
+  ons-list {
+    border-bottom: 0.1rem solid $light-grey;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  ons-list-item {
+    $margin: 0.4rem;
+
+    border: none;
+    color: $black;
+    margin: $margin 0;
+    font-size: 0.85em;
+    font-weight: bold;
+
+    &:first-child {
+      margin: $margin 0;
+    }
+
+    .center {
+      background-image: none;
+      border: none;
+    }
+
+    &.active {
+      background-color: $light-grey;
+      color: $black;
+
+      ons-icon {
+        color: $black;
+      }
+    }
+
+    .left {
+      justify-content: center;
+    }
+
+    ons-icon {
+      color: $md-grey;
+    }
+  }
+}

@@ -39,7 +39,12 @@ export class Navigator extends Component {
 
     closeDrawer();
     setRoute(route.key);
-    this.state.navigator.resetPage(route);
+    if (!route || !route.component) {
+      this.state.navigator.pushPage(route);
+    }
+    else {
+      this.state.navigator.resetPage(route);
+    }
   }
 
   onDrawerOpen() {
@@ -65,7 +70,7 @@ export class Navigator extends Component {
           onClose={this.onDrawerClose}
           onOpen={this.onDrawerOpen}
           side="left"
-          width={300}
+          width={350}
         >
           <Menu
             currentRoute={currentRoute}

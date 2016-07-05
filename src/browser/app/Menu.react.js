@@ -1,5 +1,6 @@
-import Component from 'react-pure-render/component';
+import './Menu.scss';
 
+import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {
   Icon,
@@ -16,6 +17,10 @@ const indexedMap = addIndex(map);
 
 const ROUTES = [
   [
+    route('home'),
+  ],
+
+  [
 
     route('logAgenda'),
     route('logWeek'),
@@ -24,6 +29,7 @@ const ROUTES = [
   ],
 
   [
+    route('journal'),
     route('medication'),
     route('support'),
   ],
@@ -62,8 +68,13 @@ export default class Menu extends Component {
         onClick={() => onMenuItemClick(item)}
         ripple
       >
-        <Icon icon={item.icon} />
-        {item.key}
+        <div className="left">
+          <Icon icon={item.icon} size={22}/>
+        </div>
+
+        <div className="center">
+          {item.key}
+        </div>
       </ListItem>
     );
   }
@@ -80,12 +91,8 @@ export default class Menu extends Component {
 
   render() {
     return (
-      <Page>
-        <Toolbar inline>
-          <p>
-            Menu
-          </p>
-        </Toolbar>
+      <Page className="menu">
+        <Toolbar inline/>
 
         {indexedMap(this.renderRouteList, ROUTES)}
 

@@ -1,0 +1,24 @@
+@import '../app/Constants';
+
+.home {
+  color: white;
+
+  .page__background {
+    background-color: $md-grey;
+  }
+
+  .container {
+    padding-top: 8rem;
+  }
+
+  ons-col {
+    justify-content: center;
+    align-items: center;
+    display: inline-flex;
+    flex-direction: column;
+  }
+
+  ons-fab {
+    background-color: $primary;
+  }
+}

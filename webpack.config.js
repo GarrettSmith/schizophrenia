@@ -61,7 +61,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'www'),
     filename: '[name].[hash].js',
-    publicPath: './'
+    publicPath: dev ? '/' : './'
   },
   module: {
     preLoaders: [

@@ -1,16 +1,19 @@
+import './Fab.scss';
+
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-
 import {
   Fab,
   Icon,
   SpeedDial,
   SpeedDialItem,
 } from 'react-onsenui';
+import {route} from '../routes';
 
 export default class ActionButton extends Component {
 
   static propTypes = {
+    navigator: PropTypes.object.isRequired,
   };
 
   state = {
@@ -19,19 +22,17 @@ export default class ActionButton extends Component {
 
   constructor(props) {
     super(props);
-    this.logEntryPressed = this.logEntryPressed.bind(this);
+    this.goTo = this.goTo.bind(this);
   }
 
-  logEntryPressed(active) {
-    // only navigate when open
-    if (active) {
-      //this.props.routes.logEntry();
-    }
+  goTo(routeKey) {
+    this.props.navigator.pushPage(route(routeKey));
   }
 
   render() {
     return (
       <SpeedDial
+        class="log-speed-dial"
         position="bottom right"
       >
         <Fab
@@ -43,12 +44,22 @@ export default class ActionButton extends Component {
           />
         </Fab>
 
-        <SpeedDialItem>
-          <Icon icon="md-flag" />
+        <SpeedDialItem
+          onClick={() => this.goTo('logEntry')}
+        >
+          <Icon icon="md-edit" />
         </SpeedDialItem>
 
-        <SpeedDialItem>
-          <Icon icon="md-pill" />
+        <SpeedDialItem
+          onClick={() => this.goTo('journalEntry')}
+        >
+          <Icon icon="md-book" />
+        </SpeedDialItem>
+
+        <SpeedDialItem
+          onClick={() => this.goTo('goalEntry')}
+        >
+          <Icon icon="md-flag" />
         </SpeedDialItem>
       </SpeedDial>
     );
