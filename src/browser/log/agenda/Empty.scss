@@ -1,0 +1,17 @@
+@import '../../app/Constants';
+
+.empty {
+  align-items: center;
+  background-color: $light-grey;
+  color: $md-grey;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+
+  p {
+    margin: 0.3rem;
+  }
+
+}

@@ -24,6 +24,7 @@ export class Navigator extends Component {
 
   renderPage(route, navigator) {
     this.setState({navigator});
+    // Fallback to the not found page just in case
     const RouteComponent = route.component || NotFound;
     return (
       <RouteComponent navigator={navigator} {...route} />
@@ -52,9 +53,7 @@ export class Navigator extends Component {
   render() {
     const {
       drawerOpen,
-      closeMenu,
       currentRoute,
-      onDrawerChange,
     } = this.props;
 
     return(
@@ -66,7 +65,7 @@ export class Navigator extends Component {
           onClose={this.onDrawerClose}
           onOpen={this.onDrawerOpen}
           side="left"
-          width={240}
+          width={300}
         >
           <Menu
             currentRoute={currentRoute}

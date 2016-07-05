@@ -5,6 +5,7 @@ import Fab from '../Fab.react';
 import Empty from './Empty.react';
 import Entry from './Entry.react';
 
+import Header from '../../app/Header.react';
 import {Page} from 'react-onsenui';
 
 import {
@@ -31,6 +32,7 @@ export default class AgendaPage extends Component {
 
     return (
       <Page>
+        <Header title="Agenda"/>
         {isEmpty(entries) ? <Empty /> : this.renderEntries(entries)}
         <Fab />
       </Page>
