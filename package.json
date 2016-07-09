@@ -154,6 +154,7 @@
     "react-intl": "^2.0.0-pr-1",
     "react-onsenui": "^0.5.2",
     "react-pure-render": "^1.0.1",
+    "react-rating": "^0.4.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.4.0",
     "react-styleable": "^2.2.4",

@@ -25,15 +25,31 @@ body {
 
 #app {
   background-color: red;
-}
 
-ons-speed-dial ons-icon {
-  vertical-align: middle;
-}
+  ons-speed-dial ons-icon {
+    vertical-align: middle;
+  }
 
-textarea {
-  display: block;
-  width: 100%;
-  border: 1px solid $light-grey;
-  min-height: 20rem;
+  textarea {
+    display: block;
+    width: 100%;
+    border: 1px solid $light-grey;
+    min-height: 20rem;
+  }
+
+  ons-toolbar-button {
+    background: none;
+    padding: 0;
+
+    ons-icon {
+      background-color: transparentize(white, 1);
+      border-radius: 50%;
+      padding: 0.75rem 0.9rem;
+      transition: background-color 0.1s ease-in-out;
+    }
+
+    &:active ons-icon{
+      background-color: transparentize(white, 0.8);
+    }
+  }
 }

@@ -6,6 +6,7 @@ import LogAgenda from './log/agenda/Page.react';
 import LogAll from './log/all/Page.react';
 import LogMonth from './log/month/Page.react';
 import LogWeek from './log/week/Page.react';
+import LogEntry from './log/entry/Page.react';
 import Support from './support/Page.react';
 import SupportEntry from './support/entry/Page.react';
 import Tracking from './tracking/Page.react';
@@ -44,7 +45,7 @@ export const ROUTES = {
 
   logEntry: {
     key: 'logEntry',
-    component: null,
+    component: LogEntry,
   },
 
   medication: {
