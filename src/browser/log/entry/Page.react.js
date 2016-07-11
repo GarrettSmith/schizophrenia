@@ -71,6 +71,7 @@ class LogEntry extends Component {
         key: 'overview',
         tab: (
           <Tab
+            key="overview"
             label="Overview"
           />
         )
@@ -83,26 +84,29 @@ class LogEntry extends Component {
         key: 'symptoms',
         tab: (
           <Tab
+            key="symptoms"
             label="Symptoms"
           />
         )
       },
 
       {
-        content: <SideEffects onEntryChanged={updateEntry} />,
+        content: <SideEffects updateEntry={updateEntry} {...newEntry} />,
         key: 'side-effects',
         tab: (
           <Tab
+            key="side-effects"
             label="Side Effects"
           />
         )
       },
 
       {
-        content: <Optional onEntryChanged={updateEntry} />,
+        content: <Optional updateEntry={updateEntry} {...newEntry} />,
         key: 'optional',
         tab: (
           <Tab
+            key="optional"
             label="Optional"
           />
         )
