@@ -18,25 +18,38 @@ class LogEntry extends Component {
 
   static propTypes = {
     navigator: PropTypes.object.isRequired,
+    newEntry: PropTypes.object.isRequired,
     updateEntry: PropTypes.func.isRequired,
+    saveEntry: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.renderToolbar = this.renderToolbar.bind(this);
     this.renderTabs = this.renderTabs.bind(this);
+    this.onSaveClick = this.onSaveClick.bind(this);
   }
 
   renderToolbar() {
     return  (
       <Header
-        action={() => console.log('save')}
+        action={this.onSaveClick}
         actionIcon="md-check"
         back
         modifier="tertiary"
         title="New Log Entry"
       />
     );
+  }
+
+  onSaveClick() {
+    const {
+      saveEntry,
+      navigator,
+    } = this.props;
+
+    saveEntry();
+    navigator.popPage();
   }
 
   renderTabs() {

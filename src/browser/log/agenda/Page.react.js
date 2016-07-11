@@ -7,7 +7,12 @@ import Empty from './Empty.react';
 import Entry from './Entry.react';
 
 import Header from '../../app/Header.react';
-import {Page} from 'react-onsenui';
+import {
+  Icon,
+  List,
+  ListItem,
+  Page,
+} from 'react-onsenui';
 
 import agendaSelector from '../../../common/logging/agenda/selector';
 
@@ -27,10 +32,23 @@ class AgendaPage extends Component {
     return <Header title="Agenda"/>;
   }
 
-  renderEntries(entries) {
+  renderEntry(entry) {
+    const entryTime = new Date(entry.createdAt);
+    const entryName = entryTime.toLocaleString();
+    return (
+      <ListItem
+        key={entry.id}
+        tappable
+      >
+        <div className="left">
+          <Icon icon="md-calendar" />
+        </div>
+        {entryName}
+      </ListItem>
+    );
     return map(
       entry => <Entry entry={entry} key={entry.id} />,
-      entries
+        entries
     );
   }
 
@@ -48,7 +66,10 @@ class AgendaPage extends Component {
         {isEmpty(entries) ? (
           <Empty />
         ) : (
-          this.renderEntries(entries)
+          <List
+            renderRow={this.renderEntry}
+            dataSource={entries}
+          />
         )}
         <Fab navigator={navigator}/>
       </Page>
