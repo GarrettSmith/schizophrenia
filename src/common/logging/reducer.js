@@ -38,6 +38,14 @@ export default function loggingReducer(state = initialState, action) {
 
   switch (action.type) {
 
+    case actions.UPDATE_ENTRY: {
+      return assoc(
+        'newEntry',
+        merge(state.newEntry, action.payload),
+        state
+      );
+    }
+
     case actions.SAVE_ENTRY: {
       const newEntry = merge(state.newEntry, action.payload);
       const newEntrySymptoms = map(assoc('entryId', newEntry.id));

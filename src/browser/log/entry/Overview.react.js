@@ -8,13 +8,31 @@ import Nominal from './Nominal.react';
 export default class Overview extends Component {
 
   static propTypes = {
+    emotional: PropTypes.number.isRequired,
+    mental: PropTypes.number.isRequired,
+    physical: PropTypes.number.isRequired,
+    updateEntry: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
+    this.onChange = this.onChange.bind(this);
+    this.onChangePhysical = this.onChange.bind(this, 'physical');
+    this.onChangeMental = this.onChange.bind(this, 'mental');
+    this.onChangeEmotional = this.onChange.bind(this, 'emotional');
+  }
+
+  onChange(prop, val) {
+    this.props.updateEntry({[prop]: val});
   }
 
   render() {
+    const {
+      emotional,
+      mental,
+      physical,
+    } = this.props;
+
     return (
       <Page
         className="overview"
@@ -24,8 +42,8 @@ export default class Overview extends Component {
             Physical
           </h3>
           <Nominal
-            onChange={x => console.log(x)}
-            value={1}
+            onChange={this.onChangePhysical}
+            value={physical}
           />
         </section>
 
@@ -34,8 +52,8 @@ export default class Overview extends Component {
             Mental
           </h3>
           <Nominal
-            onChange={x => console.log(x)}
-            value={1}
+            onChange={this.onChangeMental}
+            value={mental}
           />
         </section>
 
@@ -44,8 +62,8 @@ export default class Overview extends Component {
             Emotional
           </h3>
           <Nominal
-            onChange={x => console.log(x)}
-            value={1}
+            onChange={this.onChangeEmotional}
+            value={emotional}
           />
         </section>
 

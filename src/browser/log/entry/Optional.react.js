@@ -16,8 +16,6 @@ export default class Optional extends Component {
   }
 
   render() {
-    const {msg} = this.props;
-
     return (
       <Page
         className="optional"

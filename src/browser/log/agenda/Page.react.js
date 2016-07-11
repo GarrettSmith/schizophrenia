@@ -1,5 +1,6 @@
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
 
 import Fab from '../Fab.react';
 import Empty from './Empty.react';
@@ -8,38 +9,22 @@ import Entry from './Entry.react';
 import Header from '../../app/Header.react';
 import {Page} from 'react-onsenui';
 
+import agendaSelector from '../../../common/logging/agenda/selector';
+
 import {
   isEmpty,
   map
 } from 'ramda';
 
-export default class AgendaPage extends Component {
+class AgendaPage extends Component {
 
   static propTypes = {
-    //actions: PropTypes.object.isRequired,
-    //logging: PropTypes.object.isRequired,
+    entries: PropTypes.array.isRequired,
     navigator: PropTypes.object.isRequired,
   };
 
   renderToolbar() {
     return <Header title="Agenda"/>;
-  }
-
-  render() {
-    const {
-      navigator,
-    } = this.props;
-    const entries = [];
-
-    return (
-      <Page
-        className="agenda"
-        renderToolbar={this.renderToolbar}
-      >
-        {isEmpty(entries) ? <Empty /> : this.renderEntries(entries)}
-        <Fab navigator={navigator}/>
-      </Page>
-    );
   }
 
   renderEntries(entries) {
@@ -49,4 +34,27 @@ export default class AgendaPage extends Component {
     );
   }
 
+  render() {
+    const {
+      entries,
+      navigator,
+    } = this.props;
+
+    return (
+      <Page
+        className="agenda"
+        renderToolbar={this.renderToolbar}
+      >
+        {isEmpty(entries) ? (
+          <Empty />
+        ) : (
+          this.renderEntries(entries)
+        )}
+        <Fab navigator={navigator}/>
+      </Page>
+    );
+  }
+
 }
+
+export default connect(agendaSelector)(AgendaPage);

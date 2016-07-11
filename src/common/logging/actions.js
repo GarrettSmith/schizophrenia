@@ -5,6 +5,7 @@ export const ADD_SYMPTOM = 'ADD_SYMPTOM';
 export const SAVE_ENTRY = 'SAVE_ENTRY';
 export const ENTER_SYMPTOM = 'ENTER_SYMPTOM';
 export const UPDATE_ENTRY_SYMPTOM = 'UPDATE_ENTRY_SYMPTOM';
+export const UPDATE_ENTRY = 'UPDATE_ENTRY';
 
 function addNewSymptom() {
   return ({getUid}) => ({
@@ -52,4 +53,5 @@ export const logging = {
   enterSymptom: createAction(ENTER_SYMPTOM),
   saveEntry,
   updateEntrySymptom,
+  updateEntry: createAction(UPDATE_ENTRY),
 };

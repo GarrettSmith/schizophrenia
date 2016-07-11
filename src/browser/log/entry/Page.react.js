@@ -12,10 +12,13 @@ import Optional from './Optional.react';
 import Symptoms from './Symptoms.react';
 import SideEffects from './SideEffects.react';
 
+import {logging} from '../../../common/logging/actions';
+
 class LogEntry extends Component {
 
   static propTypes = {
     navigator: PropTypes.object.isRequired,
+    updateEntry: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -37,10 +40,21 @@ class LogEntry extends Component {
   }
 
   renderTabs() {
-    const {navigator} = this.props;
+    const {
+      newEntry,
+      updateEntry,
+    } = this.props;
+
     return [
       {
-        content: <Overview />,
+        content: (
+          <Overview
+            updateEntry={updateEntry}
+            emotional={newEntry.emotional}
+            mental={newEntry.mental}
+            physical={newEntry.physical}
+          />
+        ),
         key: 'overview',
         tab: (
           <Tab
@@ -51,9 +65,7 @@ class LogEntry extends Component {
 
       {
         content: (
-          <Symptoms
-            navigator={navigator}
-          />
+          <Symptoms onEntryChanged={updateEntry}/>
         ),
         key: 'symptoms',
         tab: (
@@ -64,7 +76,7 @@ class LogEntry extends Component {
       },
 
       {
-        content: <SideEffects />,
+        content: <SideEffects onEntryChanged={updateEntry} />,
         key: 'side-effects',
         tab: (
           <Tab
@@ -74,7 +86,7 @@ class LogEntry extends Component {
       },
 
       {
-        content: <Optional />,
+        content: <Optional onEntryChanged={updateEntry} />,
         key: 'optional',
         tab: (
           <Tab
@@ -101,7 +113,11 @@ class LogEntry extends Component {
 
 }
 
-LogEntry = connect(state => ({
-}))(LogEntry);
+LogEntry = connect(
+  state => ({
+    newEntry: state.logging.newEntry,
+  }),
+  logging
+)(LogEntry);
 
 export default LogEntry;
