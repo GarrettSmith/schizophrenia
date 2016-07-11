@@ -1,14 +1,20 @@
 import {createSelector} from 'reselect';
-import agendaSelector from './agenda/selector';
+
+import {Symptom} from './models';
 
 import {
   contains,
   filter,
+  length,
   map,
+  merge,
   mergeAll,
   prop,
+  toLower,
   values,
 } from 'ramda';
+
+const MIN_ENTERED = 3;
 
 const enteredSymptomSelector = state => state.logging.enteredSymptom;
 const newEntrySymptomsSelector = state => state.logging.newEntrySymptoms;
@@ -16,8 +22,18 @@ const newSymptomsSelector = state => state.logging.newSymptoms;
 const symptomsSelector = state => state.logging.symptoms;
 
 function suggestSymptoms(entered, symptoms) {
+  if (length(entered) < MIN_ENTERED) return [];
+
   const symptomObjs = values(symptoms);
-  return filter(s => contains(entered, s.name), symptomObjs);
+  const existing = filter(
+    s => contains(toLower(entered), toLower(s.name)),
+    symptomObjs
+  );
+  const newSymptom = merge(Symptom, {name: entered});
+  return [
+    newSymptom,
+    ...existing,
+  ];
 }
 
 function associateEntrySymptoms(entrySymptoms, ...symptoms) {
@@ -33,20 +49,17 @@ function associateEntrySymptoms(entrySymptoms, ...symptoms) {
 
 export default createSelector(
   [
-    agendaSelector,
     enteredSymptomSelector,
     newEntrySymptomsSelector,
     newSymptomsSelector,
     symptomsSelector,
   ],
   (
-    agenda,
     entered,
     newEntrySymptoms,
     newSymptoms,
     symptoms
   ) => ({
-    agenda,
     suggestedSymptoms: suggestSymptoms(entered, symptoms),
     newEntrySymptoms:
       associateEntrySymptoms(newEntrySymptoms, symptoms, newSymptoms),

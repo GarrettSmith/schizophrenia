@@ -13,6 +13,7 @@ import Symptoms from './Symptoms.react';
 import SideEffects from './SideEffects.react';
 
 import {logging} from '../../../common/logging/actions';
+import loggingSelector  from '../../../common/logging/selector';
 
 class LogEntry extends Component {
 
@@ -54,8 +55,15 @@ class LogEntry extends Component {
 
   renderTabs() {
     const {
+      addNewSymptom,
+      addSymptom,
+      enterSymptom,
+      enteredSymptom,
+      newEntrySymptoms,
       newEntry,
+      suggestedSymptoms,
       updateEntry,
+      updateEntrySymptom,
     } = this.props;
 
     return [
@@ -79,7 +87,15 @@ class LogEntry extends Component {
 
       {
         content: (
-          <Symptoms onEntryChanged={updateEntry}/>
+          <Symptoms
+            addNewSymptom={addNewSymptom}
+            addSymptom={addSymptom}
+            enterSymptom={enterSymptom}
+            enteredSymptom={enteredSymptom}
+            entrySymptoms={newEntrySymptoms}
+            suggestedSymptoms={suggestedSymptoms}
+            updateEntrySymptom={updateEntrySymptom}
+          />
         ),
         key: 'symptoms',
         tab: (
@@ -130,11 +146,11 @@ class LogEntry extends Component {
 
 }
 
-LogEntry = connect(
+export default connect(
   state => ({
     newEntry: state.logging.newEntry,
+    enteredSymptom: state.logging.enteredSymptom,
+    ...loggingSelector(state),
   }),
   logging
 )(LogEntry);
-
-export default LogEntry;
