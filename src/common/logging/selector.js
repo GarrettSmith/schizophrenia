@@ -22,7 +22,7 @@ const newSymptomsSelector = state => state.logging.newSymptoms;
 const symptomsSelector = state => state.logging.symptoms;
 
 function suggestSymptoms(entered, symptoms) {
-  if (length(entered) < MIN_ENTERED) return [];
+  if (!entered || length(entered) < MIN_ENTERED) return [];
 
   const symptomObjs = values(symptoms);
   const existing = filter(

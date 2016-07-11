@@ -37,10 +37,11 @@ export default class Symptoms extends Component {
   renderSuggestion(symptom) {
     const {addSymptom} = this.props;
     const icon = symptom.id ? "md-plus" : "md-file-plus";
+    const onClick = () => addSymptom(symptom.id);
     return (
       <ListItem
         key={symptom.id}
-        onClick={addSymptom}
+        onClick={onClick}
         tappable
       >
         <div className="right">
@@ -56,10 +57,7 @@ export default class Symptoms extends Component {
   renderEntered(entrySymptom) {
     const {updateEntrySymptom} = this.props;
     const inputId = `input-${entrySymptom.id}`;
-    const onChange = severity => updateEntrySymptom({
-      id: entrySymptom.id,
-      severity,
-    });
+    const onChange = severity => updateEntrySymptom(severity, entrySymptom.id);
     ;
     return (
       <ListItem
@@ -74,7 +72,7 @@ export default class Symptoms extends Component {
         </label>
         <div className="center">
           <p>
-            {entrySymptom.name}
+            {entrySymptom.symptom.name}
           </p>
           <Nominal
             value={entrySymptom.severity}
