@@ -25,12 +25,10 @@ const ROUTES = [
     route('logAgenda'),
     route('logWeek'),
     route('logMonth'),
-    route('logAll'),
   ],
 
   [
     route('journal'),
-    route('medication'),
     route('support'),
   ],
 
@@ -73,7 +71,7 @@ export default class Menu extends Component {
         </div>
 
         <div className="center">
-          {item.key}
+          {item.name}
         </div>
       </ListItem>
     );

@@ -3,6 +3,7 @@ import './Header.scss';
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {
+  BackButton,
   Toolbar,
   ToolbarButton,
   Icon,
@@ -16,7 +17,6 @@ class Header extends Component {
     action: PropTypes.func,
     actionIcon: PropTypes.string,
     back: PropTypes.bool,
-    navigator: PropTypes.object,
     title: PropTypes.string,
     modifier: PropTypes.string,
   };
@@ -30,19 +30,23 @@ class Header extends Component {
   renderLeft() {
     const {
       back,
-      navigator,
       openDrawer,
     } = this.props;
-    const icon = back ? 'md-arrow-left' : 'md-menu';
-    const onClick = back ? navigator.popPage.bind(navigator) : openDrawer;
+
     return (
       <div className="left">
+      {back ? (
+        <BackButton>
+          Back
+        </BackButton>
+      ) : (
         <ToolbarButton
-          onClick={onClick}
+          onClick={openDrawer}
           ripple
         >
-          <Icon icon={icon}/>
+          <Icon icon="md-menu" />
         </ToolbarButton>
+      )}
       </div>
     );
   }

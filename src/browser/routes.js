@@ -1,51 +1,57 @@
+import AddSymptom from './log/entry/AddSymptom.react';
 import Crisis from './crisis/Page.react';
+import GoalEntry from './goal/entry/Page.react';
 import Home from './home/Page.react';
 import Journal from './journal/Page.react';
 import JournalEntry from './journal/entry/Page.react';
 import LogAgenda from './log/agenda/Page.react';
 import LogAll from './log/all/Page.react';
+import LogEntry from './log/entry/Page.react';
 import LogMonth from './log/month/Page.react';
 import LogWeek from './log/week/Page.react';
-import LogEntry from './log/entry/Page.react';
 import Support from './support/Page.react';
 import SupportEntry from './support/entry/Page.react';
 import Tracking from './tracking/Page.react';
-import GoalEntry from './goal/entry/Page.react';
 
 export const ROUTES = {
   home: {
     icon: 'md-home',
     key: 'home',
+    name: 'Home',
     component: Home,
   },
 
   logAgenda: {
     icon: 'md-view-agenda',
     key: 'logAgenda',
+    name: 'Day',
     component: LogAgenda,
   },
 
   logWeek: {
     icon: 'md-view-week',
     key: 'logWeek',
+    name: 'Week',
     component: LogAgenda,
   },
 
   logMonth: {
     icon: 'md-view-module',
     key: 'logMonth',
-    component: LogAgenda,
-  },
-
-  logAll: {
-    icon: 'md-time',
-    key: 'logAll',
+    name: 'Month',
     component: LogAgenda,
   },
 
   logEntry: {
+    disableDrawer: true,
+    icon: 'md-edit',
     key: 'logEntry',
     component: LogEntry,
+  },
+
+  logEntryAddSymptom: {
+    key: 'logEntryAddSymptom',
+    component: AddSymptom,
   },
 
   medication: {
@@ -57,6 +63,7 @@ export const ROUTES = {
   support: {
     icon: 'md-accounts',
     key: 'support',
+    name: 'Support',
     component: Support,
   },
 
@@ -69,22 +76,26 @@ export const ROUTES = {
   settings: {
     icon: 'md-settings',
     key: 'settings',
+    name: 'Settings',
     component: null,
   },
 
   help: {
     icon: 'md-help',
     key: 'help',
+    name: 'Help & Feedback',
     component: null,
   },
 
   journal: {
     icon: 'md-book',
     key: 'journal',
+    name: 'Journal',
     component: Journal
   },
 
   journalEntry: {
+    icon: 'md-book',
     key: 'journalEntry',
     component: JournalEntry
   },
@@ -102,7 +113,8 @@ export const ROUTES = {
   goalEntry: {
     key: 'goalEntry',
     component: GoalEntry,
-  }
+  },
+
 };
 
 export const INITIAL_ROUTE = ROUTES.home;

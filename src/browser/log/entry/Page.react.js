@@ -31,16 +31,17 @@ class LogEntry extends Component {
         actionIcon="md-check"
         back
         modifier="tertiary"
-        navigator={this.props.navigator}
         title="New Log Entry"
       />
     );
   }
 
   renderTabs() {
+    const {navigator} = this.props;
     return [
       {
         content: <Overview />,
+        key: 'overview',
         tab: (
           <Tab
             label="Overview"
@@ -49,7 +50,12 @@ class LogEntry extends Component {
       },
 
       {
-        content: <Symptoms />,
+        content: (
+          <Symptoms
+            navigator={navigator}
+          />
+        ),
+        key: 'symptoms',
         tab: (
           <Tab
             label="Symptoms"
@@ -59,6 +65,7 @@ class LogEntry extends Component {
 
       {
         content: <SideEffects />,
+        key: 'side-effects',
         tab: (
           <Tab
             label="Side Effects"
@@ -68,6 +75,7 @@ class LogEntry extends Component {
 
       {
         content: <Optional />,
+        key: 'optional',
         tab: (
           <Tab
             label="Optional"
@@ -78,8 +86,6 @@ class LogEntry extends Component {
   }
 
   render() {
-    const {msg} = this.props;
-
     return (
       <Page
         className="goal-entry"

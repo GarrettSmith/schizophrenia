@@ -15,16 +15,14 @@ export default class Overview extends Component {
   }
 
   render() {
-    const {msg} = this.props;
-
     return (
       <Page
         className="overview"
       >
         <section>
-          <h2>
+          <h3>
             Physical
-          </h2>
+          </h3>
           <Nominal
             onChange={x => console.log(x)}
             value={1}
@@ -32,17 +30,23 @@ export default class Overview extends Component {
         </section>
 
         <section>
-          <h2>
+          <h3>
             Mental
-          </h2>
-          <Nominal />
+          </h3>
+          <Nominal
+            onChange={x => console.log(x)}
+            value={1}
+          />
         </section>
 
         <section>
-          <h2>
+          <h3>
             Emotional
-          </h2>
-          <Nominal />
+          </h3>
+          <Nominal
+            onChange={x => console.log(x)}
+            value={1}
+          />
         </section>
 
       </Page>

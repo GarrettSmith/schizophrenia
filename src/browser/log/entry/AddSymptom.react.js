@@ -1,17 +1,15 @@
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {
-  Button,
-  Fab,
   Icon,
   Input,
+  Page,
   List,
   ListHeader,
   ListItem,
-  Page,
 } from 'react-onsenui';
+import Header from '../../app/Header.react';
 import Nominal from './Nominal.react';
-import {route} from '../../routes';
 
 const SYMPTOMS = [
   'Angry',
@@ -19,7 +17,7 @@ const SYMPTOMS = [
   'Suicidal Thoughts',
 ];
 
-export default class Symptoms extends Component {
+export default class AddSymptom extends Component {
 
   static propTypes = {
   };
@@ -27,6 +25,19 @@ export default class Symptoms extends Component {
   constructor(props) {
     super(props);
     this.renderRow = this.renderRow.bind(this);
+    this.renderHeader = this.renderHeader.bind(this)
+  }
+
+  renderToolbar() {
+    return  (
+      <Header
+        action={() => console.log('save')}
+        actionIcon="md-check"
+        back
+        modifier="tertiary"
+        title="Add Symptoms"
+      />
+    );
   }
 
   renderRow(item) {
@@ -34,7 +45,6 @@ export default class Symptoms extends Component {
     return (
       <ListItem
         key={item}
-        modifier="longdivider"
         tappable
       >
         <label className="left">
@@ -42,10 +52,12 @@ export default class Symptoms extends Component {
             inputId={inputId}
             type="checkbox"
           />
+        </label>
+        <label
+          className="center"
+          htmlFor={inputId}
+        >
           {item}
-          <Nominal
-            value={0}
-          />
         </label>
       </ListItem>
     );
@@ -54,10 +66,7 @@ export default class Symptoms extends Component {
   renderHeader() {
     return (
       <ListHeader>
-        <Input
-          modifier="underbar"
-          placeholder="Add a Symptom"
-        />
+        <Input />
       </ListHeader>
     );
   }
@@ -66,12 +75,14 @@ export default class Symptoms extends Component {
     return (
       <Page
         className="symptoms"
+        renderToolbar={this.renderToolbar}
       >
         <List
           dataSource={SYMPTOMS}
-          renderRow={this.renderRow}
           renderHeader={this.renderHeader}
+          renderRow={this.renderRow}
         />
+
       </Page>
     );
   }

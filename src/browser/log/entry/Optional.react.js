@@ -1,6 +1,7 @@
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {
+  Input,
   Page,
 } from 'react-onsenui';
 import Nominal from './Nominal.react';
@@ -22,24 +23,34 @@ export default class Optional extends Component {
         className="optional"
       >
         <section>
-          <h3>
-            Weight
-          </h3>
-          <input type="number" />
+          <Input
+            float
+            placeholder="Weight (lbs)"
+            type="number"
+          />
         </section>
 
         <section>
-          <h3>
-            Blood Sugar
-          </h3>
-          <input type="number" />
+          <Input
+            float
+            placeholder="Blood Sugar (mmol/L)"
+            type="number"
+          />
         </section>
 
         <section>
           <h3>
             Blood Pressure
           </h3>
-          <input type="number" />
+          <Input
+            placeholder="Systolic"
+            type="number"
+          />
+          /
+          <Input
+            placeholder="Diastolic"
+            type="number"
+          />
         </section>
       </Page>
     );

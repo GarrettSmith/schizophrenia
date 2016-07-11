@@ -32,7 +32,7 @@ export default class SideEffects extends Component {
         modifier="longdivider"
         key={item}
       >
-        <div class="center">
+        <div className="center">
           <h3>
             {item}
           </h3>

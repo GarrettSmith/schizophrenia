@@ -12,6 +12,11 @@ import {route} from '../routes';
 
 export default class ActionButton extends Component {
 
+  ACTIONS = [
+    route('logEntry'),
+    route('journalEntry'),
+  ];
+
   static propTypes = {
     navigator: PropTypes.object.isRequired,
   };
@@ -22,17 +27,25 @@ export default class ActionButton extends Component {
 
   constructor(props) {
     super(props);
-    this.goTo = this.goTo.bind(this);
+    this.renderItem = this.renderItem.bind(this);
   }
 
-  goTo(routeKey) {
-    this.props.navigator.pushPage(route(routeKey));
+  renderItem(route) {
+    const {navigator} = this.props;
+    return (
+        <SpeedDialItem
+          key={route.key}
+          onClick={() => navigator.pushPage(route)}
+        >
+          <Icon icon={route.icon}/>
+        </SpeedDialItem>
+    );
   }
 
   render() {
     return (
       <SpeedDial
-        class="log-speed-dial"
+        className="log-speed-dial"
         position="bottom right"
       >
         <Fab
@@ -44,23 +57,8 @@ export default class ActionButton extends Component {
           />
         </Fab>
 
-        <SpeedDialItem
-          onClick={() => this.goTo('logEntry')}
-        >
-          <Icon icon="md-edit" />
-        </SpeedDialItem>
+        {this.ACTIONS.map(this.renderItem)}
 
-        <SpeedDialItem
-          onClick={() => this.goTo('journalEntry')}
-        >
-          <Icon icon="md-book" />
-        </SpeedDialItem>
-
-        <SpeedDialItem
-          onClick={() => this.goTo('goalEntry')}
-        >
-          <Icon icon="md-flag" />
-        </SpeedDialItem>
       </SpeedDial>
     );
   }
