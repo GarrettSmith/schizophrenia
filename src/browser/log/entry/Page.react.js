@@ -9,11 +9,11 @@ import {
 } from 'react-onsenui';
 import Overview from './Overview.react';
 import Optional from './Optional.react';
-import Symptoms from './Symptoms.react';
-import SideEffects from './SideEffects.react';
+import LogList from './LogList.react';
 
 import {logging} from '../../../common/logging/actions';
-import loggingSelector  from '../../../common/logging/selector';
+import {associations} from '../../../common/logging/associations/actions';
+import associationSelector from '../../../common/logging/associations/selector';
 
 class LogEntry extends Component {
 
@@ -56,14 +56,17 @@ class LogEntry extends Component {
   renderTabs() {
     const {
       addNewSymptom,
+      addNewSideEffect,
       addSymptom,
-      enterSymptom,
-      enteredSymptom,
-      newEntrySymptoms,
+      addSideEffect,
+      filterSymptom,
+      filterSideEffect,
       newEntry,
-      suggestedSymptoms,
+      sideEffect,
+      symptom,
       updateEntry,
       updateEntrySymptom,
+      updateEntrySideEffect,
     } = this.props;
 
     return [
@@ -87,14 +90,12 @@ class LogEntry extends Component {
 
       {
         content: (
-          <Symptoms
-            addNewSymptom={addNewSymptom}
-            addSymptom={addSymptom}
-            enterSymptom={enterSymptom}
-            enteredSymptom={enteredSymptom}
-            entrySymptoms={newEntrySymptoms}
-            suggestedSymptoms={suggestedSymptoms}
-            updateEntrySymptom={updateEntrySymptom}
+          <LogList
+            add={addSymptom}
+            association={symptom}
+            filterPlaceholder="Add a Symptom"
+            onChangeFilter={filterSymptom}
+            updateItem={updateEntrySymptom}
           />
         ),
         key: 'symptoms',
@@ -107,12 +108,20 @@ class LogEntry extends Component {
       },
 
       {
-        content: <SideEffects updateEntry={updateEntry} {...newEntry} />,
-        key: 'side-effects',
+        content: (
+          <LogList
+            add={addSideEffect}
+            association={sideEffect}
+            filterPlaceholder="Add a Side Effect"
+            onChangeFilter={filterSideEffect}
+            updateItem={updateEntrySideEffect}
+          />
+        ),
+        key: 'sideEffects',
         tab: (
           <Tab
-            key="side-effects"
-            label="Side Effects"
+            key="sideEffects"
+            label="SideEffects"
           />
         )
       },
@@ -150,7 +159,11 @@ export default connect(
   state => ({
     newEntry: state.logging.newEntry,
     enteredSymptom: state.logging.enteredSymptom,
-    ...loggingSelector(state),
+    sideEffect: associationSelector(state.sideEffect),
+    symptom: associationSelector(state.symptom),
   }),
-  logging
+  {
+    ...associations,
+    ...logging,
+  }
 )(LogEntry);

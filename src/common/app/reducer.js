@@ -8,12 +8,18 @@ import device from '../device/reducer';
 import intl from '../intl/reducer';
 import logging from '../logging/reducer';
 import ui from '../ui/reducer';
+import {
+  sideEffectReducer,
+  symptomReducer,
+} from '../logging/associations/reducer'
 
 const appReducer = combineReducers({
   device,
   intl,
   logging,
   reduxFields,
+  sideEffect: sideEffectReducer,
+  symptom: symptomReducer,
   ui,
 });
 
