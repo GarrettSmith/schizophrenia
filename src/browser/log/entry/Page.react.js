@@ -9,7 +9,7 @@ import {
 } from 'react-onsenui';
 import Overview from './Overview.react';
 import Optional from './Optional.react';
-import LogList from './LogList.react';
+import AssociationList from './AssociationList.react';
 
 import {logging} from '../../../common/logging/actions';
 import {associations} from '../../../common/logging/associations/actions';
@@ -90,7 +90,7 @@ class LogEntry extends Component {
 
       {
         content: (
-          <LogList
+          <AssociationList
             add={addSymptom}
             association={symptom}
             filterPlaceholder="Add a Symptom"
@@ -109,7 +109,7 @@ class LogEntry extends Component {
 
       {
         content: (
-          <LogList
+          <AssociationList
             add={addSideEffect}
             association={sideEffect}
             filterPlaceholder="Add a Side Effect"

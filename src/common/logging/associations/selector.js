@@ -15,7 +15,7 @@ import {
 
 import {associate} from '../../lib/state';
 
-const MIN_ENTERED = 3;
+const MIN_ENTERED = 1;
 
 const filterSelector = state => state.filter;
 const newEntryAssociationsSelector = state => state.newEntryAssociations;

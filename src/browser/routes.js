@@ -1,4 +1,3 @@
-import AddSymptom from './log/entry/AddSymptom.react';
 import Crisis from './crisis/Page.react';
 import GoalEntry from './goal/entry/Page.react';
 import Home from './home/Page.react';
@@ -47,11 +46,6 @@ export const ROUTES = {
     icon: 'md-edit',
     key: 'logEntry',
     component: LogEntry,
-  },
-
-  logEntryAddSymptom: {
-    key: 'logEntryAddSymptom',
-    component: AddSymptom,
   },
 
   medication: {

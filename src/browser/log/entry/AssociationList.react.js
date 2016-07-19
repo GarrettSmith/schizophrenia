@@ -1,3 +1,5 @@
+import './AssociationList.scss';
+
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {
@@ -14,7 +16,7 @@ import Nominal from './Nominal.react';
 import {route} from '../../routes';
 import {values} from 'ramda';
 
-export default class LogList extends Component {
+export default class AssociationList extends Component {
 
   static propTypes = {
     add: PropTypes.func.isRequired,
@@ -60,7 +62,8 @@ export default class LogList extends Component {
     return (
       <ListItem
         key={item.id}
-        modifier="longdivider"
+        modifier="longdivider selected"
+        tappable
       >
         <label className="left">
           <Input
@@ -69,9 +72,9 @@ export default class LogList extends Component {
           />
         </label>
         <div className="center">
-          <p>
+          <span className="name">
             {item.association.name}
-          </p>
+          </span>
           <Nominal
             value={item.severity}
             onChange={onChange}
@@ -97,6 +100,7 @@ export default class LogList extends Component {
         <p>
           <Input
             onChange={this.onChangeFilter}
+            modifier="underbar"
             placeholder={filterPlaceholder}
             value={filter}
           />
@@ -118,7 +122,7 @@ export default class LogList extends Component {
 
     return (
       <Page
-        className="log-list"
+        className="association-list"
       >
         <List
           dataSource={dataSource}
