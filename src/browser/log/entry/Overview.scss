@@ -1,0 +1,37 @@
+@import '../../app/Constants';
+
+.overview {
+  .page__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .page__background {
+    background-color: $light-grey;
+  }
+
+  .card {
+    background-color: white;
+    box-shadow: 0 0.2rem 0.4rem transparentize(black, 0.7);
+    border-radius: 0.2rem;
+    margin: 0.5rem;
+    flex-grow: 1;
+  }
+
+  section {
+    border-bottom: 1px solid $light-grey;
+    padding: 0.8rem;
+
+    &:last-child {
+      border: none;
+    }
+
+    h3 {
+      color: $md-grey;
+      font-size: 2em;
+      line-height: 1em;
+      margin-top: 1rem;
+    }
+  }
+}

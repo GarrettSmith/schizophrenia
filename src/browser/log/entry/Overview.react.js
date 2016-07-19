@@ -1,3 +1,5 @@
+import './Overview.scss';
+
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {
@@ -37,35 +39,37 @@ export default class Overview extends Component {
       <Page
         className="overview"
       >
-        <section>
-          <h3>
-            Physical
-          </h3>
-          <Nominal
-            onChange={this.onChangePhysical}
-            value={physical}
-          />
-        </section>
+        <div className="card">
+          <section>
+            <h3>
+              Physical
+            </h3>
+            <Nominal
+              onChange={this.onChangePhysical}
+              value={physical}
+            />
+          </section>
 
-        <section>
-          <h3>
-            Mental
-          </h3>
-          <Nominal
-            onChange={this.onChangeMental}
-            value={mental}
-          />
-        </section>
+          <section>
+            <h3>
+              Mental
+            </h3>
+            <Nominal
+              onChange={this.onChangeMental}
+              value={mental}
+            />
+          </section>
 
-        <section>
-          <h3>
-            Emotional
-          </h3>
-          <Nominal
-            onChange={this.onChangeEmotional}
-            value={emotional}
-          />
-        </section>
+          <section>
+            <h3>
+              Emotional
+            </h3>
+            <Nominal
+              onChange={this.onChangeEmotional}
+              value={emotional}
+            />
+          </section>
+        </div>
 
       </Page>
     );
