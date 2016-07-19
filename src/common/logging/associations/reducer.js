@@ -26,6 +26,7 @@ import {
   merge,
   prop,
   reject,
+  values,
 } from 'ramda';
 
 import {
@@ -66,7 +67,7 @@ function createAssociationReducer(association_type, default_associations) {
     const newAssociations = differenceWith(
       (a, b) => a.name === b.name,
       default_associations,
-      state.existingAssociations,
+      values(state.existingAssociations),
     );
 
     return evolve(
