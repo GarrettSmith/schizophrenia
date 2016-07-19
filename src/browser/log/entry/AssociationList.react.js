@@ -12,9 +12,10 @@ import {
   ListItem,
   Page,
 } from 'react-onsenui';
+import Header from '../../app/Header.react';
 import Nominal from './Nominal.react';
 import {route} from '../../routes';
-import {values} from 'ramda';
+import {isEmpty} from 'ramda';
 
 export default class AssociationList extends Component {
 
@@ -24,6 +25,8 @@ export default class AssociationList extends Component {
     onChangeFilter: PropTypes.func.isRequired,
     updateItem: PropTypes.func.isRequired,
     filterPlaceholder: PropTypes.string.isRequired,
+    select: PropTypes.func.isRequired,
+    removeSelected: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -32,6 +35,7 @@ export default class AssociationList extends Component {
     this.onChangeFilter = this.onChangeFilter.bind(this);
     this.renderSelected = this.renderSelected.bind(this);
     this.renderFiltered = this.renderFiltered.bind(this);
+    this.onSelect = this.onSelect.bind(this);
   }
 
   renderFiltered(item) {
@@ -54,11 +58,18 @@ export default class AssociationList extends Component {
     );
   }
 
+  onSelect(e) {
+    this.props.select(e.target.checked, e.target.value);
+  }
+
   renderSelected(item) {
-    const {updateItem} = this.props;
+    const {
+      updateItem,
+    } = this.props;
+
     const inputId = `input-${item.id}`;
     const onChange = severity => updateItem(severity, item.id);
-    ;
+
     return (
       <ListItem
         key={item.id}
@@ -69,11 +80,14 @@ export default class AssociationList extends Component {
           <Input
             inputId={inputId}
             type="checkbox"
+            checked={item.selected}
+            onChange={this.onSelect}
+            value={item.id}
           />
         </label>
         <div className="center">
           <span className="name">
-            {item.association.name}
+            {item.association && item.association.name}
           </span>
           <Nominal
             value={item.severity}
@@ -113,9 +127,11 @@ export default class AssociationList extends Component {
     const {
       association: {
         filter,
+        selected,
         filteredAssociations,
         selectedAssociations,
-      }
+      },
+      removeSelected,
     } = this.props;
     const dataSource = filter ? filteredAssociations : selectedAssociations;
     const renderRow = filter ? this.renderFiltered : this.renderSelected;
@@ -129,6 +145,16 @@ export default class AssociationList extends Component {
           renderRow={renderRow}
           renderHeader={this.renderHeader}
         />
+
+        {!isEmpty(selected) ? (
+          <Fab
+            onClick={removeSelected}
+            position="bottom right"
+          >
+            <Icon icon="md-delete" />
+          </Fab>
+        ) : null}
+
       </Page>
     );
   }

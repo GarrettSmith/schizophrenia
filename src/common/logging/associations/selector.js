@@ -2,6 +2,7 @@ import {createSelector} from 'reselect';
 import {Association} from './models';
 
 import {
+  assoc,
   contains,
   filter,
   length,
@@ -21,6 +22,7 @@ const filterSelector = state => state.filter;
 const newEntryAssociationsSelector = state => state.newEntryAssociations;
 const newAssociationsSelector = state => state.newAssociations;
 const associationsSelector = state => state.existingAssociations;
+const selectedSelector = state => state.selected;
 
 // TODO prevent duplicates from typing
 function suggestAssociations(filterText, associations) {
@@ -38,7 +40,7 @@ function suggestAssociations(filterText, associations) {
   ];
 }
 
-function associateEntryAssociations(entryAssociations, ...associations) {
+function associateEntryAssociations(selected, entryAssociations, ...associations) {
   const mergedAssociations = mergeAll(associations);
   const associated = associate(
     'associationId',
@@ -46,25 +48,37 @@ function associateEntryAssociations(entryAssociations, ...associations) {
     mergedAssociations,
     entryAssociations
   );
-  return values(associated);
+  // select entry associations
+  const selectedAssociations = map(
+    a => assoc('selected', contains(a.id, selected), a),
+    associated
+  );
+  return values(selectedAssociations);
 }
 
 export default createSelector(
   [
     filterSelector,
+    selectedSelector,
     newEntryAssociationsSelector,
     newAssociationsSelector,
     associationsSelector,
   ],
   (
     filter,
+    selected,
     newEntryAssociations,
     newAssociations,
     associations
   ) => ({
     filter,
+    selected,
     filteredAssociations: suggestAssociations(filter, associations),
-    selectedAssociations:
-      associateEntryAssociations(newEntryAssociations, associations, newAssociations),
+    selectedAssociations: associateEntryAssociations(
+      selected,
+      newEntryAssociations,
+      associations,
+      newAssociations
+    ),
   })
 );

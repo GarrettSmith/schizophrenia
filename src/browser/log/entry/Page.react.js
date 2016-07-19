@@ -62,6 +62,10 @@ class LogEntry extends Component {
       filterSymptom,
       filterSideEffect,
       newEntry,
+      removeSelectedEntrySymptoms,
+      removeSelectedEntrySideEffects,
+      selectEntrySymptom,
+      selectEntrySideEffect,
       sideEffect,
       symptom,
       updateEntry,
@@ -96,6 +100,8 @@ class LogEntry extends Component {
             filterPlaceholder="Add a Symptom"
             onChangeFilter={filterSymptom}
             updateItem={updateEntrySymptom}
+            select={selectEntrySymptom}
+            removeSelected={removeSelectedEntrySymptoms}
           />
         ),
         key: 'symptoms',
@@ -115,6 +121,8 @@ class LogEntry extends Component {
             filterPlaceholder="Add a Side Effect"
             onChangeFilter={filterSideEffect}
             updateItem={updateEntrySideEffect}
+            select={selectEntrySideEffect}
+            removeSelected={removeSelectedEntrySideEffects}
           />
         ),
         key: 'sideEffects',
@@ -146,6 +154,7 @@ class LogEntry extends Component {
         renderToolbar={this.renderToolbar}
       >
         <Tabbar
+          animation="slide"
           initialIndex={0}
           renderTabs={this.renderTabs}
         />

@@ -14,18 +14,18 @@ import {
 } from './models';
 
 import {
+  append,
   assoc,
   assocPath,
-  curry,
+  contains,
+  differenceWith,
+  equals,
   evolve,
-  find,
   identity,
-  isEmpty,
   map,
   merge,
-  propEq,
-  unionWith,
-  values,
+  prop,
+  reject,
 } from 'ramda';
 
 import {
@@ -46,6 +46,7 @@ export const sideEffectReducer = createAssociationReducer(
 function createAssociationReducer(association_type, default_associations) {
   const volatileState = {
     filter: null,
+    selected: [],
 
     newEntryAssociations: {},
     newAssociations: {},
@@ -62,15 +63,14 @@ function createAssociationReducer(association_type, default_associations) {
   };
 
   function load(state) {
-    const associations = unionWith(
+    const newAssociations = differenceWith(
       (a, b) => a.name === b.name,
       default_associations,
       state.existingAssociations,
     );
 
-    return assoc(
-      'existingAssociations',
-      idMap(associations),
+    return evolve(
+      {existingAssociations: merge(idMap(newAssociations))},
       state
     );
   }
@@ -147,6 +147,26 @@ function createAssociationReducer(association_type, default_associations) {
     return assoc('filter', filter, state);
   }
 
+  function select({id, selected}, state) {
+    const transform = selected ? append(id) : reject(equals(id));
+    return evolve({selected: transform}, state);
+  }
+
+  function removeSelected(state) {
+    const rejectedIds = map(
+      prop('associationId'),
+      state.newEntryAssociations
+    );
+    return evolve(
+      {
+        selected: () => [],
+        newEntryAssociations: reject(a => contains(a.id, state.selected)),
+        newAssociations: reject(a => contains(a.id, rejectedIds)),
+      },
+      state
+    );
+  }
+
   return function associationReducer(state = initialState, action) {
     // only handle actions for the given association type
     if (action.meta && action.meta.associationType !== association_type)
@@ -170,6 +190,12 @@ function createAssociationReducer(association_type, default_associations) {
 
       case actions.FILTER_ASSOCIATION:
         return filter(action.payload, state);
+
+      case actions.SELECT_ENTRY_ASSOCIATION:
+        return select(action.payload, state);
+
+      case actions.REMOVE_SELECTED_ENTRY_ASSOCIATIONS:
+        return removeSelected(state);
     }
 
     return state;
