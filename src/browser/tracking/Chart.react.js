@@ -41,7 +41,7 @@ export default class Chart extends Component {
                 data={data}
                 domain={domain}
                 x={X_KEY}
-                y={dimension.key}
+                y={dimension.prop}
                 standAlone={false}
                 style={{
                   data: {stroke: 'black'},
@@ -52,7 +52,7 @@ export default class Chart extends Component {
                 data={data}
                 domain={domain}
                 x={X_KEY}
-                y={dimension.key}
+                y={dimension.prop}
                 standAlone={false}
                 style={{
                   data: {fill: 'grey'},

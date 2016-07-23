@@ -1,14 +1,17 @@
 import {createSelector} from 'reselect';
 import {
   evolve,
+  filter,
   map,
   pick,
   pipe,
+  prop,
   values,
 } from 'ramda';
 import moment from 'moment';
 
 const entriesSelector = state => values(state.logging.entries);
+const dimensionsSelector = state => values(state.tracking.dimensions);
 
 const overviewFilter = map(pick([
   'createdAt',
@@ -23,20 +26,7 @@ const normalizeDates = map(evolve({
 
 const overviewData = pipe(overviewFilter, normalizeDates);
 
-const DIMENSIONS = [
-  {
-    name: 'Physical',
-    key: 'physical',
-  },
-  {
-    name: 'Mental',
-    key: 'mental',
-  },
-  {
-    name: 'Emotional',
-    key: 'emotional',
-  },
-];
+const enabledDimensions = filter(prop('enabled'));
 
 const DOMAIN = {
   x: [
@@ -49,10 +39,15 @@ const DOMAIN = {
 export default createSelector(
   [
     entriesSelector,
+    dimensionsSelector,
   ],
-  (entries) => ({
+  (
+    entries,
+    dimensions,
+  ) => ({
     data: overviewData(entries),
-    dimensions: DIMENSIONS,
+    dimensions: dimensions,
+    enabledDimensions: enabledDimensions(dimensions),
     domain: DOMAIN,
   })
 );

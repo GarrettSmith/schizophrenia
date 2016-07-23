@@ -11,10 +11,13 @@ export default class Filter extends Component {
 
   static propTypes = {
     dimensions: PropTypes.array.isRequired,
+    toggleDimension: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
+    this.onDimensionChange = this.onDimensionChange.bind(this);
+    this.renderListRow = this.renderListRow.bind(this);
   }
 
   renderListHeader() {
@@ -25,13 +28,22 @@ export default class Filter extends Component {
     )
   }
 
+  onDimensionChange(e) {
+    const {toggleDimension} = this.props;
+    const id = e.target.value;
+    const checked = e.target.checked;
+    toggleDimension(id, checked);
+  }
+
   renderListRow(dimension) {
     return (
       <ListItem key={dimension.name}>
         <label className="left">
           <Input
-            checked
+            checked={dimension.enabled}
+            onChange={this.onDimensionChange}
             type="checkbox"
+            value={dimension.id}
           />
         </label>
         {dimension.name}

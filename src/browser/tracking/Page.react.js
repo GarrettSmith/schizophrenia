@@ -5,17 +5,14 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Header from '../app/Header.react';
 import {
-  Toolbar,
-  ToolbarButton,
-  Icon,
   Page,
-  Tab,
-  Tabbar,
 } from 'react-onsenui';
 import Chart from './Chart.react';
 import Filter from './Filter.react';
+import Toolbar from './Toolbar.react';
 
 import trackingSelector from '../../common/tracking/selector';
+import {tracking as trackingActions} from '../../common/tracking/actions';
 
 class Tracking extends Component {
 
@@ -38,6 +35,8 @@ class Tracking extends Component {
       data,
       dimensions,
       domain,
+      enabledDimensions,
+      toggleDimension,
     } = this.props;
 
     return (
@@ -45,42 +44,17 @@ class Tracking extends Component {
         className="tracking"
         renderToolbar={this.renderToolbar}
       >
-        <Toolbar inline>
-          <div className="left">
-            <ToolbarButton>
-              <Icon icon="md-caret-left" />
-            </ToolbarButton>
-          </div>
-
-          <div className="center">
-            <select>
-              <option>
-                Week
-              </option>
-              <option>
-                Month
-              </option>
-              <option>
-                Year
-              </option>
-            </select>
-          </div>
-
-          <div className="right">
-            <ToolbarButton>
-              <Icon icon="md-caret-right" />
-            </ToolbarButton>
-          </div>
-        </Toolbar>
+        <Toolbar />
 
         <Chart
           data={data}
-          dimensions={dimensions}
+          dimensions={enabledDimensions}
           domain={domain}
         />
 
         <Filter
           dimensions={dimensions}
+          toggleDimension={toggleDimension}
         />
       </Page>
     );
@@ -91,5 +65,6 @@ class Tracking extends Component {
 export default connect(
   state => ({
     ...trackingSelector(state),
-  })
+  }),
+  trackingActions
 )(Tracking);
