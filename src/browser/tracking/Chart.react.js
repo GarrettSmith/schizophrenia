@@ -7,7 +7,10 @@ import {
   Tab,
   Tabbar,
 } from 'react-onsenui';
-import {prop} from 'ramda';
+import {
+  map,
+  prop,
+} from 'ramda';
 import moment from 'moment';
 import {
   VictoryLine,
@@ -28,24 +31,106 @@ export default class Chart extends Component {
   render() {
     const data = [
       {
-        createdAt: moment().toDate(),
-        val: 2,
+        name: 'Physical',
+        color: 'green',
+        values: [
+          {
+            createdAt: moment().toDate(),
+            val: 2,
+          },
+          {
+            createdAt: moment().subtract(1, 'd').toDate(),
+            val: 3,
+          },
+          {
+            createdAt: moment().subtract(2, 'd').toDate(),
+            val: 5,
+          },
+          {
+            createdAt: moment().subtract(3, 'd').toDate(),
+            val: 4,
+          },
+          {
+            createdAt: moment().subtract(4, 'd').toDate(),
+            val: 2,
+          },
+          {
+            createdAt: moment().subtract(5, 'd').toDate(),
+            val: 2,
+          },
+          {
+            createdAt: moment().subtract(6, 'd').toDate(),
+            val: 1,
+          },
+        ],
       },
       {
-        createdAt: moment().subtract(1, 'd').toDate(),
-        val: 3,
+        name: 'Mental',
+        color: 'blue',
+        values: [
+          {
+            createdAt: moment().toDate(),
+            val: 3,
+          },
+          {
+            createdAt: moment().subtract(1, 'd').toDate(),
+            val: 1,
+          },
+          {
+            createdAt: moment().subtract(2, 'd').toDate(),
+            val: 3,
+          },
+          {
+            createdAt: moment().subtract(3, 'd').toDate(),
+            val: 4,
+          },
+          {
+            createdAt: moment().subtract(4, 'd').toDate(),
+            val: 5,
+          },
+          {
+            createdAt: moment().subtract(5, 'd').toDate(),
+            val: 5,
+          },
+          {
+            createdAt: moment().subtract(6, 'd').toDate(),
+            val: 3,
+          },
+        ],
       },
       {
-        createdAt: moment().subtract(2, 'd').toDate(),
-        val: 5,
-      },
-      {
-        createdAt: moment().subtract(3, 'd').toDate(),
-        val: 4,
-      },
-      {
-        createdAt: moment().subtract(4, 'd').toDate(),
-        val: 2,
+        name: 'Emotional',
+        color: 'red',
+        values: [
+          {
+            createdAt: moment().toDate(),
+            val: 1,
+          },
+          {
+            createdAt: moment().subtract(1, 'd').toDate(),
+            val: 2,
+          },
+          {
+            createdAt: moment().subtract(2, 'd').toDate(),
+            val: 3,
+          },
+          {
+            createdAt: moment().subtract(3, 'd').toDate(),
+            val: 3,
+          },
+          {
+            createdAt: moment().subtract(4, 'd').toDate(),
+            val: 2,
+          },
+          {
+            createdAt: moment().subtract(5, 'd').toDate(),
+            val: 4,
+          },
+          {
+            createdAt: moment().subtract(6, 'd').toDate(),
+            val: 3,
+          },
+        ],
       },
     ];
 
@@ -54,28 +139,40 @@ export default class Chart extends Component {
         moment().startOf('week').toDate(),
         moment().endOf('week').toDate(),
       ],
-      y: [0, 5],
+      y: [1, 5],
     };
 
     return (
       <Page className="chart">
         <svg width="100%" height="100%">
-          <VictoryLine data={data}
-            domain={domain}
-            interpolation="cardinal"
-            x="createdAt"
-            y="val"
-            standAlone={false}
-          />
 
-          <VictoryScatter
-            data={data}
-            domain={domain}
-            x="createdAt"
-            y="val"
-            standAlone={false}
-            labels={prop('val')}
-          />
+          {map(
+            data => (
+              <g key={data.name} >
+                <VictoryLine data={data.values}
+                  domain={domain}
+                  x="createdAt"
+                  y="val"
+                  standAlone={false}
+                  style={{
+                    data: {stroke: data.color},
+                  }}
+                />
+
+                <VictoryScatter
+                  data={data.values}
+                  domain={domain}
+                  x="createdAt"
+                  y="val"
+                  standAlone={false}
+                  style={{
+                    data: {fill: data.color},
+                  }}
+                />
+              </g>
+            ),
+            data
+          )}
 
           <VictoryAxis
             standAlone={false}
@@ -88,6 +185,11 @@ export default class Chart extends Component {
             standAlone={false}
             domain={domain.y}
             tickFormat={x => `${x}`}
+            style={{
+              grid: {
+                stroke: "grey",
+              },
+            }}
           />
         </svg>
       </Page>
