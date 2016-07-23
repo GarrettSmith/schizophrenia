@@ -13,7 +13,9 @@ import {
   Tabbar,
 } from 'react-onsenui';
 import Chart from './Chart.react';
-import {route} from '../routes';
+import Filter from './Filter.react';
+
+import trackingSelector from '../../common/tracking/selector';
 
 class Tracking extends Component {
 
@@ -32,6 +34,11 @@ class Tracking extends Component {
   }
 
   render() {
+    const {
+      data,
+      dimensions,
+      domain,
+    } = this.props;
 
     return (
       <Page
@@ -66,14 +73,23 @@ class Tracking extends Component {
           </div>
         </Toolbar>
 
-        <Chart/>
+        <Chart
+          data={data}
+          dimensions={dimensions}
+          domain={domain}
+        />
+
+        <Filter
+          dimensions={dimensions}
+        />
       </Page>
     );
   }
 
 }
 
-Tracking = connect(state => ({
-}))(Tracking);
-
-export default Tracking;
+export default connect(
+  state => ({
+    ...trackingSelector(state),
+  })
+)(Tracking);
