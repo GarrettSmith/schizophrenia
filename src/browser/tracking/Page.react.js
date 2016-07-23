@@ -5,12 +5,12 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Header from '../app/Header.react';
 import {
-  Fab,
   Icon,
   Page,
   Tab,
   Tabbar,
 } from 'react-onsenui';
+import Chart from './Chart.react';
 import {route} from '../routes';
 
 class Tracking extends Component {
@@ -33,7 +33,7 @@ class Tracking extends Component {
   renderTabs() {
     return [
       {
-        content: <Page>Week</Page>,
+        content: <Chart />,
         tab: <Tab label='Week' icon="md-view-week" />
       },
       {

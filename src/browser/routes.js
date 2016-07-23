@@ -21,9 +21,9 @@ export const ROUTES = {
   },
 
   logAgenda: {
-    icon: 'md-view-agenda',
+    icon: 'md-calendar',
     key: 'logAgenda',
-    name: 'Day',
+    name: 'Logging',
     component: LogAgenda,
   },
 
@@ -101,6 +101,8 @@ export const ROUTES = {
 
   tracking: {
     key: 'tracking',
+    icon: 'md-chart',
+    name: 'Tracking',
     component: Tracking,
   },
 
