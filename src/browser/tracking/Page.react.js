@@ -44,18 +44,20 @@ class Tracking extends Component {
         className="tracking"
         renderToolbar={this.renderToolbar}
       >
-        <Toolbar />
+        <div className="content">
+          <Toolbar />
 
-        <Chart
-          data={data}
-          dimensions={enabledDimensions}
-          domain={domain}
-        />
+          <Chart
+            data={data}
+            dimensions={enabledDimensions}
+            domain={domain}
+          />
 
-        <Filter
-          dimensions={dimensions}
-          toggleDimension={toggleDimension}
-        />
+          <Filter
+            dimensions={dimensions}
+            toggleDimension={toggleDimension}
+          />
+        </div>
       </Page>
     );
   }
