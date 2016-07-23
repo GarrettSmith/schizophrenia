@@ -5,6 +5,8 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Header from '../app/Header.react';
 import {
+  Toolbar,
+  ToolbarButton,
   Icon,
   Page,
   Tab,
@@ -16,7 +18,6 @@ import {route} from '../routes';
 class Tracking extends Component {
 
   static propTypes = {
-    navigator: PropTypes.object,
   };
 
   constructor(props) {
@@ -30,23 +31,6 @@ class Tracking extends Component {
     );
   }
 
-  renderTabs() {
-    return [
-      {
-        content: <Chart />,
-        tab: <Tab label='Week' icon="md-view-week" />
-      },
-      {
-        content: <Page>Month</Page>,
-        tab: <Tab label='Month' icon="md-view-module" />
-      },
-      {
-        content: <Page>Year</Page>,
-        tab: <Tab label='Year' icon="md-calendar" />
-      },
-    ];
-  }
-
   render() {
 
     return (
@@ -54,11 +38,35 @@ class Tracking extends Component {
         className="tracking"
         renderToolbar={this.renderToolbar}
       >
-        <Tabbar
-          initialIndex={0}
-          renderTabs={this.renderTabs}
-          position="bottom"
-        />
+        <Toolbar inline>
+          <div className="left">
+            <ToolbarButton>
+              <Icon icon="md-caret-left" />
+            </ToolbarButton>
+          </div>
+
+          <div className="center">
+            <select>
+              <option>
+                Week
+              </option>
+              <option>
+                Month
+              </option>
+              <option>
+                Year
+              </option>
+            </select>
+          </div>
+
+          <div className="right">
+            <ToolbarButton>
+              <Icon icon="md-caret-right" />
+            </ToolbarButton>
+          </div>
+        </Toolbar>
+
+        <Chart/>
       </Page>
     );
   }

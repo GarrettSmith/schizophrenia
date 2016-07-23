@@ -1,11 +1,10 @@
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {
-  Fab,
-  Icon,
-  Page,
-  Tab,
-  Tabbar,
+  Input,
+  List,
+  ListHeader,
+  ListItem,
 } from 'react-onsenui';
 import {
   map,
@@ -21,11 +20,32 @@ import {
 export default class Chart extends Component {
 
   static propTypes = {
-    navigator: PropTypes.object,
   };
 
   constructor(props) {
     super(props);
+  }
+
+  renderListHeader() {
+    return (
+      <ListHeader>
+        Filter
+      </ListHeader>
+    )
+  }
+
+  renderListRow(data) {
+    return (
+      <ListItem key={data.name}>
+        <label className="left">
+          <Input
+            checked
+            type="checkbox"
+          />
+        </label>
+        {data.name}
+      </ListItem>
+    )
   }
 
   render() {
@@ -143,9 +163,9 @@ export default class Chart extends Component {
     };
 
     return (
-      <Page className="chart">
-        <svg width="100%" height="100%">
+      <div className="chart">
 
+        <svg width="100%" height="50%">
           {map(
             data => (
               <g key={data.name} >
@@ -192,7 +212,13 @@ export default class Chart extends Component {
             }}
           />
         </svg>
-      </Page>
+
+        <List
+          dataSource={data}
+          renderHeader={this.renderListHeader}
+          renderRow={this.renderListRow}
+        />
+      </div>
     )
   }
 }
