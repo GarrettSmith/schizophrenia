@@ -36,7 +36,11 @@ function load(state) {
 }
 
 function setTimeScale(timeScale, state) {
-  return merge(state, {timeScale});
+  const resetIntervalState = changeTimeInterval(
+    TIME_INTERVAL_DIRECTIONS.NOW,
+    state
+  );
+  return merge(resetIntervalState, {timeScale});
 }
 
 function changeTimeInterval(direction, state) {
@@ -45,17 +49,16 @@ function changeTimeInterval(direction, state) {
     timeScale,
   } = state;
 
-  let newMarker;
-  switch(direction) {
-    case TIME_INTERVAL_DIRECTIONS.NOW:
-      newMarker = moment();
+  const newMarker = {
+    [TIME_INTERVAL_DIRECTIONS.NOW]:
+      () => moment(),
 
-    case TIME_INTERVAL_DIRECTIONS.PREVIOUS:
-      newMarker = moment(timeIntervalMarker).subtract(1, timeScale);
+    [TIME_INTERVAL_DIRECTIONS.PREVIOUS]:
+      () =>  moment(timeIntervalMarker).subtract(1, timeScale),
 
-    case TIME_INTERVAL_DIRECTIONS.NEXT:
-      newMarker = moment(timeIntervalMarker).add(1, timeScale);
-  }
+    [TIME_INTERVAL_DIRECTIONS.NEXT]:
+      () => moment(timeIntervalMarker).add(1, timeScale),
+  }[direction]();
 
   return merge(state, {timeIntervalMarker: newMarker});
 }

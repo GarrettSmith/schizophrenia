@@ -12,42 +12,64 @@ import moment from 'moment';
 
 const entriesSelector = state => values(state.logging.entries);
 const dimensionsSelector = state => values(state.tracking.dimensions);
-
-const overviewFilter = map(pick([
-  'createdAt',
-  'physical',
-  'mental',
-  'emotional',
-]));
+const timeScaleSelector = state => state.tracking.timeScale;
+const timeIntervalMarkerSelector = state => state.tracking.timeIntervalMarker;
 
 const normalizeDates = map(evolve({
   createdAt: x => moment(x).startOf('day'),
 }));
 
-const overviewData = pipe(overviewFilter, normalizeDates);
+function intervalFilter({start, end}, entries) {
+  return filter(
+    entry => moment(entry.createdAt).isBetween(start, end, null, '[]'),
+    entries
+  );
+}
+
+const data = pipe(intervalFilter, normalizeDates);
 
 const enabledDimensions = filter(prop('enabled'));
 
-const DOMAIN = {
-  x: [
-    moment().startOf('week').toDate(),
-    moment().endOf('week').toDate(),
+function domain({start, end}) {
+  return {
+    x: [start, end],
+    y: [1, 5],
+  };
+}
+
+function timeInterval(scale, marker) {
+  return {
+    start: moment(marker).startOf(scale),
+    end: moment(marker).endOf(scale),
+  };
+}
+
+const intervalSelector = createSelector(
+  [
+    timeScaleSelector,
+    timeIntervalMarkerSelector,
   ],
-  y: [1, 5],
-};
+  (
+    timeScale,
+    timeIntervalMarker,
+  ) => timeInterval(timeScale, timeIntervalMarker)
+);
 
 export default createSelector(
   [
     entriesSelector,
     dimensionsSelector,
+    intervalSelector,
   ],
   (
     entries,
     dimensions,
+    interval,
   ) => ({
-    data: overviewData(entries),
+    data: data(interval, entries),
     dimensions: dimensions,
     enabledDimensions: enabledDimensions(dimensions),
-    domain: DOMAIN,
+    domain: domain(interval),
+    interval,
   })
 );

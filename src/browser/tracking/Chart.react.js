@@ -13,6 +13,8 @@ import {
   VictoryScatter,
 } from 'victory';
 
+import {TIME_SCALES} from '../../common/tracking/constants';
+
 const X_KEY = 'createdAt';
 
 export default class Chart extends Component {
@@ -21,6 +23,7 @@ export default class Chart extends Component {
     data: PropTypes.array.isRequired,
     dimensions: PropTypes.array.isRequired,
     domain: PropTypes.object.isRequired,
+    timeScale: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -32,7 +35,14 @@ export default class Chart extends Component {
       data,
       dimensions,
       domain,
+      timeScale,
     } = this.props;
+
+    const xTickFormat = {
+      [TIME_SCALES.WEEK]: 'ddd D',
+      [TIME_SCALES.MONTH]: 'D',
+      [TIME_SCALES.YEAR]: 'MMM',
+    }[timeScale];
 
     return (
       <svg className="chart">
@@ -68,7 +78,7 @@ export default class Chart extends Component {
         <VictoryAxis
           standAlone={false}
           domain={domain.x}
-          tickFormat={x => moment(x).format('ddd D')}
+          tickFormat={x => moment(x).format(xTickFormat)}
         />
 
         <VictoryAxis

@@ -17,6 +17,16 @@ import {tracking as trackingActions} from '../../common/tracking/actions';
 class Tracking extends Component {
 
   static propTypes = {
+    data: PropTypes.array.isRequired,
+    dimensions: PropTypes.array.isRequired,
+    domain: PropTypes.object.isRequired,
+    enabledDimensions: PropTypes.array.isRequired,
+    interval: PropTypes.object.isRequired,
+    nextTimeInterval: PropTypes.func.isRequired,
+    previousTimeInterval: PropTypes.func.isRequired,
+    setTimeScale: PropTypes.func.isRequired,
+    timeScale: PropTypes.string.isRequired,
+    toggleDimension: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -36,6 +46,11 @@ class Tracking extends Component {
       dimensions,
       domain,
       enabledDimensions,
+      interval,
+      nextTimeInterval,
+      previousTimeInterval,
+      setTimeScale,
+      timeScale,
       toggleDimension,
     } = this.props;
 
@@ -45,12 +60,19 @@ class Tracking extends Component {
         renderToolbar={this.renderToolbar}
       >
         <div className="content">
-          <Toolbar />
+          <Toolbar
+            nextTimeInterval={nextTimeInterval}
+            previousTimeInterval={previousTimeInterval}
+            setTimeScale={setTimeScale}
+            interval={interval}
+            timeScale={timeScale}
+          />
 
           <Chart
             data={data}
             dimensions={enabledDimensions}
             domain={domain}
+            timeScale={timeScale}
           />
 
           <Filter
@@ -67,6 +89,7 @@ class Tracking extends Component {
 export default connect(
   state => ({
     ...trackingSelector(state),
+    timeScale: state.tracking.timeScale,
   }),
   trackingActions
 )(Tracking);
