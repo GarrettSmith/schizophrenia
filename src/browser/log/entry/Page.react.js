@@ -7,7 +7,7 @@ import {
   Tab,
   Tabbar,
 } from 'react-onsenui';
-import Overview from './Overview.react';
+import Overview from './overview/Page.react';
 import Optional from './Optional.react';
 import AssociationList from './AssociationList.react';
 

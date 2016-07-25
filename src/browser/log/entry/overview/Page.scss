@@ -1,0 +1,19 @@
+@import '../../../app/Constants';
+
+.overview {
+  .page__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .page__background {
+    background-color: $light-grey;
+  }
+
+  .card {
+    margin: 0.5rem;
+    flex-grow: 1;
+  }
+
+}
