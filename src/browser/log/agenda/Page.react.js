@@ -29,7 +29,7 @@ class AgendaPage extends Component {
   };
 
   renderToolbar() {
-    return <Header title="Agenda"/>;
+    return <Header title="Logging" />;
   }
 
   renderEntry(entry) {

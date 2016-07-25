@@ -1,6 +1,8 @@
 import {createSelector} from 'reselect';
-import * as E from '../../lib/entries';
-import {values} from 'ramda';
+import {
+  values,
+} from 'ramda';
+import {previousEntry} from '../../lib/entries';
 
 const entriesSelector = state => state.logging.entries;
 
@@ -9,6 +11,6 @@ export default createSelector(
     entriesSelector,
   ],
   (entries) => ({
-    entries: values(entries),
+    previousEntry: previousEntry(values(entries)),
   })
 );

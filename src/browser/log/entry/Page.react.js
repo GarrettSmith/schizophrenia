@@ -14,12 +14,14 @@ import AssociationList from './AssociationList.react';
 import {logging} from '../../../common/logging/actions';
 import {associations} from '../../../common/logging/associations/actions';
 import associationSelector from '../../../common/logging/associations/selector';
+import entrySelector from '../../../common/logging/entry/selector';
 
 class LogEntry extends Component {
 
   static propTypes = {
     navigator: PropTypes.object.isRequired,
     newEntry: PropTypes.object.isRequired,
+    previousEntry: PropTypes.object.isRequired,
     updateEntry: PropTypes.func.isRequired,
     saveEntry: PropTypes.func.isRequired,
   };
@@ -62,6 +64,7 @@ class LogEntry extends Component {
       filterSymptom,
       filterSideEffect,
       newEntry,
+      previousEntry,
       removeSelectedEntrySymptoms,
       removeSelectedEntrySideEffects,
       selectEntrySymptom,
@@ -81,6 +84,9 @@ class LogEntry extends Component {
             emotional={newEntry.emotional}
             mental={newEntry.mental}
             physical={newEntry.physical}
+            previousEmotional={previousEntry.emotional}
+            previousMental={previousEntry.mental}
+            previousPhysical={previousEntry.physical}
           />
         ),
         key: 'overview',
@@ -166,6 +172,7 @@ class LogEntry extends Component {
 
 export default connect(
   state => ({
+    ...entrySelector(state),
     newEntry: state.logging.newEntry,
     enteredSymptom: state.logging.enteredSymptom,
     sideEffect: associationSelector(state.sideEffect),

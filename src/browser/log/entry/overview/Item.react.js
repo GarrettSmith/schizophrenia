@@ -17,7 +17,7 @@ const CURRENT_ICON_MAP = {
 };
 
 const PREVIOUS_ICON_MAP = {
-  [0]: 'ion-ios-help-empty',
+  [0]: 'ion-ios-help',
   [1]: 'ion-ios-thunderstorm',
   [2]: 'ion-ios-rainy',
   [3]: 'ion-ios-cloudy',
@@ -32,6 +32,7 @@ export default class Item extends Component {
     title: PropTypes.string.isRequired,
     updateEntry: PropTypes.func.isRequired,
     value: PropTypes.number.isRequired,
+    previousValue: PropTypes.number.isRequired,
   };
 
   constructor(props) {
@@ -46,6 +47,7 @@ export default class Item extends Component {
   render() {
     const {
       prop,
+      previousValue,
       title,
       value,
     } = this.props;
@@ -68,16 +70,19 @@ export default class Item extends Component {
             />
           </div>
         </div>
-        <div className="subcontent">
-          <p>
-            Last Entry:
-            <Icon
-              className="previous-icon"
-              icon={PREVIOUS_ICON_MAP[3]}
-            />
-            3
-          </p>
-        </div>
+
+        {previousValue ? (
+          <div className="subcontent">
+            <p>
+              Last Entry:
+              <Icon
+                className="previous-icon"
+                icon={PREVIOUS_ICON_MAP[previousValue]}
+              />
+              {previousValue}
+            </p>
+          </div>
+        ) : null}
       </div>
     );
   }

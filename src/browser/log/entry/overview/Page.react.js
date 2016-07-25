@@ -15,6 +15,9 @@ export default class Overview extends Component {
     emotional: PropTypes.number.isRequired,
     mental: PropTypes.number.isRequired,
     physical: PropTypes.number.isRequired,
+    previousEmotional: PropTypes.number,
+    previousMental: PropTypes.number,
+    previousPhysical: PropTypes.number,
     updateEntry: PropTypes.func.isRequired,
   };
 
@@ -27,6 +30,9 @@ export default class Overview extends Component {
       emotional,
       mental,
       physical,
+      previousEmotional,
+      previousMental,
+      previousPhysical,
       updateEntry,
     } = this.props;
 
@@ -35,16 +41,19 @@ export default class Overview extends Component {
         prop: 'physical',
         title: 'Physical',
         value: physical,
+        previousValue: previousPhysical,
       },
       {
         prop: 'mental',
         title: 'Mental',
         value: mental,
+        previousValue: previousMental,
       },
       {
         prop: 'emotional',
         title: 'Emotional',
         value: emotional,
+        previousValue: previousEmotional,
       },
     ];
 
