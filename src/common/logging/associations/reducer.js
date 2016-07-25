@@ -21,10 +21,12 @@ import {
   differenceWith,
   equals,
   evolve,
+  filter,
   identity,
   map,
   merge,
   prop,
+  propEq,
   reject,
   values,
 } from 'ramda';
@@ -95,6 +97,16 @@ function createAssociationReducer(association_type, default_associations) {
     );
     return reset(savedState);
   }
+
+  function edit(id, state) {
+    const cleanState = reset(state);
+    const newEntryAssociations = filter(
+      propEq('entryId', id),
+      state.existingEntryAssociations
+    );
+    return merge(cleanState, {newEntryAssociations});
+  }
+
 
   function addEntryAssociation(
     {
@@ -182,6 +194,9 @@ function createAssociationReducer(association_type, default_associations) {
 
       case loggingActions.SAVE_ENTRY:
         return save(action.payload, state);
+
+      case loggingActions.EDIT_ENTRY:
+        return edit(action.payload, state);
 
       case actions.ADD_ENTRY_ASSOCIATION:
         return addEntryAssociation(action.payload, state);

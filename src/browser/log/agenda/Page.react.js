@@ -20,8 +20,11 @@ import {
   PREVIOUS_ICON_MAP,
 } from '../../lib/icons';
 
-import agendaSelector from '../../../common/logging/agenda/selector';
 
+import agendaSelector from '../../../common/logging/agenda/selector';
+import {logging as loggingActions} from '../../../common/logging/actions';
+
+import {route} from '../../routes';
 import {
   isEmpty,
   map
@@ -38,18 +41,30 @@ const DATE_FORMATS = {
 class AgendaPage extends Component {
 
   static propTypes = {
+    editEntry: PropTypes.func.isRequired,
     entries: PropTypes.array.isRequired,
     navigator: PropTypes.object.isRequired,
+    resetEntry: PropTypes.func.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.renderEntry = this.renderEntry.bind(this);
+  }
 
   renderToolbar() {
     return <Header title="Logging" />;
   }
 
   renderEntry(entry) {
+    const {
+      editEntry,
+      navigator,
+    } = this.props;
+
     const subcontent = map(
       o => o.value ? (
-        <p>
+        <p key={o.label}>
           {o.label}: {o.value}
           <Icon
             icon={PREVIOUS_ICON_MAP[o.value]}
@@ -72,10 +87,15 @@ class AgendaPage extends Component {
       ]
     );
 
+    function onClick() {
+      editEntry(entry.id);
+      navigator.pushPage(route('logEntry'));
+    }
+
     return (
       <Card
         key={entry.id}
-        onClick={() => console.log('click')}
+        onClick={onClick}
         subcontent={subcontent}
       >
         <h4>
@@ -89,6 +109,7 @@ class AgendaPage extends Component {
     const {
       entries,
       navigator,
+      resetEntry,
     } = this.props;
 
     return (
@@ -104,11 +125,17 @@ class AgendaPage extends Component {
             dataSource={entries}
           />
         )}
-        <Fab navigator={navigator}/>
+        <Fab
+          navigator={navigator}
+          resetEntry={resetEntry}
+        />
       </Page>
     );
   }
 
 }
 
-export default connect(agendaSelector)(AgendaPage);
+export default connect(
+  agendaSelector,
+  loggingActions
+)(AgendaPage);

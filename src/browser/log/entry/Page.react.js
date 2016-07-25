@@ -51,8 +51,7 @@ class LogEntry extends Component {
       navigator,
     } = this.props;
 
-    saveEntry();
-    navigator.popPage();
+    navigator.popPage().then(saveEntry);
   }
 
   renderTabs() {

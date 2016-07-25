@@ -12,12 +12,8 @@ import {route} from '../routes';
 
 export default class ActionButton extends Component {
 
-  ACTIONS = [
-    route('logEntry'),
-    route('journalEntry'),
-  ];
-
   static propTypes = {
+    resetEntry: PropTypes.func.isRequired,
     navigator: PropTypes.object.isRequired,
   };
 
@@ -30,12 +26,18 @@ export default class ActionButton extends Component {
     this.renderItem = this.renderItem.bind(this);
   }
 
-  renderItem(route) {
+  renderItem({route, action}) {
     const {navigator} = this.props;
+
+    function onClick() {
+      action && action();
+      navigator.pushPage(route)
+    }
+
     return (
         <SpeedDialItem
           key={route.key}
-          onClick={() => navigator.pushPage(route)}
+          onClick={onClick}
         >
           <Icon icon={route.icon}/>
         </SpeedDialItem>
@@ -43,6 +45,21 @@ export default class ActionButton extends Component {
   }
 
   render() {
+    const {
+      resetEntry,
+    } = this.props;
+
+    const actions = [
+      {
+        route: route('logEntry'),
+        action: resetEntry,
+      },
+      {
+        route: route('journalEntry'),
+        action: null,
+      }
+    ];
+
     return (
       <SpeedDial
         className="log-speed-dial"
@@ -57,7 +74,7 @@ export default class ActionButton extends Component {
           />
         </Fab>
 
-        {this.ACTIONS.map(this.renderItem)}
+        {actions.map(this.renderItem)}
 
       </SpeedDial>
     );

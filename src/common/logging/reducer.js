@@ -7,6 +7,7 @@ import {
 
 import {
   assoc,
+  evolve,
   merge,
 } from 'ramda';
 import {set} from '../lib/state'
@@ -25,12 +26,26 @@ function updateEntry(payload, state) {
 }
 
 function saveEntry(payload, state) {
-  const newEntry = merge(state.newEntry, payload);
+  // only set id and createdAt if new
+  const newEntry =
+    state.newEntry.id ? state.newEntry : merge(state.newEntry, payload);
+  return merge(
+    resetEntry(state),
+    {
+      entries: set(newEntry, state.entries),
+    }
+  );
+}
+
+function resetEntry(state) {
+  return merge(state, {newEntry: Entry});
+}
+
+function editEntry(id, state) {
   return merge(
     state,
     {
-      newEntry: Entry,
-      entries: set(newEntry, state.entries),
+      newEntry: state.entries[id] || state.newEntry,
     }
   );
 }
@@ -44,6 +59,12 @@ export default function loggingReducer(state = initialState, action) {
 
     case actions.SAVE_ENTRY:
       return saveEntry(action.payload, state);
+
+    case actions.RESET_ENTRY:
+      return resetEntry(state);
+
+    case actions.EDIT_ENTRY:
+      return editEntry(action.payload, state);
   }
 
   return state;
