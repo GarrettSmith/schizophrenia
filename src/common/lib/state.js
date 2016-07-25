@@ -8,7 +8,7 @@ import {
 
 export function idMap(array) {
   return fromPairs(map(
-    x => [x.id, x],
+    x => x ? [x.id, x] : null,
     array
   ));
 }

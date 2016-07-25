@@ -5,12 +5,12 @@ export const RESET_ENTRY = 'RESET_ENTRY';
 export const UPDATE_ENTRY = 'UPDATE_ENTRY';
 export const EDIT_ENTRY = 'EDIT_ENTRY';
 
-function saveEntry() {
+function saveEntry(id) {
   return ({getUid, now}) => ({
     type: SAVE_ENTRY,
     payload: {
       createdAt: now(),
-      id: getUid(),
+      id: id || getUid(),
     },
   });
 }

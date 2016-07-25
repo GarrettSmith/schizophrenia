@@ -47,11 +47,13 @@ class LogEntry extends Component {
 
   onSaveClick() {
     const {
-      saveEntry,
       navigator,
+      newEntry,
+      saveEntry,
     } = this.props;
 
-    navigator.popPage().then(saveEntry);
+    navigator.popPage()
+      .then(() => saveEntry(newEntry.id));
   }
 
   renderTabs() {

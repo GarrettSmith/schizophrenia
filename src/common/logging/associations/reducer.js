@@ -83,30 +83,39 @@ function createAssociationReducer(association_type, default_associations) {
   }
 
   function save({id}, state) {
-    const newEntryAssociations = map(
-      assoc('entryId', id),
-      state.newEntryAssociations
+    const enteredEntryAssociations = filter(
+      prop('severity'),
+      values(state.newEntryAssociations)
     );
-    const newAssociations = state.newAssociations;
-    const savedState = evolve(
+    const newEntryAssociations = idMap(map(
+      assoc('entryId', id),
+      enteredEntryAssociations
+    ));
+    const newAssociations = idMap(map(
+      entryAssociation => state.newAssociations[entryAssociation.associationId],
+      values(newEntryAssociations)
+    ));
+
+    const savedState = merge(
+      state,
       {
-        existingEntryAssociations: merge(newEntryAssociations),
-        existingAssociations: merge(newAssociations),
-      },
-      state
+        existingEntryAssociations:
+          merge(state.existingEntryAssociations, newEntryAssociations),
+        existingAssociations:
+          merge(state.existingAssociations, newAssociations),
+      }
     );
     return reset(savedState);
-  }
+    }
 
   function edit(id, state) {
     const cleanState = reset(state);
-    const newEntryAssociations = filter(
+    const newEntryAssociations = idMap(filter(
       propEq('entryId', id),
-      state.existingEntryAssociations
-    );
+      values(state.existingEntryAssociations)
+    ));
     return merge(cleanState, {newEntryAssociations});
   }
-
 
   function addEntryAssociation(
     {
@@ -156,8 +165,8 @@ function createAssociationReducer(association_type, default_associations) {
     );
   }
 
-  function filter(filter, state) {
-    return assoc('filter', filter, state);
+  function filterAssociation(filterVal, state) {
+    return assoc('filter', filterVal, state);
   }
 
   function select({id, selected}, state) {
@@ -205,7 +214,7 @@ function createAssociationReducer(association_type, default_associations) {
         return updateEntryAssociation(action.payload, state);
 
       case actions.FILTER_ASSOCIATION:
-        return filter(action.payload, state);
+        return filterAssociation(action.payload, state);
 
       case actions.SELECT_ENTRY_ASSOCIATION:
         return select(action.payload, state);
