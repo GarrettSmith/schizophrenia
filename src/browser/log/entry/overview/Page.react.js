@@ -59,7 +59,7 @@ export default class Overview extends Component {
 
     return (
       <Page className="overview">
-        <div className="card">
+        <div className="content">
           {map(
             item => (
               <Item

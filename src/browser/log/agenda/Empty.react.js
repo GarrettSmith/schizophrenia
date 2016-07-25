@@ -12,10 +12,10 @@ export default class Empty extends Component {
 
         <Icon icon="md-calendar" size={96} />
         <p>
-          You haven't logged anything for today.
+          You haven't logged anything yet.
         </p>
         <p>
-          Tap to get started!
+          Tap the action button to get started!
         </p>
 
       </div>

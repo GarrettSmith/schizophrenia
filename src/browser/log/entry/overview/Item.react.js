@@ -5,25 +5,12 @@ import React, {PropTypes} from 'react';
 import {
   Icon,
 } from 'react-onsenui';
+import Card from '../../../card/Card.react';
 import Nominal from '../Nominal.react';
-
-const CURRENT_ICON_MAP = {
-  [0]: 'ion-ios-help-empty',
-  [1]: 'ion-ios-thunderstorm-outline',
-  [2]: 'ion-ios-rainy-outline',
-  [3]: 'ion-ios-cloudy-outline',
-  [4]: 'ion-ios-partlysunny-outline',
-  [5]: 'ion-ios-sunny-outline',
-};
-
-const PREVIOUS_ICON_MAP = {
-  [0]: 'ion-ios-help',
-  [1]: 'ion-ios-thunderstorm',
-  [2]: 'ion-ios-rainy',
-  [3]: 'ion-ios-cloudy',
-  [4]: 'ion-ios-partlysunny',
-  [5]: 'ion-ios-sunny',
-}
+import {
+  CURRENT_ICON_MAP,
+  PREVIOUS_ICON_MAP,
+} from '../../../lib/icons';
 
 export default class Item extends Component {
 
@@ -52,38 +39,35 @@ export default class Item extends Component {
       value,
     } = this.props;
 
+    const subcontent = previousValue ? (
+      <p>
+        Last Entry: {previousValue}
+        <Icon
+          className="previous-icon"
+          icon={PREVIOUS_ICON_MAP[previousValue]}
+        />
+      </p>
+    ) : null;
+
     return (
-      <div className="overview-item">
-        <div className="content">
-          <Icon
-            className="current-icon"
-            icon={CURRENT_ICON_MAP[value]}
+      <Card
+        subcontent={subcontent}
+      >
+        <Icon
+          className="primary-icon"
+          icon={CURRENT_ICON_MAP[value]}
+        />
+
+        <div>
+          <h3>
+            {title}
+          </h3>
+          <Nominal
+            onChange={this.onChange}
+            value={value}
           />
-
-          <div>
-            <h3>
-              {title}
-            </h3>
-            <Nominal
-              onChange={this.onChange}
-              value={value}
-            />
-          </div>
         </div>
-
-        {previousValue ? (
-          <div className="subcontent">
-            <p>
-              Last Entry:
-              <Icon
-                className="previous-icon"
-                icon={PREVIOUS_ICON_MAP[previousValue]}
-              />
-              {previousValue}
-            </p>
-          </div>
-        ) : null}
-      </div>
+      </Card>
     );
   }
 

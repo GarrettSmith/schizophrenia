@@ -1,56 +1,7 @@
-@import '../../../app/Constants';
-
-.overview-item {
-  margin-bottom: 0.8rem;
-  background-color: white;
-  box-shadow: 0 0.2rem 0.4rem transparentize(black, 0.7);
-  border-radius: 0.2rem;
-
-  .content, .subcontent {
-    align-items: center;
-    display: flex;
-    flex-align: row;
-    padding: 0.8rem;
-    justify-content: flex-start;
-  }
-
-  .content {
-    border-bottom: 1px solid $light-grey;
-  }
-
-  .subcontent {
-    color: $md-grey;
-  }
-
-  h3 {
-    color: $md-grey;
-    font-size: 2em;
-    line-height: 1em;
-    margin: 0 0 0.5rem 0;
-  }
-
-  .current-icon {
+.overview .card {
+  .primary-icon {
     $size: 4.7rem;
-    align-items: center;
-    background-color: $md-grey;
-    border-radius: 50%;
-    color: white;
-    display: flex;
-    font-size: 4rem;
-    height: $size;
-    justify-content: center;
-    margin-right: 1rem;
-    text-align: center;
     width: $size;
-  }
-
-  p {
-    margin: 0;
-  }
-
-  .previous-icon {
-    font-size: 2em;
-    line-height: 0.8em;
-    margin: 0 0.2em;
+    height: $size;
   }
 }
