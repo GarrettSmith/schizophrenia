@@ -3,6 +3,7 @@ import './Card.scss';
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {Ripple} from 'react-onsenui';
+import {isEmpty} from 'ramda';
 
 const RIPPLE_COLOR = 'rgba(40, 40, 40, 0.1)';
 
@@ -32,7 +33,7 @@ export default class Card extends Component {
           {children}
         </div>
 
-        {subcontent ? (
+        {subcontent && !isEmpty(subcontent) ? (
           <div className="subcontent">
             {subcontent}
           </div>

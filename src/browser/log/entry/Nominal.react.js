@@ -6,7 +6,7 @@ export default class Nominal extends Component {
 
   static propTypes = {
     onChange: PropTypes.func,
-    value: PropTypes.number.isRequired,
+    value: PropTypes.number,
   };
 
   constructor(props) {

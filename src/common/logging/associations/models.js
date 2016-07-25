@@ -8,5 +8,5 @@ export const EntryAssociation = {
   id: null,
   entryId: null,
   associationId: null,
-  severity: 1,
+  severity: null,
 };

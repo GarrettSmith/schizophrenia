@@ -26,8 +26,10 @@ import {logging as loggingActions} from '../../../common/logging/actions';
 
 import {route} from '../../routes';
 import {
+  filter,
   isEmpty,
-  map
+  map,
+  prop,
 } from 'ramda';
 import moment from 'moment';
 
@@ -63,28 +65,31 @@ class AgendaPage extends Component {
     } = this.props;
 
     const subcontent = map(
-      o => o.value ? (
+      o => (
         <p key={o.label}>
           {o.label}: {o.value}
           <Icon
             icon={PREVIOUS_ICON_MAP[o.value]}
           />
         </p>
-      ) : null,
-      [
-        {
-          label: 'Physical',
-          value: entry.physical,
-        },
-        {
-          label: 'Mental',
-          value: entry.mental,
-        },
-        {
-          label: 'Emotional',
-          value: entry.emotional,
-        },
-      ]
+      ),
+      filter(
+        prop('value'),
+        [
+          {
+            label: 'Physical',
+            value: entry.physical,
+          },
+          {
+            label: 'Mental',
+            value: entry.mental,
+          },
+          {
+            label: 'Emotional',
+            value: entry.emotional,
+          },
+        ]
+      )
     );
 
     function onClick() {
