@@ -56,7 +56,7 @@ export default class Chart extends Component {
                 y={dimension.prop}
                 standAlone={false}
                 style={{
-                  data: {stroke: 'black'},
+                  data: {stroke: dimension.color},
                 }}
               />
 
@@ -67,7 +67,7 @@ export default class Chart extends Component {
                 y={dimension.prop}
                 standAlone={false}
                 style={{
-                  data: {fill: 'grey'},
+                  data: {fill: dimension.color},
                 }}
               />
             </g>

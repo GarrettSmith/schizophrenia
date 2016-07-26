@@ -15,10 +15,6 @@ const dimensionsSelector = state => values(state.tracking.dimensions);
 const timeScaleSelector = state => state.tracking.timeScale;
 const timeIntervalMarkerSelector = state => state.tracking.timeIntervalMarker;
 
-const normalizeDates = map(evolve({
-  createdAt: x => moment(x).startOf('day'),
-}));
-
 function intervalFilter({start, end}, entries) {
   return filter(
     entry => moment(entry.createdAt).isBetween(start, end, null, '[]'),
@@ -26,7 +22,7 @@ function intervalFilter({start, end}, entries) {
   );
 }
 
-const data = pipe(intervalFilter, normalizeDates);
+const data = pipe(intervalFilter);
 
 const enabledDimensions = filter(prop('enabled'));
 

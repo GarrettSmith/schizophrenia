@@ -5,6 +5,7 @@ import {
 export const Dimension = {
   id: null,
   name: null,
+  color: null,
   enabled: false,
 };
 

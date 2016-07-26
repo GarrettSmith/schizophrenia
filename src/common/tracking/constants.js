@@ -3,6 +3,7 @@ import {
 } from './models';
 
 import shortid from 'shortid';
+import randomColor from 'randomcolor'
 import {
   map,
   merge,
@@ -32,6 +33,9 @@ export const OVERVIEW_DIMENSIONS = map(
     PropDimension,
     {
       id: shortid(),
+      color: randomColor({
+        luminosity: 'bright',
+      }),
       name: prop,
       prop: toLower(prop)
     }

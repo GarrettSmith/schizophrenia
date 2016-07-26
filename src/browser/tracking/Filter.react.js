@@ -6,6 +6,8 @@ import {
   ListHeader,
   ListItem,
 } from 'react-onsenui';
+import Helmet from 'react-helmet';
+import {map} from 'ramda';
 
 export default class Filter extends Component {
 
@@ -40,13 +42,16 @@ export default class Filter extends Component {
       <ListItem key={dimension.name}>
         <label className="left">
           <Input
+            className={dimension.name}
             checked={dimension.enabled}
             onChange={this.onDimensionChange}
             type="checkbox"
             value={dimension.id}
           />
         </label>
-        {dimension.name}
+        <label>
+          {dimension.name}
+        </label>
       </ListItem>
     )
   }
@@ -56,13 +61,31 @@ export default class Filter extends Component {
       dimensions,
     } = this.props;
 
+    const checkboxStyles = map(
+      d => {
+        const selector = `.${d.name} .checkbox__input:checked`;
+        return {
+          cssText:
+            `
+            ${selector},
+            ${selector} + .checkbox__checkmark:before {
+            background-color: ${d.color};
+            }
+            `
+        };
+      },
+      dimensions
+    );
+
     return (
-      <List
-        className="tracking-filter"
-        dataSource={dimensions}
-        renderHeader={this.renderListHeader}
-        renderRow={this.renderListRow}
-      />
+      <div className="tracking-filter">
+        <Helmet style={checkboxStyles} />
+        <List
+          dataSource={dimensions}
+          renderHeader={this.renderListHeader}
+          renderRow={this.renderListRow}
+        />
+      </div>
     )
   }
 }
