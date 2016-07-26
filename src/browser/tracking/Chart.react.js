@@ -16,11 +16,11 @@ import {
 import {TIME_SCALES} from '../../common/tracking/constants';
 
 const X_KEY = 'createdAt';
+const Y_KEY = 'value';
 
 export default class Chart extends Component {
 
   static propTypes = {
-    data: PropTypes.array.isRequired,
     dimensions: PropTypes.array.isRequired,
     domain: PropTypes.object.isRequired,
     timeScale: PropTypes.string.isRequired,
@@ -32,7 +32,6 @@ export default class Chart extends Component {
 
   render() {
     const {
-      data,
       dimensions,
       domain,
       timeScale,
@@ -47,13 +46,13 @@ export default class Chart extends Component {
     return (
       <svg className="chart">
         {map(
-          dimension => isEmpty(data) ? null : (
+          dimension => isEmpty(dimension.data) ? null : (
             <g key={dimension.name} >
               <VictoryLine
-                data={data}
+                data={dimension.data}
                 domain={domain}
                 x={X_KEY}
-                y={dimension.prop}
+                y={Y_KEY}
                 standAlone={false}
                 style={{
                   data: {stroke: dimension.color},
@@ -61,10 +60,10 @@ export default class Chart extends Component {
               />
 
               <VictoryScatter
-                data={data}
+                data={dimension.data}
                 domain={domain}
                 x={X_KEY}
-                y={dimension.prop}
+                y={Y_KEY}
                 standAlone={false}
                 style={{
                   data: {fill: dimension.color},

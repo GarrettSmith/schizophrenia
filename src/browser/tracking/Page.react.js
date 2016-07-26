@@ -17,7 +17,6 @@ import {tracking as trackingActions} from '../../common/tracking/actions';
 class Tracking extends Component {
 
   static propTypes = {
-    data: PropTypes.array.isRequired,
     dimensions: PropTypes.array.isRequired,
     domain: PropTypes.object.isRequired,
     enabledDimensions: PropTypes.array.isRequired,
@@ -42,7 +41,6 @@ class Tracking extends Component {
 
   render() {
     const {
-      data,
       dimensions,
       domain,
       enabledDimensions,
@@ -69,7 +67,6 @@ class Tracking extends Component {
           />
 
           <Chart
-            data={data}
             dimensions={enabledDimensions}
             domain={domain}
             timeScale={timeScale}
