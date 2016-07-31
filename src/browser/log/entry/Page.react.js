@@ -81,13 +81,9 @@ class LogEntry extends Component {
       {
         content: (
           <Overview
+            newEntry={newEntry}
+            previousEntry={previousEntry}
             updateEntry={updateEntry}
-            emotional={newEntry.emotional}
-            mental={newEntry.mental}
-            physical={newEntry.physical}
-            previousEmotional={previousEntry.emotional}
-            previousMental={previousEntry.mental}
-            previousPhysical={previousEntry.physical}
           />
         ),
         key: 'overview',

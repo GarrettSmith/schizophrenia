@@ -19,7 +19,7 @@ import {
   CURRENT_ICON_MAP,
   PREVIOUS_ICON_MAP,
 } from '../../lib/icons';
-
+import * as dates from '../../lib/dates';
 
 import agendaSelector from '../../../common/logging/agenda/selector';
 import {logging as loggingActions} from '../../../common/logging/actions';
@@ -31,14 +31,6 @@ import {
   map,
   prop,
 } from 'ramda';
-import moment from 'moment';
-
-const DATE_FORMATS = {
-  sameDay: '[Today], D MMMM',
-  lastDay: '[Yesterday], D MMMM',
-  lastWeek: 'dddd, D MMMM',
-  sameElse: 'D MMMM, YYYY',
-};
 
 class AgendaPage extends Component {
 
@@ -104,7 +96,7 @@ class AgendaPage extends Component {
         subcontent={subcontent}
       >
         <h4>
-          {moment(entry.createdAt).calendar(null, DATE_FORMATS)}
+          {dates.format(entry.createdAt)}
         </h4>
       </Card>
     );

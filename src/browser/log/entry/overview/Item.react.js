@@ -12,6 +12,8 @@ import {
   PREVIOUS_ICON_MAP,
 } from '../../../lib/icons';
 
+import * as dates from '../../../lib/dates';
+
 export default class Item extends Component {
 
   static propTypes = {
@@ -19,6 +21,7 @@ export default class Item extends Component {
     title: PropTypes.string.isRequired,
     updateEntry: PropTypes.func.isRequired,
     value: PropTypes.number.isRequired,
+    previousTime: PropTypes.number.isRequired,
     previousValue: PropTypes.number.isRequired,
   };
 
@@ -34,6 +37,7 @@ export default class Item extends Component {
   render() {
     const {
       prop,
+      previousTime,
       previousValue,
       title,
       value,
@@ -46,6 +50,7 @@ export default class Item extends Component {
           className="previous-icon"
           icon={PREVIOUS_ICON_MAP[previousValue]}
         />
+        {dates.format(previousTime)}
       </p>
     ) : null;
 

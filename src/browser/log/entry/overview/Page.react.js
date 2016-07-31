@@ -6,18 +6,15 @@ import Item from './Item.react';
 import {
   Page,
 } from 'react-onsenui';
+import {Entry} from '../../../../common/logging/models';
 
 import {map} from 'ramda';
 
 export default class Overview extends Component {
 
   static propTypes = {
-    emotional: PropTypes.number.isRequired,
-    mental: PropTypes.number.isRequired,
-    physical: PropTypes.number.isRequired,
-    previousEmotional: PropTypes.number,
-    previousMental: PropTypes.number,
-    previousPhysical: PropTypes.number,
+    newEntry: PropTypes.object.isRequired,
+    previousEntry: PropTypes.object.isRequired,
     updateEntry: PropTypes.func.isRequired,
   };
 
@@ -27,33 +24,33 @@ export default class Overview extends Component {
 
   render() {
     const {
-      emotional,
-      mental,
-      physical,
-      previousEmotional,
-      previousMental,
-      previousPhysical,
+      newEntry,
       updateEntry,
     } = this.props;
+
+    const previousEntry = this.props.previousEntry || Entry;
 
     const items = [
       {
         prop: 'physical',
         title: 'Physical',
-        value: physical,
-        previousValue: previousPhysical,
+        value: newEntry.physical,
+        previousValue: previousEntry.physical,
+        previousTime: previousEntry.createdAt,
       },
       {
         prop: 'mental',
         title: 'Mental',
-        value: mental,
-        previousValue: previousMental,
+        value: newEntry.mental,
+        previousValue: previousEntry.mental,
+        previousTime: previousEntry.createdAt,
       },
       {
         prop: 'emotional',
         title: 'Emotional',
-        value: emotional,
-        previousValue: previousEmotional,
+        value: newEntry.emotional,
+        previousValue: previousEntry.emotional,
+        previousTime: previousEntry.createdAt,
       },
     ];
 
