@@ -2,15 +2,18 @@ import {createSelector} from 'reselect';
 import {
   evolve,
   filter,
+  groupWith,
   map,
   merge,
-  pick,
-  pipe,
+  pluck,
   prop,
+  sum,
   values,
 } from 'ramda';
 import moment from 'moment';
 import randomColor from 'randomcolor';
+
+import {TIME_SCALES} from './constants';
 
 const entriesSelector = state => values(state.logging.entries);
 const dimensionsSelector = state => values(state.tracking.dimensions);
@@ -43,11 +46,35 @@ function propMap(property, entries) {
 
 const filterOutNulls = filter(prop('value'));
 
+function groupByScale(scale, entries) {
+  if (scale === TIME_SCALES.WEEK) return entries;
+
+  // Group everything else by day
+  const timeScale = 'day';
+  const grouped = groupWith(
+    (a, b) => moment(a.createdAt).isSame(b.createdAt, timeScale),
+    entries
+  );
+  const averaged = map(
+    group => ({
+      value: average(pluck('value', group)),
+      createdAt: moment(group[0].createdAt).startOf(timeScale),
+    }),
+    grouped
+  );
+  return averaged;
+}
+
+function average(values) {
+  return sum(values) / values.length;
+}
+
 function data(prop, interval, entries) {
   const intervalFiltered = intervalFilter(interval, entries);
   const propMapped = propMap(prop, intervalFiltered);
   const nullFiltered = filterOutNulls(propMapped);
-  return nullFiltered;
+  const scaleGrouped = groupByScale(interval.scale, nullFiltered);
+  return scaleGrouped;
 }
 
 function populateDimensions(interval, entries, dimensions) {
@@ -76,6 +103,7 @@ function timeInterval(scale, marker) {
   return {
     start: moment(marker).startOf(scale),
     end: moment(marker).endOf(scale),
+    scale,
   };
 }
 
