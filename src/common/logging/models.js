@@ -7,7 +7,7 @@ export const Entry = {
   emotional: 0,
 
   weight: null,
-
+  bloodSugar: null,
   bloodPressureSystolic: null,
   bloodPressureDiastolic: null,
 

@@ -9,18 +9,19 @@ import Nominal from './Nominal.react';
 export default class Optional extends Component {
 
   static propTypes = {
+    bloodPressureDiastolic: PropTypes.number.isRequired,
+    bloodPressureSystolic: PropTypes.number.isRequired,
+    bloodSugar: PropTypes.number,
     updateEntry: PropTypes.func.isRequired,
     weight: PropTypes.number,
-    bloodSugar: PropTypes.number,
-    bloodPressure: PropTypes.object.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.onChangeWeight = this.onChange.bind(this, 'weight');
     this.onChangeBloodSugar = this.onChange.bind(this, 'bloodSugar');
-    this.onChangeBPSystolic = this.onChangeBP.bind(this, 'systolic');
-    this.onChangeBPDiastolic = this.onChangeBP.bind(this, 'diastolic');
+    this.onChangeBPSystolic = this.onChange.bind(this, 'bloodPressureSystolic');
+    this.onChangeBPDiastolic = this.onChange.bind(this, 'bloodPressureDiastolic');
   }
 
   onChange(prop, event) {
@@ -28,21 +29,13 @@ export default class Optional extends Component {
     this.props.updateEntry({[prop]: val});
   }
 
-  onChangeBP(prop, val) {
-
-  }
-
   render() {
     const {
-      //bloodPressure,
+      bloodPressureDiastolic,
+      bloodPressureSystolic,
       bloodSugar,
       weight,
     } = this.props;
-
-    const bloodPressure = {
-      systolic: 0,
-      diastolic: 0,
-    };
 
     return (
       <Page
@@ -75,15 +68,15 @@ export default class Optional extends Component {
           <Input
             placeholder="Systolic"
             type="number"
-            value={bloodPressure.systolic}
+            value={bloodPressureSystolic}
             onChange={this.onChangeBPSystolic}
           />
           /
           <Input
             placeholder="Diastolic"
             type="number"
-            value={bloodPressure.diastolic}
-            onChange={this.onChangeBPDisatolic}
+            value={bloodPressureDiastolic}
+            onChange={this.onChangeBPDiastolic}
           />
         </section>
       </Page>
