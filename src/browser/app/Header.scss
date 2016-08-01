@@ -1,5 +1,7 @@
 @import './Constants';
 
+$header-height: 56px;
+
 .header {
   background-color: $secondary;
   display: block;
@@ -17,7 +19,7 @@
   }
 
   &.has-subheader {
-    height: 112px;
+    height: $header-height * 2;
   }
 
   ons-toolbar {
@@ -25,4 +27,10 @@
     box-shadow: none;
   }
 
+}
+
+.navigation-bar--material.has-subheader +
+.page__background +
+.page__content {
+  top: $header-height * 2;
 }
