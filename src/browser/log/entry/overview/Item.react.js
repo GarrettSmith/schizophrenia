@@ -21,8 +21,8 @@ export default class Item extends Component {
     title: PropTypes.string.isRequired,
     updateEntry: PropTypes.func.isRequired,
     value: PropTypes.number.isRequired,
-    previousTime: PropTypes.number.isRequired,
-    previousValue: PropTypes.number.isRequired,
+    previousTime: PropTypes.number,
+    previousValue: PropTypes.number,
   };
 
   constructor(props) {

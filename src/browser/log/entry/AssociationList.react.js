@@ -20,7 +20,6 @@ import {isEmpty} from 'ramda';
 export default class AssociationList extends Component {
 
   static propTypes = {
-    add: PropTypes.func.isRequired,
     association: PropTypes.object.isRequired,
     onChangeFilter: PropTypes.func.isRequired,
     updateItem: PropTypes.func.isRequired,
@@ -39,9 +38,9 @@ export default class AssociationList extends Component {
   }
 
   renderFiltered(item) {
-    const {add} = this.props;
+    const {updateItem} = this.props;
     const icon = item.id ? "md-plus" : "md-file-plus";
-    const onClick = () => add(item.id);
+    const onClick = () => updateItem({associationId: item.id});
     return (
       <ListItem
         key={item.id}
@@ -68,11 +67,11 @@ export default class AssociationList extends Component {
     } = this.props;
 
     const inputId = `input-${item.id}`;
-    const onChange = severity => updateItem(severity, item.id);
+    const onChange = severity => updateItem({...item, severity});
 
     return (
       <ListItem
-        key={item.id}
+        key={`${item.id}-${item.associationId}`}
         modifier="longdivider selected"
         tappable
       >
@@ -129,11 +128,11 @@ export default class AssociationList extends Component {
         filter,
         selected,
         filteredAssociations,
-        selectedAssociations,
+        selectedEntryAssociations,
       },
       removeSelected,
     } = this.props;
-    const dataSource = filter ? filteredAssociations : selectedAssociations;
+    const dataSource = filter ? filteredAssociations : selectedEntryAssociations;
     const renderRow = filter ? this.renderFiltered : this.renderSelected;
 
     return (

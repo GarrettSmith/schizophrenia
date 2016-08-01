@@ -6,11 +6,18 @@ import {previousEntry} from '../../lib/entries';
 
 const entriesSelector = state => state.logging.entries;
 
-export default createSelector(
+export const previousEntrySelector = createSelector(
   [
     entriesSelector,
   ],
-  (entries) => ({
-    previousEntry: previousEntry(values(entries)),
+  entries => previousEntry(values(entries))
+);
+
+export default createSelector(
+  [
+    previousEntrySelector,
+  ],
+  previousEntry => ({
+    previousEntry,
   })
 );

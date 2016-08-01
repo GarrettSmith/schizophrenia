@@ -58,10 +58,6 @@ class LogEntry extends Component {
 
   renderTabs() {
     const {
-      addNewSymptom,
-      addNewSideEffect,
-      addSymptom,
-      addSideEffect,
       filterSymptom,
       filterSideEffect,
       newEntry,
@@ -73,8 +69,8 @@ class LogEntry extends Component {
       sideEffect,
       symptom,
       updateEntry,
-      updateEntrySymptom,
-      updateEntrySideEffect,
+      setEntrySymptom,
+      setEntrySideEffect,
     } = this.props;
 
     return [
@@ -98,11 +94,10 @@ class LogEntry extends Component {
       {
         content: (
           <AssociationList
-            add={addSymptom}
             association={symptom}
             filterPlaceholder="Add a Symptom"
             onChangeFilter={filterSymptom}
-            updateItem={updateEntrySymptom}
+            updateItem={setEntrySymptom}
             select={selectEntrySymptom}
             removeSelected={removeSelectedEntrySymptoms}
           />
@@ -119,11 +114,10 @@ class LogEntry extends Component {
       {
         content: (
           <AssociationList
-            add={addSideEffect}
             association={sideEffect}
             filterPlaceholder="Add a Side Effect"
             onChangeFilter={filterSideEffect}
-            updateItem={updateEntrySideEffect}
+            updateItem={setEntrySideEffect}
             select={selectEntrySideEffect}
             removeSelected={removeSelectedEntrySideEffects}
           />
@@ -172,8 +166,8 @@ export default connect(
     ...entrySelector(state),
     newEntry: state.logging.newEntry,
     enteredSymptom: state.logging.enteredSymptom,
-    sideEffect: associationSelector(state.sideEffect),
-    symptom: associationSelector(state.symptom),
+    sideEffect: associationSelector('sideEffect', state),
+    symptom: associationSelector('symptom', state),
   }),
   {
     ...associations,

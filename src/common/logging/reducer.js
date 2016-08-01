@@ -1,7 +1,6 @@
 import * as actions from './actions';
 
 import {
-  BloodPressure,
   Entry,
 } from './models';
 

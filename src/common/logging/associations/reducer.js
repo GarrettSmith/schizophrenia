@@ -25,6 +25,7 @@ import {
   identity,
   map,
   merge,
+  mergeAll,
   prop,
   propEq,
   reject,
@@ -117,50 +118,48 @@ function createAssociationReducer(association_type, default_associations) {
     return merge(cleanState, {newEntryAssociations});
   }
 
-  function addEntryAssociation(
-    {
-      entryAssociationId,
-      associationId,
-    },
+  function setEntryAssociation(
+    entryAssociation,
     state
   ) {
+    const {
+      id,
+      severity,
+    } = entryAssociation;
 
-    // Find an existing object
-    const existingAssociation = state.existingAssociations[associationId];
-    // Make a new one
-    const newAssociation = merge(
+    // Make a new entry association or get the existing one and update
+    const newEntryAssociation = mergeAll([
+      EntryAssociation,
+      // payload to make new
+      entryAssociation,
+      // existing in this entry
+      state.newEntryAssociations[id],
+      // Allow updating severity
+      {severity},
+    ]);
+
+    const {associationId} = newEntryAssociation;
+
+    // Get association, get precidence to older associations
+    const association = mergeAll([
       Association,
+      // Make new
       {
         id: associationId,
         name: state.filter,
-      }
-    );
+      },
+      // new on this entry
+      state.newAssociations[associationId],
+      // existing
+      state.existingAssociations[associationId]
+    ]);
 
-    // Make a new entry association
-    const newEntryAssociation = merge(
-      EntryAssociation,
-      {
-        id: entryAssociationId,
-        associationId,
-      }
-    );
-
-    // Put values into state
     return evolve(
       {
         newEntryAssociations: set(newEntryAssociation),
-        // only update new assocition list if this is actually new
-        newAssociations: existingAssociation ? identity : set(newAssociation),
+        newAssociations: set(association),
         filter: () => null,
       },
-      state
-    );
-  }
-
-  function updateEntryAssociation({id, severity}, state) {
-    return assocPath(
-      ['newEntryAssociations', id, 'severity'],
-      Math.round(severity),
       state
     );
   }
@@ -207,11 +206,8 @@ function createAssociationReducer(association_type, default_associations) {
       case loggingActions.EDIT_ENTRY:
         return edit(action.payload, state);
 
-      case actions.ADD_ENTRY_ASSOCIATION:
-        return addEntryAssociation(action.payload, state);
-
-      case actions.UPDATE_ENTRY_ASSOCIATION:
-        return updateEntryAssociation(action.payload, state);
+      case actions.SET_ENTRY_ASSOCIATION:
+        return setEntryAssociation(action.payload, state);
 
       case actions.FILTER_ASSOCIATION:
         return filterAssociation(action.payload, state);
