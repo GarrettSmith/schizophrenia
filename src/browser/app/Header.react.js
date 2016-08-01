@@ -10,6 +10,7 @@ import {
 } from 'react-onsenui';
 import {ui as uiActions} from '../../common/ui/actions';
 import {connect} from 'react-redux';
+import classnames from 'classnames';
 
 class Header extends Component {
 
@@ -19,6 +20,7 @@ class Header extends Component {
     back: PropTypes.bool,
     title: PropTypes.string,
     modifier: PropTypes.string,
+    subheader: PropTypes.node,
   };
 
   constructor(props) {
@@ -74,16 +76,30 @@ class Header extends Component {
   render() {
     const {
       modifier,
+      subheader,
       title,
     } = this.props;
 
     return (
-      <Toolbar className={`header ${modifier}`}>
-        {this.renderLeft()}
-        <div className="center">
-          {title}
-        </div>
-        {this.renderRight()}
+      <Toolbar
+        className={classnames({
+          header: true,
+          [modifier]: !!modifier,
+          'has-subheader': !!subheader,
+        })}
+      >
+        <Toolbar
+          className="header-content"
+          inline
+        >
+          {this.renderLeft()}
+          <div className="center">
+            {title}
+          </div>
+          {this.renderRight()}
+        </Toolbar>
+
+        {subheader}
       </Toolbar>
     );
   }
