@@ -1,0 +1,38 @@
+.optional {
+  .page__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .content {
+    flex-grow: 1;
+  }
+
+  .card {
+    .subcontent {
+      .sub-input {
+        display: flex;
+        flex-grow: 1;
+      }
+
+      ons-input {
+        flex-grow: 1;
+
+        input {
+          text-align: right;
+        }
+      }
+
+      .unit {
+        flex-shrink: 1;
+        margin-left: 1rem;
+      }
+
+      .bp-seperator {
+        margin: 0 1rem;
+      }
+
+    }
+  }
+}

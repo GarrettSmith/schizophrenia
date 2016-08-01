@@ -1,10 +1,12 @@
+import './Optional.scss';
+
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {
   Input,
   Page,
 } from 'react-onsenui';
-import Nominal from './Nominal.react';
+import Card from '../../card/Card.react';
 
 export default class Optional extends Component {
 
@@ -41,44 +43,76 @@ export default class Optional extends Component {
       <Page
         className="optional"
       >
-        <p>
-          <Input
-            float
-            onChange={this.onChangeWeight}
-            placeholder="Weight (lbs)"
-            type="number"
-            value={weight}
-          />
-        </p>
+        <div className="content">
 
-        <p>
-          <Input
-            float
-            placeholder="Blood Sugar (mmol/L)"
-            type="number"
-            onChange={this.onChangeBloodSugar}
-            value={bloodSugar}
-          />
-        </p>
+          <Card
+            subcontent={
+              <div className="sub-input">
+                <Input
+                  float
+                  onChange={this.onChangeWeight}
+                  type="number"
+                  value={weight}
+                />
+                <span className="unit">
+                  lbs
+                </span>
+              </div>
+            }
+          >
+            <h3>
+              Weight
+            </h3>
+          </Card>
 
-        <section>
-          <h3>
-            Blood Pressure
-          </h3>
-          <Input
-            placeholder="Systolic"
-            type="number"
-            value={bloodPressureSystolic}
-            onChange={this.onChangeBPSystolic}
-          />
-          /
-          <Input
-            placeholder="Diastolic"
-            type="number"
-            value={bloodPressureDiastolic}
-            onChange={this.onChangeBPDiastolic}
-          />
-        </section>
+          <Card
+            subcontent={
+              <div className="sub-input">
+                <Input
+                  float
+                  type="number"
+                  onChange={this.onChangeBloodSugar}
+                  value={bloodSugar}
+                />
+                <span className="unit">
+                  mmol/L
+                </span>
+              </div>
+            }
+          >
+            <h3>
+              Blood Sugar
+            </h3>
+          </Card>
+
+          <Card
+            subcontent={
+              <div className="sub-input">
+                <Input
+                  type="number"
+                  value={bloodPressureSystolic}
+                  onChange={this.onChangeBPSystolic}
+                />
+                <span className="bp-seperator">
+                  /
+                </span>
+                <Input
+                  type="number"
+                  value={bloodPressureDiastolic}
+                  onChange={this.onChangeBPDiastolic}
+                />
+                <span className="unit bp-unit">
+                  mm&nbsp;Hg
+                </span>
+              </div>
+            }
+          >
+            <h3>
+              Blood Pressure
+            </h3>
+          </Card>
+
+        </div>
       </Page>
     );
   }

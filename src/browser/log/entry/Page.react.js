@@ -1,3 +1,5 @@
+import './Page.scss';
+
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
@@ -147,7 +149,7 @@ class LogEntry extends Component {
   render() {
     return (
       <Page
-        className="goal-entry"
+        className="log-entry"
         renderToolbar={this.renderToolbar}
       >
         <Tabbar
