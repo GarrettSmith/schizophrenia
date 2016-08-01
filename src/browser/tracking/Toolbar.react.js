@@ -3,12 +3,15 @@ import './Page.scss';
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {
+  Button,
+  Icon,
+  List,
+  ListItem,
+  Popover,
   Toolbar,
   ToolbarButton,
-  Icon,
 } from 'react-onsenui';
 import {
-  map,
   values,
 } from 'ramda';
 import moment from 'moment';
@@ -25,14 +28,20 @@ export default class TrackingToolbar extends Component {
     timeScale: PropTypes.string.isRequired,
   };
 
+  state = {
+    intervalsOpen: false,
+  }
+
   constructor(props) {
     super(props);
     this.changeScale = this.changeScale.bind(this);
+    this.toggleIntervals = this.toggleIntervals.bind(this);
+    this.renderPopoverItem = this.renderPopoverItem.bind(this);
   }
 
-  changeScale(e) {
+  changeScale(scale) {
     const {setTimeScale} = this.props;
-    const scale = e.target.value;
+    this.toggleIntervals(false);
     setTimeScale(scale);
   }
 
@@ -49,6 +58,26 @@ export default class TrackingToolbar extends Component {
       [TIME_SCALES.YEAR]:
         () => start.format('YYYY'),
     }[timeScale]();
+  }
+
+  toggleIntervals(open) {
+    const intervalsOpen =
+      open != undefined ? open : !this.state.intervalsOpen;
+    this.setState({intervalsOpen})
+  }
+
+  renderPopoverItem(item) {
+    return (
+      <ListItem
+        key={item}
+        modifier="longdivider"
+        onClick={() => this.changeScale(item)}
+        tappable
+        value={item}
+      >
+        {item}
+      </ListItem>
+    )
   }
 
   render() {
@@ -71,22 +100,27 @@ export default class TrackingToolbar extends Component {
         </div>
 
         <div className="center">
-          <select
-            onChange={this.changeScale}
+
+          <ToolbarButton
+            modifier="large-center"
+            onClick={() => this.toggleIntervals()}
+            ref="interval_button"
           >
-            {map(
-              scale => (
-                <option
-                  key={scale}
-                  value={scale}
-                >
-                  {scale}
-                </option>
-              ),
-              values(TIME_SCALES)
-            )}
-          </select>
-          {this.renderTime(timeScale, interval)}
+            {this.renderTime(timeScale, interval)}
+          </ToolbarButton>
+
+          <Popover
+            isCancelable
+            isOpen={this.state.intervalsOpen}
+            onCancel={() => this.toggleIntervals(false)}
+            getTarget={() => this.refs.interval_button}
+          >
+            <List
+              dataSource={values(TIME_SCALES)}
+              renderRow={this.renderPopoverItem}
+            />
+          </Popover>
+
         </div>
 
         <div className="right">

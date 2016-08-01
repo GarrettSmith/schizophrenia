@@ -3,13 +3,15 @@ import './Page.scss';
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
-import Header from '../app/Header.react';
+
 import {
   Page,
+  Tab,
+  Tabbar,
 } from 'react-onsenui';
-import Chart from './Chart.react';
-import Filter from './Filter.react';
+import Header from '../app/Header.react';
 import Toolbar from './Toolbar.react';
+import Category from './Category.react';
 
 import trackingSelector from '../../common/tracking/selector';
 import {tracking as trackingActions} from '../../common/tracking/actions';
@@ -30,16 +32,68 @@ class Tracking extends Component {
 
   constructor(props) {
     super(props);
+    this.renderTabs = this.renderTabs.bind(this);
     this.renderToolbar = this.renderToolbar.bind(this);
   }
 
-  renderToolbar() {
-    return (
-      <Header title="Tracking" />
-    );
+  renderTabs() {
+    return [
+      {
+        content: (
+          <Category
+            {...this.props}
+          />
+        ),
+        tab: (
+          <Tab
+            label="Overview"
+          />
+        ),
+      },
+
+      {
+        content: (
+          <Category
+            {...this.props}
+          />
+        ),
+        tab: (
+          <Tab
+            label="Symptoms"
+          />
+        ),
+      },
+
+      {
+        content: (
+          <Category
+            {...this.props}
+          />
+        ),
+        tab: (
+          <Tab
+            label="Side Effects"
+          />
+        ),
+      },
+
+      {
+        content: (
+          <Category
+            {...this.props}
+          />
+        ),
+        tab: (
+          <Tab
+            label="Optional"
+          />
+        ),
+      },
+    ];
   }
 
-  render() {
+
+  renderToolbar() {
     const {
       dimensions,
       domain,
@@ -53,11 +107,9 @@ class Tracking extends Component {
     } = this.props;
 
     return (
-      <Page
-        className="tracking"
-        renderToolbar={this.renderToolbar}
-      >
-        <div className="content">
+      <Header
+        title="Tracking"
+        subheader={
           <Toolbar
             nextTimeInterval={nextTimeInterval}
             previousTimeInterval={previousTimeInterval}
@@ -65,22 +117,26 @@ class Tracking extends Component {
             interval={interval}
             timeScale={timeScale}
           />
-
-          <Chart
-            dimensions={enabledDimensions}
-            domain={domain}
-            timeScale={timeScale}
-          />
-
-          <Filter
-            dimensions={dimensions}
-            toggleDimension={toggleDimension}
-          />
-        </div>
-      </Page>
+        }
+      />
     );
   }
 
+  render() {
+    return (
+      <Page
+        className="tracking"
+        renderToolbar={this.renderToolbar}
+      >
+
+        <Tabbar
+          animation="slide"
+          initialIndex={0}
+          renderTabs={this.renderTabs}
+        />
+      </Page>
+    );
+  }
 }
 
 export default connect(
