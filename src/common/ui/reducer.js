@@ -1,4 +1,5 @@
 import * as actions from './actions';
+import {LOAD} from 'redux-storage';
 
 import * as routes from '../lib/routes';
 import {
@@ -20,11 +21,16 @@ const initialState = {
   primaryRoute: {
     name: 'logAgenda',
   },
+  loaded: false,
 };
 
 export default function uiReducer(state = initialState, action) {
 
   switch (action.type) {
+
+    case LOAD: {
+      return assoc('loaded', true, state);
+    }
 
     case actions.CLOSE_DRAWER: {
       return assoc('drawerOpen', false, state);

@@ -1,0 +1,13 @@
+.loading {
+  .page__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ons-progress-circular {
+    $size: 6rem;
+    width: $size;
+    height: $size;
+  }
+}

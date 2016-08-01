@@ -12,6 +12,7 @@ import {
 import {route} from '../routes';
 import NotFound from '../notfound/Page.react';
 import Menu from './Menu.react';
+import Loading from './Loading.react';
 
 export class Navigator extends Component {
 
@@ -105,7 +106,12 @@ export class Navigator extends Component {
       drawerEnabled,
       drawerOpen,
       currentRoute,
+      loaded,
     } = this.props;
+
+    if (!loaded) return <Loading />;
+
+    const initialRoute = route(currentRoute);
 
     return(
       <Splitter>
@@ -126,7 +132,7 @@ export class Navigator extends Component {
 
         <SplitterContent>
           <OnsNav
-            initialRoute={route(currentRoute)}
+            initialRoute={initialRoute}
             onPostPop={this.onNavChange}
             onPostPush={this.onNavChange}
             renderPage={this.renderPage}
@@ -138,9 +144,7 @@ export class Navigator extends Component {
 }
 
 Navigator = connect(state => ({
-  currentRoute: state.ui.currentRoute,
-  drawerEnabled: state.ui.drawerEnabled,
-  drawerOpen: state.ui.drawerOpen
+  ...state.ui,
 }), uiActions)(Navigator);
 
 export default Navigator;
