@@ -14,12 +14,20 @@ import NotFound from '../notfound/Page.react';
 import Menu from './Menu.react';
 import Loading from './Loading.react';
 
-export class Navigator extends Component {
+import CrisisNotification from '../crisis/Notification.react'
+
+const SIDEBAR_WIDTH = 350;
+
+class Navigator extends Component {
 
   static propTypes = {
     closeDrawer: PropTypes.func.isRequired,
     setRoute: PropTypes.func.isRequired,
     setDrawerEnabled: PropTypes.func.isRequired,
+  };
+
+  state = {
+    navigator: null,
   };
 
   constructor(props) {
@@ -109,6 +117,10 @@ export class Navigator extends Component {
       loaded,
     } = this.props;
 
+    const {
+      navigator,
+    } = this.state;
+
     if (!loaded) return <Loading />;
 
     const initialRoute = route(currentRoute);
@@ -122,7 +134,7 @@ export class Navigator extends Component {
           onClose={this.onDrawerClose}
           onOpen={this.onDrawerOpen}
           side="left"
-          width={350}
+          width={SIDEBAR_WIDTH}
         >
           <Menu
             currentRoute={currentRoute}
@@ -131,6 +143,9 @@ export class Navigator extends Component {
         </SplitterSide>
 
         <SplitterContent>
+          <CrisisNotification
+            navigator={navigator}
+          />
           <OnsNav
             initialRoute={initialRoute}
             onPostPop={this.onNavChange}
@@ -143,8 +158,6 @@ export class Navigator extends Component {
   }
 }
 
-Navigator = connect(state => ({
-  ...state.ui,
-}), uiActions)(Navigator);
+Navigator = connect(state => state.ui, uiActions)(Navigator);
 
 export default Navigator;

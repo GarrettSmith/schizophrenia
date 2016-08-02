@@ -6,10 +6,13 @@ import {
 
 import {
   assoc,
+  assocPath,
   evolve,
   merge,
+  mergeAll,
 } from 'ramda';
 import {set} from '../lib/state'
+import {detectCrisis} from '../lib/entries';
 
 const initialState = {
   newEntry: Entry,
@@ -25,14 +28,18 @@ function updateEntry(payload, state) {
 }
 
 function saveEntry(payload, state) {
-  // only set id and createdAt if new
-  const newEntry =
-    state.newEntry.id ? state.newEntry : merge(state.newEntry, payload);
-  return merge(
-    resetEntry(state),
+  const exists = !!state.newEntry.id;
+  const newEntry = mergeAll([
+    state.newEntry,
+    // only set id and createdAt if new
+    exists ? {} : payload,
+    {crisisOccurred: detectCrisis(state.newEntry)},
+  ]);
+  return evolve(
     {
-      entries: set(newEntry, state.entries),
-    }
+      entries: set(newEntry),
+    },
+    resetEntry(state)
   );
 }
 
@@ -46,6 +53,14 @@ function editEntry(id, state) {
     {
       newEntry: state.entries[id] || state.newEntry,
     }
+  );
+}
+
+function setCrisisResolved({id, resolved}, state) {
+  return assocPath(
+    ['entries', id, 'crisisResolved'],
+    resolved,
+    state
   );
 }
 
@@ -64,6 +79,9 @@ export default function loggingReducer(state = initialState, action) {
 
     case actions.EDIT_ENTRY:
       return editEntry(action.payload, state);
+
+    case actions.SET_CRISIS_RESOLVED:
+      return setCrisisResolved(action.payload, state);
   }
 
   return state;
