@@ -5,8 +5,10 @@ import {
   groupWith,
   map,
   merge,
+  pick,
   pluck,
   prop,
+  propEq,
   sum,
   values,
 } from 'ramda';
@@ -107,6 +109,17 @@ function timeInterval(scale, marker) {
   };
 }
 
+function crisis(resolved, entries) {
+  const crisisEntries = filter(
+    propEq('crisisResolved', resolved),
+    entries
+  );
+  return map(
+    pick(['createdAt', 'crisisResolved']),
+    crisisEntries
+  );
+}
+
 const intervalSelector = createSelector(
   [
     timeScaleSelector,
@@ -142,6 +155,8 @@ export default createSelector(
     dimensions,
     interval,
   ) => ({
+    crisisResolved: crisis(true, entries),
+    crisisUnresolved: crisis(false, entries),
     dimensions,
     enabledDimensions: enabledDimensions(dimensions),
     domain: domain(interval),

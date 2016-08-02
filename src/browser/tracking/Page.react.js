@@ -19,6 +19,8 @@ import {tracking as trackingActions} from '../../common/tracking/actions';
 class Tracking extends Component {
 
   static propTypes = {
+    crisisResolved: PropTypes.array.isRequired,
+    crisisUnresolved: PropTypes.array.isRequired,
     dimensions: PropTypes.array.isRequired,
     domain: PropTypes.object.isRequired,
     enabledDimensions: PropTypes.array.isRequired,

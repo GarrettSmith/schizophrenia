@@ -11,6 +11,8 @@ import Filter from './Filter.react';
 export default class TrackingCategory extends Component {
 
   static propTypes = {
+    crisisResolved: PropTypes.array.isRequired,
+    crisisUnresolved: PropTypes.array.isRequired,
     dimensions: PropTypes.array.isRequired,
     domain: PropTypes.object.isRequired,
     enabledDimensions: PropTypes.array.isRequired,
@@ -28,6 +30,8 @@ export default class TrackingCategory extends Component {
 
   render() {
     const {
+      crisisResolved,
+      crisisUnresolved,
       dimensions,
       domain,
       enabledDimensions,
@@ -45,6 +49,8 @@ export default class TrackingCategory extends Component {
       >
         <div className="content">
           <Chart
+            crisisResolved={crisisResolved}
+            crisisUnresolved={crisisUnresolved}
             dimensions={enabledDimensions}
             domain={domain}
             timeScale={timeScale}

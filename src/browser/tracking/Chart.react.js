@@ -13,14 +13,18 @@ import {
   VictoryScatter,
 } from 'victory';
 
+import {COLORS} from '../lib/constants';
 import {TIME_SCALES} from '../../common/tracking/constants';
 
 const X_KEY = 'createdAt';
 const Y_KEY = 'value';
+const CRISIS_SIZE = 10;
 
 export default class Chart extends Component {
 
   static propTypes = {
+    crisisResolved: PropTypes.array.isRequired,
+    crisisUnresolved: PropTypes.array.isRequired,
     dimensions: PropTypes.array.isRequired,
     domain: PropTypes.object.isRequired,
     timeScale: PropTypes.string.isRequired,
@@ -32,10 +36,17 @@ export default class Chart extends Component {
 
   render() {
     const {
+      crisisResolved,
+      crisisUnresolved,
       dimensions,
       domain,
       timeScale,
     } = this.props;
+
+    const crisisDomain = {
+      x: domain.x,
+      y: [0, 0],
+    };
 
     const xTickFormat = {
       [TIME_SCALES.WEEK]: 'ddd D',
@@ -45,6 +56,25 @@ export default class Chart extends Component {
 
     return (
       <svg className="chart">
+
+        <VictoryAxis
+          standAlone={false}
+          domain={domain.x}
+          tickFormat={x => moment(x).format(xTickFormat)}
+        />
+
+        <VictoryAxis
+          dependentAxis
+          standAlone={false}
+          domain={domain.y}
+          tickFormat={x => `${x}`}
+          style={{
+            grid: {
+              stroke: "grey",
+            },
+          }}
+        />
+
         {map(
           dimension => isEmpty(dimension.data) ? null : (
             <g key={dimension.name} >
@@ -74,21 +104,27 @@ export default class Chart extends Component {
           dimensions
         )}
 
-        <VictoryAxis
+        <VictoryScatter
+          data={crisisResolved}
+          domain={crisisDomain}
+          x={X_KEY}
+          y="crisisResolved"
           standAlone={false}
-          domain={domain.x}
-          tickFormat={x => moment(x).format(xTickFormat)}
+          size={CRISIS_SIZE}
+          style={{
+            data: {fill: COLORS.GREEN}
+          }}
         />
 
-        <VictoryAxis
-          dependentAxis
+        <VictoryScatter
+          data={crisisUnresolved}
+          domain={crisisDomain}
+          x={X_KEY}
+          y="crisisResolved"
           standAlone={false}
-          domain={domain.y}
-          tickFormat={x => `${x}`}
+          size={CRISIS_SIZE}
           style={{
-            grid: {
-              stroke: "grey",
-            },
+            data: {fill: COLORS.RED}
           }}
         />
       </svg>
