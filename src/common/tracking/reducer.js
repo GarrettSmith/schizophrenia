@@ -4,9 +4,11 @@ import {
   TIME_SCALES,
   TIME_INTERVAL_DIRECTIONS,
   OVERVIEW_DIMENSIONS,
+  OPTIONAL_DIMENSIONS,
 } from './constants';
 
 import {
+  concat,
   differenceWith,
   evolve,
   assocPath,
@@ -23,14 +25,23 @@ const initialState = {
 };
 
 function load(state) {
+  const defaultDimensions = concat(
+    OVERVIEW_DIMENSIONS,
+    OPTIONAL_DIMENSIONS,
+  );
   const newDimensions = differenceWith(
     (a, b) => a.prop === b.prop,
-    OVERVIEW_DIMENSIONS,
+    defaultDimensions,
     values(state.dimensions),
   );
+  console.log(newDimensions)
 
   return evolve(
-    {dimensions: merge(idMap(newDimensions))},
+    {
+      dimensions: merge(idMap(newDimensions))
+      //dimensions: () => idMap(newDimensions),
+
+    },
     state
   );
 }

@@ -2,6 +2,8 @@ import {createSelector} from 'reselect';
 import {
   evolve,
   filter,
+  fromPairs,
+  groupBy,
   groupWith,
   map,
   merge,
@@ -15,7 +17,10 @@ import {
 import moment from 'moment';
 import randomColor from 'randomcolor';
 
-import {TIME_SCALES} from './constants';
+import {
+  DIMENSION_CATEGORIES,
+  TIME_SCALES,
+} from './constants';
 
 const entriesSelector = state => values(state.logging.entries);
 const dimensionsSelector = state => values(state.tracking.dimensions);
@@ -92,7 +97,21 @@ function populateDimensions(interval, entries, dimensions) {
   );
 }
 
-const enabledDimensions = filter(prop('enabled'));
+function categorizeDimensions(dimensions) {
+  const groups = groupBy(
+    prop('category'),
+    dimensions
+  );
+  const emptyCategories = fromPairs(map(
+    cat => [cat, []],
+    values(DIMENSION_CATEGORIES)
+  ));
+  // ensure we have all expected categories
+  return merge(
+    emptyCategories,
+    groups,
+  );
+}
 
 function domain({start, end}) {
   return {
@@ -157,8 +176,7 @@ export default createSelector(
   ) => ({
     crisisResolved: crisis(true, entries),
     crisisUnresolved: crisis(false, entries),
-    dimensions,
-    enabledDimensions: enabledDimensions(dimensions),
+    dimensions: categorizeDimensions(dimensions),
     domain: domain(interval),
     interval,
   })

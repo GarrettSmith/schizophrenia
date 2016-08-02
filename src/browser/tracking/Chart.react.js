@@ -76,7 +76,7 @@ export default class Chart extends Component {
         />
 
         {map(
-          dimension => isEmpty(dimension.data) ? null : (
+          dimension => dimension.enabled && !isEmpty(dimension.data) ? (
             <g key={dimension.name} >
               <VictoryLine
                 data={dimension.data}
@@ -100,7 +100,7 @@ export default class Chart extends Component {
                 }}
               />
             </g>
-          ),
+          ) : null,
           dimensions
         )}
 

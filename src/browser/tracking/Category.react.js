@@ -15,7 +15,6 @@ export default class TrackingCategory extends Component {
     crisisUnresolved: PropTypes.array.isRequired,
     dimensions: PropTypes.array.isRequired,
     domain: PropTypes.object.isRequired,
-    enabledDimensions: PropTypes.array.isRequired,
     interval: PropTypes.object.isRequired,
     nextTimeInterval: PropTypes.func.isRequired,
     previousTimeInterval: PropTypes.func.isRequired,
@@ -34,7 +33,6 @@ export default class TrackingCategory extends Component {
       crisisUnresolved,
       dimensions,
       domain,
-      enabledDimensions,
       interval,
       nextTimeInterval,
       previousTimeInterval,
@@ -51,7 +49,7 @@ export default class TrackingCategory extends Component {
           <Chart
             crisisResolved={crisisResolved}
             crisisUnresolved={crisisUnresolved}
-            dimensions={enabledDimensions}
+            dimensions={dimensions}
             domain={domain}
             timeScale={timeScale}
           />

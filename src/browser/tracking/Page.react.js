@@ -21,9 +21,8 @@ class Tracking extends Component {
   static propTypes = {
     crisisResolved: PropTypes.array.isRequired,
     crisisUnresolved: PropTypes.array.isRequired,
-    dimensions: PropTypes.array.isRequired,
+    dimensions: PropTypes.object.isRequired,
     domain: PropTypes.object.isRequired,
-    enabledDimensions: PropTypes.array.isRequired,
     interval: PropTypes.object.isRequired,
     nextTimeInterval: PropTypes.func.isRequired,
     previousTimeInterval: PropTypes.func.isRequired,
@@ -39,11 +38,17 @@ class Tracking extends Component {
   }
 
   renderTabs() {
+    const {
+      dimensions,
+    } = this.props;
+    console.log(dimensions)
+
     return [
       {
         content: (
           <Category
             {...this.props}
+            dimensions={dimensions.overview}
           />
         ),
         tab: (
@@ -57,6 +62,7 @@ class Tracking extends Component {
         content: (
           <Category
             {...this.props}
+            dimensions={dimensions.symptoms}
           />
         ),
         tab: (
@@ -70,6 +76,7 @@ class Tracking extends Component {
         content: (
           <Category
             {...this.props}
+            dimensions={dimensions.side_effects}
           />
         ),
         tab: (
@@ -83,6 +90,7 @@ class Tracking extends Component {
         content: (
           <Category
             {...this.props}
+            dimensions={dimensions.optional}
           />
         ),
         tab: (
@@ -99,7 +107,6 @@ class Tracking extends Component {
     const {
       dimensions,
       domain,
-      enabledDimensions,
       interval,
       nextTimeInterval,
       previousTimeInterval,

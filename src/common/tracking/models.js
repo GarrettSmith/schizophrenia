@@ -7,6 +7,7 @@ export const Dimension = {
   name: null,
   color: null,
   enabled: false,
+  category: null,
 };
 
 export const AssociationDimension = merge(Dimension, {

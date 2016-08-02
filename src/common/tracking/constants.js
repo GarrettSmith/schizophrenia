@@ -22,23 +22,63 @@ export const TIME_INTERVAL_DIRECTIONS = {
   NEXT: 'NEXT',
 };
 
+export const DIMENSION_CATEGORIES = {
+  OVERVIEW: 'overview',
+  OPTIONAL: 'optional',
+  SIDE_EFFECTS: 'side_effects',
+  SYMPTOMS: 'symptoms',
+};
+
 const OVERVIEW_PROPS = [
-  'Physical',
-  'Mental',
-  'Emotional',
+  {
+    name: 'Physical',
+    prop: 'physical',
+  },
+  {
+    name: 'Mental',
+    prop: 'mental',
+  },
+  {
+    name: 'Emotional',
+    prop: 'emotional',
+  },
 ];
 
-export const OVERVIEW_DIMENSIONS = map(
-  prop => merge(
+const OPTIONAL_PROPS = [
+  {
+    name: 'Weight',
+    prop: 'weight',
+  },
+  {
+    name: 'Blood Sugar',
+    prop: 'bloodSugar',
+  },
+  {
+    name: 'Blood Pressure Systolic',
+    prop: 'bloodPressureSystolic',
+  },
+  {
+    name: 'Blood Pressure Diastolic',
+    prop: 'bloodPressureDiastolic',
+  },
+];
+
+const createDimensions = category => map(
+  ({name, prop}) => merge(
     PropDimension,
     {
       id: shortid(),
       color: randomColor({
         luminosity: 'bright',
       }),
-      name: prop,
-      prop: toLower(prop)
+      category,
+      name,
+      prop,
     }
-  ),
-  OVERVIEW_PROPS
+  )
 );
+
+export const OVERVIEW_DIMENSIONS =
+  createDimensions(DIMENSION_CATEGORIES.OVERVIEW)(OVERVIEW_PROPS);
+export const OPTIONAL_DIMENSIONS =
+  createDimensions(DIMENSION_CATEGORIES.OPTIONAL)(OPTIONAL_PROPS);
