@@ -3,6 +3,7 @@ import './Page.scss';
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
+import classnames from 'classnames';
 
 import Fab from '../Fab.react';
 import Empty from './Empty.react';
@@ -18,8 +19,10 @@ import {
 import {
   CURRENT_ICON_MAP,
   PREVIOUS_ICON_MAP,
+  CRISIS_ICON_MAP,
 } from '../../lib/icons';
 import * as dates from '../../lib/dates';
+import {isNil} from 'ramda';
 
 import agendaSelector from '../../../common/logging/agenda/selector';
 import {logging as loggingActions} from '../../../common/logging/actions';
@@ -98,6 +101,17 @@ class AgendaPage extends Component {
         <h4>
           {dates.format(entry.createdAt)}
         </h4>
+
+        {!isNil(entry.crisisResolved) ? (
+          <Icon
+            className={classnames({
+              'crisis-icon': true,
+              'resolved': entry.crisisResolved,
+            })}
+            icon={CRISIS_ICON_MAP[entry.crisisResolved]}
+          />
+        ) : null}
+
       </Card>
     );
   }

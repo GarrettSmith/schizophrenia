@@ -14,5 +14,9 @@ export const PREVIOUS_ICON_MAP = {
   [3]: 'ion-ios-cloudy',
   [4]: 'ion-ios-partlysunny',
   [5]: 'ion-ios-sunny',
-}
+};
 
+export const CRISIS_ICON_MAP = {
+  [true]: 'md-mood',
+  [false]: 'md-mood-bad',
+};

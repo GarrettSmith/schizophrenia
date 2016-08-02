@@ -1,6 +1,6 @@
 export const DATE_FORMATS = {
-  sameDay: '[Today], D MMMM',
-  lastDay: '[Yesterday], D MMMM',
-  lastWeek: 'dddd, D MMMM',
-  sameElse: 'D MMMM, YYYY',
+  sameDay: 'LT [Today], D MMMM',
+  lastDay: 'LT [Yesterday], D MMMM',
+  lastWeek: 'LT dddd, D MMMM',
+  sameElse: 'LT D MMMM, YYYY',
 };

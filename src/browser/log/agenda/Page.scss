@@ -4,4 +4,17 @@
   .page__background {
     background-color: $light-grey;
   }
+
+  .card h4 {
+    flex-grow: 1;
+  }
+
+  .crisis-icon {
+    color: $red;
+    font-size: 2em;
+
+    &.resolved {
+      color: $green;
+    }
+  }
 }
