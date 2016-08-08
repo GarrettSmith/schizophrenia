@@ -10,6 +10,7 @@ import {
   Page,
 } from 'react-onsenui';
 import {route} from '../routes';
+import {openNavMap} from '../lib/googleMaps';
 
 class CrisisHome extends Component {
 
@@ -71,7 +72,11 @@ class CrisisHome extends Component {
           <a href="tel:2049403633">
             204-940-3633
           </a>
-          755 Portage Avenue
+          <a
+            onClick={() => openNavMap('755 Portage Avenue, Winnipeg')}
+          >
+            755 Portage Avenue
+          </a>
         </p>
 
         <h3>
@@ -81,7 +86,11 @@ class CrisisHome extends Component {
           <a href="tel:2049401781">
             204-940-1781
           </a>
-          817 Bannatyne Avenue
+          <a
+          onClick={() => openNavMap('817 Bannatyne Avenue, Winnipeg')}
+          >
+            817 Bannatyne Avenue
+          </a>
         </p>
 
         <h2>
