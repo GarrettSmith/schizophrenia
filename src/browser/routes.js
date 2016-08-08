@@ -45,6 +45,7 @@ export const ROUTES = {
     disableDrawer: true,
     icon: 'md-edit',
     key: 'logEntry',
+    name: 'Track an Entry',
     component: LogEntry,
   },
 
@@ -91,6 +92,7 @@ export const ROUTES = {
   journalEntry: {
     icon: 'md-book',
     key: 'journalEntry',
+    name: 'Journal Entry',
     component: JournalEntry
   },
 

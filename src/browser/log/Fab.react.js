@@ -38,8 +38,12 @@ export default class ActionButton extends Component {
         <SpeedDialItem
           key={route.key}
           onClick={onClick}
+          ref={route.key}
         >
           <Icon icon={route.icon}/>
+          <p>
+            {route.name}
+          </p>
         </SpeedDialItem>
     );
   }
@@ -67,6 +71,7 @@ export default class ActionButton extends Component {
       >
         <Fab
           onClick={() => this.setState({open: !this.state.open})}
+          ref="fab"
         >
           <Icon
             icon="md-plus"

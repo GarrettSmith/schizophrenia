@@ -11,6 +11,23 @@
 
   ons-speed-dial-item, ons-speed-dial-item:active {
     background-color: $secondary;
+    overflow: visible;
+
+    p {
+      position: absolute;
+      display: block;
+      right: 52px;
+      top: -12px;
+      background: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      color: $black;
+      font-size: 0.6em;
+      font-weight: bold;
+      padding: 0 8px;
+      white-space: nowrap;
+      line-height: 2em;
+    }
   }
 
 }
