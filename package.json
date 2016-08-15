@@ -32,13 +32,15 @@
     "dumpdev": {
       "command": "better-npm-run webpack",
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "DEVICE": "true"
       }
     },
     "dumpprod": {
       "command": "better-npm-run webpack -p",
       "env": {
-        "NODE_ENV": "production"
+        "NODE_ENV": "production",
+        "DEVICE": "true"
       }
     }
   },

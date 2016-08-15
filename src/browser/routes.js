@@ -9,7 +9,6 @@ import LogEntry from './log/entry/Page.react';
 import LogMonth from './log/month/Page.react';
 import LogWeek from './log/week/Page.react';
 import Support from './support/Page.react';
-import SupportEntry from './support/entry/Page.react';
 import Tracking from './tracking/Page.react';
 
 export const ROUTES = {
@@ -60,12 +59,6 @@ export const ROUTES = {
     key: 'support',
     name: 'Support',
     component: Support,
-  },
-
-  supportEntry: {
-    icon: 'md-accounts',
-    key: 'supportEntry',
-    component: SupportEntry,
   },
 
   settings: {

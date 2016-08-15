@@ -1,44 +1,41 @@
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
+
 import Header from '../app/Header.react';
 import {
+  AlertDialog,
   Fab,
   Icon,
   List,
   ListItem,
   Page,
 } from 'react-onsenui';
-import {route} from '../routes';
+import View from './View.react';
 
-const ENTRIES = [
-  {
-    key: 1,
-    name: 'John Doe',
-    phone: '555 555-5555',
-    email: 'j.doe@example.com',
-    address: '123 Fake St.',
-  },
-  {
-    key: 2,
-    name: 'Jane Doe',
-    phone: '555 555-5555',
-    email: 'jane.doe@example.com',
-    address: '123 Fake St.',
-  },
-];
+import {route} from '../routes';
+import * as Contacts from '../lib/contacts';
+import {actions} from '../../common/support/actions';
 
 class SupportHome extends Component {
 
   static propTypes = {
-    navigator: PropTypes.object,
+    addContact: PropTypes.func.isRequired,
+    contacts: PropTypes.array.isRequired,
+    navigator: PropTypes.object.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.newEntry = this.newEntry.bind(this);
     this.renderToolbar = this.renderToolbar.bind(this);
+    this.renderFab = this.renderFab.bind(this);
+    this.renderEntry = this.renderEntry.bind(this);
   }
+
+  state = {
+    current: null,
+  };
 
   renderToolbar() {
     const {
@@ -53,63 +50,63 @@ class SupportHome extends Component {
     );
   }
 
-  renderEntry(entry) {
+  renderEntry(contact) {
+    const name = contact.displayName;
     return (
-      <ListItem tappable modifier="longdivider">
+      <ListItem
+        tappable
+        key={contact.id}
+        modifier="longdivider"
+        onClick={() => this.setState({current: contact})}
+      >
         <div className="center">
           <h3>
-            {entry.name}
+            {name}
           </h3>
-          <table>
-            <tbody>
-              <tr>
-                <td>Phone</td>
-                <td>
-                <a href={`tel:${entry.phone}`}>
-                  {entry.phone}
-                </a>
-                </td>
-              </tr>
-              <tr>
-                <td>Email</td>
-                <td>
-                  <a href={`mailto:${entry.email}`} >
-                    {entry.email}
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td>Address</td>
-                <td>{entry.address}</td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </ListItem>
     );
   }
 
+  renderModal() {
+    const {current} = this.state;
+    return (
+      <View
+        contact={current}
+        onCancel={() => this.setState({current: null})}
+      />
+    );
+  }
+
+  renderFab() {
+    return (
+      <Fab
+        onClick={this.newEntry}
+        position="bottom right"
+      >
+        <Icon icon="md-plus" />
+      </Fab>
+    );
+  }
+
   newEntry() {
-    this.props.navigator.pushPage(route('supportEntry'));
+    const {addContact} = this.props;
+    Contacts.select().then(addContact);
   }
 
   render() {
-
+    const {contacts} = this.props;
     return (
       <Page
         className="support"
+        renderFixed={this.renderFab}
         renderToolbar={this.renderToolbar}
       >
         <List
-          dataSource={ENTRIES}
+          dataSource={contacts}
           renderRow={this.renderEntry}
         />
-        <Fab
-          onClick={this.newEntry}
-          position="bottom right"
-        >
-          <Icon icon="md-plus" />
-        </Fab>
+        {this.renderModal()}
 
       </Page>
     );
@@ -117,7 +114,6 @@ class SupportHome extends Component {
 
 }
 
-SupportHome = connect(state => ({
-}))(SupportHome);
+SupportHome = connect(state => state.support, actions)(SupportHome);
 
 export default SupportHome;

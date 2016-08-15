@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 let production = process.env.NODE_ENV === 'production';
 let dev = !production;
+let device = process.env.DEVICE === 'true';
 
 let plugins = [];
 let basePlugins = [
@@ -61,7 +62,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'www'),
     filename: '[name].[hash].js',
-    publicPath: '/'
+    publicPath: device ? './' : '/',
   },
   module: {
     preLoaders: [
