@@ -18,7 +18,7 @@ import {TIME_SCALES} from '../../common/tracking/constants';
 
 const X_KEY = 'createdAt';
 const Y_KEY = 'value';
-const CRISIS_SIZE = 10;
+const CRISIS_SIZE = 6;
 
 export default class Chart extends Component {
 
