@@ -42,7 +42,7 @@ export default class Filter extends Component {
       <ListItem key={dimension.name}>
         <label className="left">
           <Input
-            className={dimension.name}
+            className={dimension.id}
             checked={dimension.enabled}
             onChange={this.onDimensionChange}
             type="checkbox"
@@ -63,7 +63,7 @@ export default class Filter extends Component {
 
     const checkboxStyles = map(
       d => {
-        const selector = `.${d.name} .checkbox__input:checked`;
+        const selector = `.${d.id} .checkbox__input:checked`;
         return {
           cssText:
             `
