@@ -11,7 +11,6 @@ export const Dimension = {
 };
 
 export const AssociationDimension = merge(Dimension, {
-  associationType: null,
   associationId: null,
 });
 

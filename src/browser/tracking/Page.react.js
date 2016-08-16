@@ -41,7 +41,6 @@ class Tracking extends Component {
     const {
       dimensions,
     } = this.props;
-    console.log(dimensions)
 
     return [
       {
@@ -62,7 +61,7 @@ class Tracking extends Component {
         content: (
           <Category
             {...this.props}
-            dimensions={dimensions.symptoms}
+            dimensions={dimensions.symptom}
           />
         ),
         tab: (
@@ -76,7 +75,7 @@ class Tracking extends Component {
         content: (
           <Category
             {...this.props}
-            dimensions={dimensions.side_effects}
+            dimensions={dimensions.sideEffect}
           />
         ),
         tab: (

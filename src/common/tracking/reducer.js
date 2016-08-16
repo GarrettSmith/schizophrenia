@@ -6,12 +6,16 @@ import {
   OVERVIEW_DIMENSIONS,
   OPTIONAL_DIMENSIONS,
 } from './constants';
+import {
+  AssociationDimension,
+} from './models';
 
 import {
   concat,
   differenceWith,
   evolve,
   assocPath,
+  map,
   merge,
   values,
 } from 'ramda';
@@ -24,25 +28,62 @@ const initialState = {
   timeIntervalMarker: moment(),
 };
 
-function load(state) {
+function load(loading, state) {
+  const existingDimensions = values(state.dimensions);
+
   const defaultDimensions = concat(
     OVERVIEW_DIMENSIONS,
     OPTIONAL_DIMENSIONS,
   );
-  const newDimensions = differenceWith(
+  const newDefaultDimensions = differenceWith(
     (a, b) => a.prop === b.prop,
     defaultDimensions,
-    values(state.dimensions),
+    existingDimensions
   );
-  console.log(newDimensions)
+
+  const symptomDimensions = associationDimensions(
+    'symptom',
+    loading.symptom.existingAssociations
+  );
+  const sideEffectDimensions = associationDimensions(
+    'sideEffect',
+    loading.sideEffect.existingAssociations
+  );
+  const allAssociationDimensions = concat(
+    symptomDimensions,
+    sideEffectDimensions
+  );
+  const newAssociationDimensions = differenceWith(
+    (a, b) => a.associationId === b.associationId,
+    allAssociationDimensions,
+    existingDimensions
+  );
+
+  const newDimensions = concat(
+    newDefaultDimensions,
+    newAssociationDimensions
+  );
 
   return evolve(
     {
       dimensions: merge(idMap(newDimensions))
-      //dimensions: () => idMap(newDimensions),
-
     },
     state
+  );
+}
+
+function associationDimensions(associationType, associations) {
+   return map(
+    association => merge(
+      AssociationDimension,
+      {
+        associationId: association.id,
+        category: associationType,
+        id: association.id,
+        name: association.name,
+      }
+    ),
+    values(associations)
   );
 }
 
@@ -85,7 +126,7 @@ function toggleDimension({id, enable}, state) {
 export default function loggingReducer(state = initialState, action) {
   switch(action.type) {
     case LOAD:
-      return load(state);
+      return load(action.payload, state);
 
     case actions.SET_TIME_SCALE:
       return setTimeScale(action.payload, state);

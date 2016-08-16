@@ -25,8 +25,8 @@ export const TIME_INTERVAL_DIRECTIONS = {
 export const DIMENSION_CATEGORIES = {
   OVERVIEW: 'overview',
   OPTIONAL: 'optional',
-  SIDE_EFFECTS: 'side_effects',
-  SYMPTOMS: 'symptoms',
+  SIDE_EFFECT: 'sideEffect',
+  SYMPTOM: 'symptom',
 };
 
 const OVERVIEW_PROPS = [
