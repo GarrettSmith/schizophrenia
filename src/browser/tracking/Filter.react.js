@@ -69,7 +69,7 @@ export default class Filter extends Component {
             `
             ${selector},
             ${selector} + .checkbox__checkmark:before {
-            background-color: ${d.color};
+              background-color: ${d.color};
             }
             `
         };
