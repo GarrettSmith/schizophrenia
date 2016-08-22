@@ -2,18 +2,22 @@ import {createSelector} from 'reselect';
 import {
   evolve,
   filter,
+  find,
   fromPairs,
   groupBy,
   groupWith,
   map,
   merge,
+  path,
   pick,
+  pipe,
   pluck,
   prop,
   propEq,
   sum,
   values,
 } from 'ramda';
+import {associate, idMap} from '../lib/state';
 import moment from 'moment';
 import randomColor from 'randomcolor';
 
@@ -22,8 +26,16 @@ import {
   TIME_SCALES,
 } from './constants';
 
-const entriesSelector = state => values(state.logging.entries);
-const dimensionsSelector = state => values(state.tracking.dimensions);
+const entriesSelector = state => state.logging.entries;
+
+const entrySymptomSelector = state => state.symptom.existingEntryAssociations;
+const symptomSelector = state => state.symptom.existingAssociations;
+
+const entrySideEffectSelector = state => state.sideEffect.existingEntryAssociations;
+const sideEffectSelector = state => state.sideEffect.existingAssociations;
+
+const dimensionsSelector = state => state.tracking.dimensions;
+
 const timeScaleSelector = state => state.tracking.timeScale;
 const timeIntervalMarkerSelector = state => state.tracking.timeIntervalMarker;
 
@@ -34,17 +46,36 @@ function dimensionColor({color, name}) {
   });
 }
 
-function intervalFilter({start, end}, entries) {
+function intervalFilter({start, end}) {
   return filter(
-    entry => moment(entry.createdAt).isBetween(start, end, null, '[]'),
-    entries
+    entry => moment(entry.createdAt).isBetween(start, end, null, '[]')
   );
 }
 
-function propMap(property, entries) {
+const associationValueExtractor = associationType => ({associationId}) => entry => {
+  const entryAssociations = entry[associationType];
+  const entryAssociation = find(
+    propEq('associationId', associationId),
+    values(entryAssociations)
+  );
+  return entryAssociation && entryAssociation.severity;
+};
+
+const valueMap = dimension => entries => {
+  // function that takes an entry and returns the value to plot
+  // passed the dimension first
+  // dimension => entry => value
+  const valueExtractor = {
+    [DIMENSION_CATEGORIES.OVERVIEW]: dimension => prop(dimension.prop),
+    // TODO
+    [DIMENSION_CATEGORIES.OPTIONAL]: () => () => null,
+    [DIMENSION_CATEGORIES.SYMPTOM]: associationValueExtractor('symptoms'),
+    [DIMENSION_CATEGORIES.SIDE_EFFECT]: associationValueExtractor('sideEffects'),
+  }[dimension.category](dimension);
+
   return map(
     entry => ({
-      value: prop(property, entry),
+      value: valueExtractor(entry),
       createdAt: entry.createdAt,
     }),
     entries
@@ -53,7 +84,7 @@ function propMap(property, entries) {
 
 const filterOutNulls = filter(prop('value'));
 
-function groupByScale(scale, entries) {
+const groupByScale = scale => entries => {
   if (scale === TIME_SCALES.WEEK) return entries;
 
   // Group everything else by day
@@ -76,12 +107,16 @@ function average(values) {
   return sum(values) / values.length;
 }
 
-function data(prop, interval, entries) {
-  const intervalFiltered = intervalFilter(interval, entries);
-  const propMapped = propMap(prop, intervalFiltered);
-  const nullFiltered = filterOutNulls(propMapped);
-  const scaleGrouped = groupByScale(interval.scale, nullFiltered);
-  return scaleGrouped;
+function data(interval, entries, dimension) {
+  // skip calculation if dimension is disabled
+  if (!dimension.enabled) return;
+  return pipe(
+    values,
+    intervalFilter(interval),
+    valueMap(dimension),
+    filterOutNulls,
+    groupByScale(interval.scale),
+  )(entries);
 }
 
 function populateDimensions(interval, entries, dimensions) {
@@ -90,7 +125,7 @@ function populateDimensions(interval, entries, dimensions) {
       dimension,
       {
         color: dimensionColor(dimension),
-        data: data(dimension.prop, interval, entries)
+        data: data(interval, entries, dimension),
       }
     ),
     dimensions
@@ -100,7 +135,7 @@ function populateDimensions(interval, entries, dimensions) {
 function categorizeDimensions(dimensions) {
   const groups = groupBy(
     prop('category'),
-    dimensions
+    values(dimensions)
   );
   const emptyCategories = fromPairs(map(
     cat => [cat, []],
@@ -135,32 +170,74 @@ function crisis(resolved, entries) {
   );
   return map(
     pick(['createdAt', 'crisisResolved']),
-    crisisEntries
+    values(crisisEntries)
   );
 }
+
+function associateEntryAssociations(associations, entryAssociations) {
+  return pipe(
+    values,
+    associate('associationId', 'association', associations),
+    groupBy(prop('entryId')),
+  )(entryAssociations);
+}
+
+function entryAssociationsForEntry(entryAssociations, {id}) {
+  return idMap(entryAssociations[id] || []);
+}
+
+function associateEntries(
+  entries,
+  entrySymptoms,
+  symptoms,
+  entrySideEffects,
+  sideEffects
+) {
+  const associatedEntrySymptoms = associateEntryAssociations(
+    symptoms,
+    entrySymptoms
+  );
+  const associatedEntrySideEffects = associateEntryAssociations(
+    sideEffects,
+    entrySideEffects
+  );
+
+  return map(
+    entry => ({
+      ...entry,
+      symptoms: entryAssociationsForEntry(associatedEntrySymptoms, entry),
+      sideEffects: entryAssociationsForEntry(associatedEntrySideEffects, entry),
+    }),
+    entries
+  );
+}
+
+const associatedEntriesSelector = createSelector(
+  [
+    entriesSelector,
+    entrySymptomSelector,
+    symptomSelector,
+    entrySideEffectSelector,
+    sideEffectSelector,
+  ],
+  associateEntries
+)
 
 const intervalSelector = createSelector(
   [
     timeScaleSelector,
     timeIntervalMarkerSelector,
   ],
-  (
-    timeScale,
-    timeIntervalMarker,
-  ) => timeInterval(timeScale, timeIntervalMarker)
+  timeInterval
 );
 
 const populatedDimensionsSelector = createSelector(
   [
-    dimensionsSelector,
-    entriesSelector,
     intervalSelector,
+    associatedEntriesSelector,
+    dimensionsSelector,
   ],
-  (
-    dimensions,
-    entries,
-    interval,
-  ) => populateDimensions(interval, entries, dimensions)
+  populateDimensions
 )
 
 export default createSelector(
