@@ -10,9 +10,10 @@ import {
   SplitterSide
 } from 'react-onsenui';
 import {route} from '../routes';
-import NotFound from '../notfound/Page.react';
-import Menu from './Menu.react';
 import Loading from './Loading.react';
+import Menu from './Menu.react';
+import NotFound from '../notfound/Page.react';
+import Notifier from './Notifier.react';
 
 import CrisisNotification from '../crisis/Notification.react'
 
@@ -104,7 +105,6 @@ class Navigator extends Component {
   }
 
   onNavChange(route) {
-    debugger
     const {setDrawerEnabled} = this.props;
     setDrawerEnabled(!route.disableDrawer);
   }
@@ -143,6 +143,9 @@ class Navigator extends Component {
         </SplitterSide>
 
         <SplitterContent>
+          <Notifier
+            navigator={navigator}
+          />
           <CrisisNotification
             navigator={navigator}
           />
