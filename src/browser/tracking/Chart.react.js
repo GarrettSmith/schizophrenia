@@ -45,7 +45,7 @@ export default class Chart extends Component {
 
     const crisisDomain = {
       x: domain.x,
-      y: [0, 0],
+      y: [0, 0.1],
     };
 
     const xTickFormat = {
