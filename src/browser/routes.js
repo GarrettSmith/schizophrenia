@@ -8,6 +8,7 @@ import LogAll from './log/all/Page.react';
 import LogEntry from './log/entry/Page.react';
 import LogMonth from './log/month/Page.react';
 import LogWeek from './log/week/Page.react';
+import Settings from './settings/Page.react';
 import Support from './support/Page.react';
 import Tracking from './tracking/Page.react';
 
@@ -65,7 +66,7 @@ export const ROUTES = {
     icon: 'md-settings',
     key: 'settings',
     name: 'Settings',
-    component: null,
+    component: Settings,
   },
 
   help: {

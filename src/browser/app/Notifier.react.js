@@ -1,12 +1,15 @@
 import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 
 import notify from '../lib/notify';
 import {route} from '../routes';
 
-export default class Notifier extends Component {
+class Notifier extends Component {
 
   static propTypes = {
     navigator: PropTypes.object,
+    notificationEnabled: PropTypes.bool.isRequired,
+    notificationTime: PropTypes.number.isRequired,
   };
 
   constructor(props) {
@@ -19,11 +22,18 @@ export default class Notifier extends Component {
     navigator.pushPage(route('logEntry'));
   }
 
-  componentDidMount() {
-    notify(this.onClick);
-  }
-
   render() {
+    const {
+      notificationEnabled,
+      notificationTime,
+    } = this.props;
+
+    notify(notificationEnabled, notificationTime, this.onClick);
+
     return null;
   }
 }
+
+export default connect(
+  state => state.settings
+)(Notifier);

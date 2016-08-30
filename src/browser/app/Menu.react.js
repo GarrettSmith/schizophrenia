@@ -30,7 +30,7 @@ const ROUTES = [
 
   [
     route('settings'),
-    route('help'),
+    //route('help'),
   ]
 ];
 

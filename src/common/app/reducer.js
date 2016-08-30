@@ -7,6 +7,7 @@ import {reduxFields} from '../lib/redux-fields';
 import device from '../device/reducer';
 import intl from '../intl/reducer';
 import logging from '../logging/reducer';
+import settings from '../settings/reducer';
 import support from '../support/reducer';
 import tracking from '../tracking/reducer';
 import ui from '../ui/reducer';
@@ -22,6 +23,7 @@ const appReducer = combineReducers({
   reduxFields,
   sideEffect: sideEffectReducer,
   symptom: symptomReducer,
+  settings,
   support,
   tracking,
   ui,
