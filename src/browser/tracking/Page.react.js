@@ -48,11 +48,13 @@ class Tracking extends Component {
           <Category
             {...this.props}
             dimensions={dimensions.overview}
+            key="overview"
           />
         ),
         tab: (
           <Tab
             label="Overview"
+            key="overview"
           />
         ),
       },
@@ -62,11 +64,13 @@ class Tracking extends Component {
           <Category
             {...this.props}
             dimensions={dimensions.symptom}
+            key="symptom"
           />
         ),
         tab: (
           <Tab
             label="Symptoms"
+            key="symptom"
           />
         ),
       },
@@ -76,11 +80,13 @@ class Tracking extends Component {
           <Category
             {...this.props}
             dimensions={dimensions.sideEffect}
+            key="side-effect"
           />
         ),
         tab: (
           <Tab
             label="Side Effects"
+            key="side-effect"
           />
         ),
       },
@@ -90,11 +96,13 @@ class Tracking extends Component {
           <Category
             {...this.props}
             dimensions={dimensions.optional}
+            key="optional"
           />
         ),
         tab: (
           <Tab
             label="Optional"
+            key="optional"
           />
         ),
       },

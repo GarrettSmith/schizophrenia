@@ -109,7 +109,7 @@ function average(values) {
 
 function data(interval, entries, dimension) {
   // skip calculation if dimension is disabled
-  if (!dimension.enabled) return;
+  if (!dimension.enabled) return [];
   return pipe(
     values,
     intervalFilter(interval),

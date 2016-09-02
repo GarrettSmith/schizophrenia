@@ -10,13 +10,8 @@ import {
   Page,
 } from 'react-onsenui';
 import {route} from '../routes';
-
-const ENTRIES = [
-  '05/01/2016',
-  '04/18/2016',
-  '04/19/2016',
-  '03/22/2016',
-];
+import {values} from 'ramda';
+import * as dates from '../lib/dates';
 
 class JournalHome extends Component {
 
@@ -27,6 +22,8 @@ class JournalHome extends Component {
   constructor(props) {
     super(props);
     this.newEntry = this.newEntry.bind(this);
+    this.viewEntry = this.viewEntry.bind(this);
+    this.renderEntry = this.renderEntry.bind(this);
   }
 
   renderToolbar() {
@@ -35,8 +32,13 @@ class JournalHome extends Component {
 
   renderEntry(entry) {
     return (
-      <ListItem tappable modifier="longdivider">
-        {entry}
+      <ListItem
+        tappable
+        modifier="longdivider"
+        key={entry.id}
+        onClick={() => this.viewEntry(entry)}
+      >
+        {dates.format(entry.createdAt)}
       </ListItem>
     );
   }
@@ -45,7 +47,12 @@ class JournalHome extends Component {
     this.props.navigator.pushPage(route('journalEntry'));
   }
 
+  viewEntry(entry) {
+    this.props.navigator.pushPage(route('journalView', {entry}));
+  }
+
   render() {
+    const {entries} = this.props;
 
     return (
       <Page
@@ -53,7 +60,7 @@ class JournalHome extends Component {
         renderToolbar={this.renderToolbar}
       >
         <List
-          dataSource={ENTRIES}
+          dataSource={values(entries)}
           renderRow={this.renderEntry}
         />
         <Fab
@@ -69,7 +76,6 @@ class JournalHome extends Component {
 
 }
 
-JournalHome = connect(state => ({
-}))(JournalHome);
-
-export default JournalHome;
+export default connect(
+  state => state.journal
+)(JournalHome);

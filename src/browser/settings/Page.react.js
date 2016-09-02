@@ -36,7 +36,6 @@ class Settings extends Component {
   renderToolbar() {
     return (
       <Header
-        back
         modifier="tertiary"
         title="Settings"
       />
@@ -60,6 +59,7 @@ class Settings extends Component {
     return (
       <Page
         className="settings"
+        renderToolbar={this.renderToolbar}
       >
         <div className="enabled">
           <label>

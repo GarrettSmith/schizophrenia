@@ -1,8 +1,11 @@
+import {merge} from 'ramda';
+
 import Crisis from './crisis/Page.react';
 import GoalEntry from './goal/entry/Page.react';
 import Home from './home/Page.react';
 import Journal from './journal/Page.react';
 import JournalEntry from './journal/entry/Page.react';
+import JournalView from './journal/View.react';
 import LogAgenda from './log/agenda/Page.react';
 import LogAll from './log/all/Page.react';
 import LogEntry from './log/entry/Page.react';
@@ -90,6 +93,13 @@ export const ROUTES = {
     component: JournalEntry
   },
 
+  journalView: {
+    icon: 'md-book',
+    key: 'journalView',
+    name: 'Journal View',
+    component: JournalView
+  },
+
   crisis: {
     key: 'crisis',
     component: Crisis,
@@ -111,7 +121,10 @@ export const ROUTES = {
 
 export const INITIAL_ROUTE = ROUTES.home;
 
-export function route(key) {
-  return ROUTES[key];
+export function route(key, props) {
+  return merge(
+    ROUTES[key],
+    props,
+  );
 }
 
