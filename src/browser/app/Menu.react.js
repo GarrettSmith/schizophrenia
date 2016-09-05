@@ -21,10 +21,9 @@ const ROUTES = [
   ],
 
   [
-
     route('logAgenda'),
     route('tracking'),
-    route('journal'),
+    //route('journal'),
     route('support'),
   ],
 

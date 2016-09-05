@@ -47,6 +47,8 @@ class AgendaPage extends Component {
   constructor(props) {
     super(props);
     this.renderEntry = this.renderEntry.bind(this);
+    this.logEntryContent = this.logEntryContent.bind(this);
+    this.journalEntryContent = this.journalEntryContent.bind(this);
   }
 
   renderToolbar() {
@@ -54,6 +56,33 @@ class AgendaPage extends Component {
   }
 
   renderEntry(entry) {
+    const content = {
+      log: this.logEntryContent,
+      journal: this.journalEntryContent,
+    }[entry.type](entry);
+
+    return (
+      <Card
+        key={entry.id}
+        onClick={content.onClick}
+        subcontent={content.subcontent}
+      >
+        <h4>
+          {dates.format(entry.createdAt)}
+        </h4>
+
+        {content.icon ? (
+          <Icon
+            className={`main-icon ${content.icon.className}`}
+            icon={content.icon.name}
+          />
+        ) : null}
+
+      </Card>
+    );
+  }
+
+  logEntryContent(entry) {
     const {
       editEntry,
       navigator,
@@ -92,28 +121,39 @@ class AgendaPage extends Component {
       navigator.pushPage(route('logEntry'));
     }
 
-    return (
-      <Card
-        key={entry.id}
-        onClick={onClick}
-        subcontent={subcontent}
-      >
-        <h4>
-          {dates.format(entry.createdAt)}
-        </h4>
+    const icon = !isNil(entry.crisisResolved) ? ({
+      className: classnames({
+        'crisis-icon': true,
+        'resolved': entry.crisisResolved,
+      }),
+      name: CRISIS_ICON_MAP[entry.crisisResolved],
+    }) : null;
 
-        {!isNil(entry.crisisResolved) ? (
-          <Icon
-            className={classnames({
-              'crisis-icon': true,
-              'resolved': entry.crisisResolved,
-            })}
-            icon={CRISIS_ICON_MAP[entry.crisisResolved]}
-          />
-        ) : null}
+    return {
+      icon,
+      onClick,
+      subcontent,
+    };
+  }
 
-      </Card>
-    );
+  journalEntryContent(entry) {
+    const {
+      navigator,
+    } = this.props;
+
+    const icon = {
+      name: 'md-book',
+    };
+
+    function onClick() {
+      navigator.pushPage(route('journalView', {entry}));
+    }
+
+    return {
+      icon,
+      onClick,
+    };
+
   }
 
   render() {

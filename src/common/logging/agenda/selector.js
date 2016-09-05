@@ -1,26 +1,42 @@
 import {createSelector} from 'reselect';
 import * as E from '../../lib/entries';
 import {
+  concat,
+  map,
+  merge,
   prop,
   reverse,
   sortBy,
   values
 } from 'ramda';
 
-const entriesSelector = state => state.logging.entries;
+const logSelector = state => state.logging.entries;
+const journalSelector = state => state.journal.entries;
 
-function sortEntries(entries) {
+function tagTypes(type, entries) {
+  return map(
+    merge({type}),
+    values(entries)
+  );
+}
+
+function sortEntries(logEntries, journalEntries) {
+  const entries = concat(
+    tagTypes('log', logEntries),
+    tagTypes('journal', journalEntries)
+  );
   return reverse(sortBy(
     prop('createdAt'),
-    values(entries)
+    entries
   ));
 }
 
 export default createSelector(
   [
-    entriesSelector,
+    logSelector,
+    journalSelector,
   ],
-  (entries) => ({
-    entries: sortEntries(entries),
+  (logEntries, journalEntries) => ({
+    entries: sortEntries(logEntries, journalEntries),
   })
 );
