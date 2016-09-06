@@ -1,3 +1,5 @@
+import './Page.scss';
+
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
@@ -77,11 +79,13 @@ class Settings extends Component {
             <label>
               Notification Time
             </label>
-            <Input
-              type="number"
-              value={`${notificationTime}`}
-              onChange={this.setTime}
-            />
+            <div className="time-inputs">
+              <Input
+                type="time"
+                value={`${notificationTime}`}
+                onChange={this.setTime}
+              />
+            </div>
           </div>
         </Card>
       </Page>

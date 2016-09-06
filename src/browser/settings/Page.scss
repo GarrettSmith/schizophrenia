@@ -1,0 +1,26 @@
+@import '../app/Constants';
+
+.settings {
+  .page__background {
+    background-color: $light-grey;
+  }
+
+  .card {
+    .content {
+      flex-direction: column;
+
+      & > div {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin: 0.6rem 0.2rem;
+      }
+    }
+  }
+
+  .time-inputs {
+    input {
+      text-align: right;
+    }
+  }
+}

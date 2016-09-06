@@ -15,7 +15,7 @@ function notify(enabled, time) {
       id: NOTIFICATION_ID,
       text: "Log an Entry for Today.",
       every: 'day',
-      at: moment().hour(time),
+      firstAt: moment().millisecond(time),
     });
   } else {
     cordova.plugins.notification.cancel([NOTIFICATION_ID]);
