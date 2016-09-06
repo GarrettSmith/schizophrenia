@@ -1,14 +1,14 @@
+import './Page.scss';
+
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Header from '../app/Header.react';
 import {
-  Fab,
   Icon,
-  List,
-  ListItem,
   Page,
 } from 'react-onsenui';
+import Card from '../card/Card.react';
 import {route} from '../routes';
 import {openNavMap} from '../lib/googleMaps';
 
@@ -21,17 +21,21 @@ class CrisisHome extends Component {
   constructor(props) {
     super(props);
     this.renderToolbar = this.renderToolbar.bind(this);
+    this.openSupport = this.openSupport.bind(this);
   }
 
   renderToolbar() {
     return  (
       <Header
         back
-        modifier="tertiary"
-        navigator={this.props.navigator}
+        modifier="secondary"
         title="Crisis Resources"
       />
     );
+  }
+
+  openSupport() {
+    this.props.navigator.pushPage(route('support'));
   }
 
   render() {
@@ -41,62 +45,114 @@ class CrisisHome extends Component {
         className="crisis"
         renderToolbar={this.renderToolbar}
       >
-        <h2>Phone Lines</h2>
-        <ul>
-          <li>
-            <a href="tel:2047868686" >
-              Klinic Crisis Line
-            </a>
-          </li>
-          <li>
-            <a href="tel:2049401781" >
-              WRHA Mobile Crisis
-            </a>
-          </li>
-          <li>
-            <a href="tel:18774357170" >
-              Manitoba Suicide Line
-            </a>
-          </li>
-          <li>
-            <a href="tel:2049429276" >
-              Seneca Help Line (7pm - 11pm)
-            </a>
-          </li>
-        </ul>
 
-        <h3>
-          Crisis Stabilization Unit (WRHA)
-        </h3>
-        <p>
-          <a href="tel:2049403633">
-            204-940-3633
-          </a>
-          <a
-            onClick={() => openNavMap('755 Portage Avenue, Winnipeg')}
-          >
-            755 Portage Avenue
-          </a>
-        </p>
+        <Card
+          onClick={this.openSupport}
+          tappable
+        >
+          <h4>
+            Contact your support network
+          </h4>
 
-        <h3>
-          Crisis Response Centre
-        </h3>
-        <p>
-          <a href="tel:2049401781">
-            204-940-1781
-          </a>
-          <a
-          onClick={() => openNavMap('817 Bannatyne Avenue, Winnipeg')}
-          >
-            817 Bannatyne Avenue
-          </a>
-        </p>
+          <Icon
+            className="main-icon"
+            icon="md-accounts"
+          />
+        </Card>
 
-        <h2>
-          Go to your nearest hospital emergency or call
-          <a href="tel:911">911</a>
-        </h2>
+        <Card
+          subcontent={
+            <ul>
+              <li>
+                <a href="tel:2047868686" >
+                  Klinic Crisis Line
+                </a>
+              </li>
+              <li>
+                <a href="tel:2049401781" >
+                  WRHA Mobile Crisis
+                </a>
+              </li>
+              <li>
+                <a href="tel:18774357170" >
+                  Manitoba Suicide Line
+                </a>
+              </li>
+              <li>
+                <a href="tel:2049429276" >
+                  Seneca Help Line (7pm - 11pm)
+                </a>
+              </li>
+            </ul>
+          }
+        >
+          <h4>
+            Phone Lines
+          </h4>
+        </Card>
+
+        <Card
+          subcontent={
+            <ul>
+              <li>
+                <a
+                  onClick={() => openNavMap('755 Portage Avenue, Winnipeg')}
+                >
+                  755 Portage Avenue
+                </a>
+              </li>
+
+              <li>
+                <a href="tel:2049403633">
+                  204-940-3633
+                </a>
+              </li>
+            </ul>
+          }
+        >
+          <h4>
+            Crisis Stabilization Unit (WRHA)
+          </h4>
+        </Card>
+
+        <Card
+          subcontent={
+            <ul>
+              <li>
+                <a
+                  onClick={() => openNavMap('817 Bannatyne Avenue, Winnipeg')}
+                >
+                  817 Bannatyne Avenue
+                </a>
+              </li>
+              <li>
+                <a href="tel:2049401781">
+                  204-940-1781
+                </a>
+              </li>
+            </ul>
+          }
+        >
+          <h4>
+            Crisis Response Centre
+          </h4>
+        </Card>
+
+        <Card
+          subcontent={
+            <ul>
+              <li>
+                <a href="tel:911">
+                  911
+                </a>
+              </li>
+            </ul>
+          }
+        >
+          <h4>
+            Go to Your Nearest Hospital Emergency
+          </h4>
+        </Card>
 
       </Page>
     );

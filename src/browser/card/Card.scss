@@ -41,6 +41,7 @@
   h3,
   h4 {
     line-height: 1em;
+    flex-grow: 1;
   }
 
   h3 {
@@ -66,6 +67,12 @@
     margin-right: 1rem;
     text-align: center;
     width: $size;
+  }
+
+  .main-icon {
+    align-self: flex-end;
+    color: $md-grey;
+    font-size: 1.8em;
   }
 
 }

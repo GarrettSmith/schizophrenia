@@ -1,0 +1,38 @@
+@import '../app/Constants';
+
+.crisis {
+  .page__background {
+    background-color: $md-grey;
+  }
+
+  h4 {
+    color: $md-grey;
+  }
+
+  .subcontent {
+    padding: 0;
+
+    a {
+      color: $black;
+      text-decoration: none;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      flex-grow: 1;
+    }
+
+    li {
+      border-bottom: 1px solid $light-grey;
+      margin: 0;
+      padding: 1rem;
+      width: 100%;
+
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+}
