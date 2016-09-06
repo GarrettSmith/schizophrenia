@@ -34,10 +34,12 @@ const OVERVIEW_PROPS = [
     name: 'Physical',
     prop: 'physical',
   },
+
   {
     name: 'Mental',
     prop: 'mental',
   },
+
   {
     name: 'Emotional',
     prop: 'emotional',
@@ -49,14 +51,17 @@ const OPTIONAL_PROPS = [
     name: 'Weight',
     prop: 'weight',
   },
+
   {
     name: 'Blood Sugar',
     prop: 'bloodSugar',
   },
+
   {
     name: 'Blood Pressure Systolic',
     prop: 'bloodPressureSystolic',
   },
+
   {
     name: 'Blood Pressure Diastolic',
     prop: 'bloodPressureDiastolic',

@@ -96,6 +96,7 @@ class Tracking extends Component {
           <Category
             {...this.props}
             dimensions={dimensions.optional}
+            domain={{x: this.props.domain.x}}
             key="optional"
           />
         ),

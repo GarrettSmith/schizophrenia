@@ -67,8 +67,7 @@ const valueMap = dimension => entries => {
   // dimension => entry => value
   const valueExtractor = {
     [DIMENSION_CATEGORIES.OVERVIEW]: dimension => prop(dimension.prop),
-    // TODO
-    [DIMENSION_CATEGORIES.OPTIONAL]: () => () => null,
+    [DIMENSION_CATEGORIES.OPTIONAL]: dimension => prop(dimension.prop),
     [DIMENSION_CATEGORIES.SYMPTOM]: associationValueExtractor('symptoms'),
     [DIMENSION_CATEGORIES.SIDE_EFFECT]: associationValueExtractor('sideEffects'),
   }[dimension.category](dimension);
@@ -126,6 +125,7 @@ function populateDimensions(interval, entries, dimensions) {
       {
         color: dimensionColor(dimension),
         data: data(interval, entries, dimension),
+        domain: dimensionDomain(interval, dimension),
       }
     ),
     dimensions
@@ -146,6 +146,23 @@ function categorizeDimensions(dimensions) {
     emptyCategories,
     groups,
   );
+}
+
+function dimensionDomain(interval, dimension) {
+  if (dimension.category === 'optional') {
+    const y = {
+      weight: [0, 300],
+      bloodSugar: [0, 20],
+      bloodPressureSystolic: [120, 160],
+      bloodPressureDiastolic: [80, 100],
+    }[dimension.prop];
+
+    return {
+      x: [interval.start, interval.end],
+      y,
+    };
+  }
+  return domain(interval);
 }
 
 function domain({start, end}) {

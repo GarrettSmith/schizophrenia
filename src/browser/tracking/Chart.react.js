@@ -54,6 +54,8 @@ export default class Chart extends Component {
       [TIME_SCALES.YEAR]: 'MMM',
     }[timeScale];
 
+    const yDomainTick = domain.y ? x => `${x}` : x => null;
+
     return (
       <svg className="chart">
 
@@ -67,7 +69,7 @@ export default class Chart extends Component {
           dependentAxis
           standAlone={false}
           domain={domain.y}
-          tickFormat={x => `${x}`}
+          tickFormat={yDomainTick}
           style={{
             grid: {
               stroke: "grey",
@@ -80,7 +82,7 @@ export default class Chart extends Component {
             <g key={dimension.name} >
               <VictoryLine
                 data={dimension.data}
-                domain={domain}
+                domain={dimension.domain}
                 x={X_KEY}
                 y={Y_KEY}
                 standAlone={false}
@@ -91,7 +93,7 @@ export default class Chart extends Component {
 
               <VictoryScatter
                 data={dimension.data}
-                domain={domain}
+                domain={dimension.domain}
                 x={X_KEY}
                 y={Y_KEY}
                 standAlone={false}
