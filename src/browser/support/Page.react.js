@@ -1,3 +1,5 @@
+import './Page.scss';
+
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
@@ -60,9 +62,9 @@ class SupportHome extends Component {
         onClick={() => this.setState({current: contact})}
       >
         <div className="center">
-          <h3>
+          <h4>
             {name}
-          </h3>
+          </h4>
         </div>
       </ListItem>
     );

@@ -91,9 +91,9 @@ export default class View extends Component {
         onCancel={onCancel}
       >
         <div className="alert-dialog-title">
-          <h2>
+          <h3>
             {name}
-          </h2>
+          </h3>
         </div>
 
         <List

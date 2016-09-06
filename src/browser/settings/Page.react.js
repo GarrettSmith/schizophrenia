@@ -13,6 +13,7 @@ import {
   Page,
   Switch,
 } from 'react-onsenui';
+import Card from '../card/Card.react';
 
 import {route} from '../routes';
 import {actions} from '../../common/settings/actions';
@@ -61,30 +62,31 @@ class Settings extends Component {
         className="settings"
         renderToolbar={this.renderToolbar}
       >
-        <div className="enabled">
-          <label>
-            Enable Notifications
-          </label>
-          <Switch
-            checked={notificationEnabled}
-            onChange={this.toggle}
-          />
-        </div>
+        <Card>
+          <div className="enabled">
+            <label>
+              Enable Notifications
+            </label>
+            <Switch
+              checked={notificationEnabled}
+              onChange={this.toggle}
+            />
+          </div>
 
-        <div className="time">
-          <label>
-            Notification Time
-          </label>
-          <Input
-            type="number"
-            value={`${notificationTime}`}
-            onChange={this.setTime}
-          />
-        </div>
+          <div className="time">
+            <label>
+              Notification Time
+            </label>
+            <Input
+              type="number"
+              value={`${notificationTime}`}
+              onChange={this.setTime}
+            />
+          </div>
+        </Card>
       </Page>
     );
   }
-
 }
 
 export default connect(

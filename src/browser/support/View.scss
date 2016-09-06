@@ -1,3 +1,17 @@
+@import '../app/Constants';
+
 .support-view .alert-dialog{
   width: 100%;
+
+  h3 {
+    margin: 0.3rem 0;
+  }
+
+  ons-list {
+    border-top: 1px solid $light-grey;
+  }
+
+  .list__item__left {
+    min-width: 2rem;
+  }
 }
