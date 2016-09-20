@@ -17,6 +17,7 @@ import {
   assocPath,
   map,
   merge,
+  pathOr,
   values,
 } from 'ramda';
 import moment from 'moment';
@@ -43,11 +44,11 @@ function load(loading, state) {
 
   const symptomDimensions = associationDimensions(
     'symptom',
-    loading.symptom.existingAssociations
+    pathOr({}, ['symptom', 'existingAssociations'], loading)
   );
   const sideEffectDimensions = associationDimensions(
     'sideEffect',
-    loading.sideEffect.existingAssociations
+    pathOr({}, ['sideEffect', 'existingAssociations'], loading)
   );
   const allAssociationDimensions = concat(
     symptomDimensions,
